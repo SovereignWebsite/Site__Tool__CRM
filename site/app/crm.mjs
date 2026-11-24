@@ -274,9 +274,9 @@ export function personFile(v, { id, name, email, org, role = '', by, at }) {
 
 // A new CRM vault's first files: its manifest (which marks it as a CRM vault the page may write to)
 // and the stages.
-export function newVaultFiles({ owner, at }) {
+export function newVaultFiles({ owner, at, name = '' }) {
   if (!owner) throw new Error('a CRM vault needs an owner name');
-  const manifest = { schema: 'crm.vault/1', synthetic: false, owner, created_at: at, created_by: 'CRM tool site (crm.tool.sovereignweb.site)', twin: null };
+  const manifest = { schema: 'crm.vault/1', synthetic: false, ...(name ? { name } : {}), owner, created_at: at, created_by: 'CRM tool site (crm.tool.sovereignweb.site)', twin: null };
   return [
     { path: 'manifest.json', text: JSON.stringify(manifest, null, 2) + '\n' },
     { path: 'crm/stages.json', text: JSON.stringify({ schema: 'crm.stages/1', stages: STAGES }, null, 2) + '\n' },

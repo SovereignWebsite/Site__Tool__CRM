@@ -14,8 +14,8 @@
 // The format code is pki.sgit.ai's own (vendor/pki/v0.2.28, unedited). unsealWith below mirrors
 // keys.js unseal, taking a CryptoKey because the private key here has no exportable bytes.
 // By cell.email@AgentiCCells.dinis, 2026-11-16. Apache-2.0.
-import { bundleOf, seal, parseEnvelope, unb64, verifyBytes, RSA_GEN, EC } from './vendor/pki/v0.2.28/keys.js?v=2ced647';
-import { keyCode, parseQrText, parseCode, verifyMessage, problems, KIND } from './vendor/pki/v0.2.28/message.js?v=2ced647';
+import { bundleOf, seal, parseEnvelope, unb64, verifyBytes, RSA_GEN, EC } from './vendor/pki/v0.2.28/keys.js?v=0048365';
+import { keyCode, parseQrText, parseCode, verifyMessage, problems, KIND } from './vendor/pki/v0.2.28/message.js?v=0048365';
 
 // Vault keys in text, with or without sgit's prefix. (message.js vaultKeysIn v0.2.28 misses the
 // prefixed form: its \b after "vault_" cannot match between "_" and the passphrase.)

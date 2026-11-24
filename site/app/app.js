@@ -111,10 +111,11 @@ async function openPage() {
     <button type="submit">Open</button>
   </form>
   <p id="status" class="muted" role="status"></p>
-  <h2>Start a new CRM vault</h2>
-  <p>Makes an empty, encrypted CRM vault on the vault service with your access token, marked as yours. Your companies and contacts then live there, not on this site. You get its key once: keep it safe.</p>
+  <h2 id="create">Start a new CRM vault</h2>
+  <p>Makes an empty, encrypted CRM vault on the vault service with your access token, marked as yours. Your companies and contacts then live there, not on this site. If you are logged in (You), it is added to your vaults, locked to this browser; you also see its key once: keep it in your password manager too.</p>
   <form id="create" class="open" autocomplete="off">
-    <label>Your name <span class="muted">(owner of the vault and its leads)</span> <input id="c-owner" type="text" required></label>
+    <label>Your name <span class="muted">(owner of the vault and its leads)</span> <input id="c-owner" type="text" value="${esc(myName())}" required></label>
+    <label>Vault name <input id="c-name" type="text" placeholder="for example: My CRM"></label>
     <label>SG/Send access token <input id="c-token" type="password" spellcheck="false" required></label>
     <label class="check"><input id="c-remember" type="checkbox"> Remember the vault on this device, sealed to this browser's own key</label>
     <button type="submit">Create my CRM vault</button>
@@ -158,13 +159,15 @@ function wireOpen() {
     $('#c-token').value = '';
     try {
       st('Making your vault…');
-      const { key } = await createCrmVault(token, newVaultFiles({ owner, at: nowIso() }));
+      const name = ($('#c-name')?.value || '').trim() || `${owner}'s CRM`;
+      const { key } = await createCrmVault(token, newVaultFiles({ owner, at: nowIso(), name }), { name });
       st('Opening it…');
       await loadVault(key, null, remember, st, token);
+      if (await ME.loggedIn()) { await ME.addVault(key, name, 'personal'); ME.setLastVault(key.split(':').pop()); }
       NEWKEY = key; location.hash = '#/today'; route();
     } catch (e) { st('Not made: ' + e.message, true); }
   });
-  $('#to-demo')?.addEventListener('click', () => loadDemo().then(() => { location.hash = '#/today'; route(); }));
+  $('#to-demo')?.addEventListener('click', () => loadDemo().then(() => { ME.setLastVault(null); location.hash = '#/today'; route(); }));
 }
 
 const stageName = (id) => V.stages.find((s) => s.id === id)?.name || id;
@@ -344,7 +347,8 @@ async function mePage() {
   ${list.length ? '' : handover}
   <h2>Your vaults</h2>
   <ul class="list vaults">${list.map((v) => `<li><strong>${esc(v.name)}</strong> <span class="muted small">${esc(v.id)} · added ${esc(v.added)}</span> <button type="button" class="small" data-openv="${esc(v.id)}">Open</button> <button type="button" class="small quiet" data-vaultapp="${esc(v.id)}" title="Open this vault in the SG/Send vault app, in a new tab">Open in the vault app ↗</button> <button type="button" class="small quiet" data-forgetv="${esc(v.id)}">Forget</button></li>`).join('') || '<li class="muted">None yet: send your QR code (1), then drop what you get back (2).</li>'}</ul>
-  ${list.length ? `<details class="add"><summary>Add another vault</summary>${handover}</details>` : ''}
+  <p><a class="button" href="#/open#create">Start a personal CRM vault</a> <span class="muted small">for your own contacts, only yours</span></p>
+  ${list.length ? `<details class="add"><summary>Add another vault (from someone else)</summary>${handover}</details>` : ''}
   <p id="v-status" class="muted" role="status"></p>
   <p><button type="button" id="logout" class="quiet small">Log out of this browser</button> <span class="muted small">removes the vault keys kept here; your vaults themselves are not touched</span></p>`;
 }
@@ -425,7 +429,7 @@ function wireActions() {
     const f = [...(e.clipboardData?.items || [])].filter((i) => i.kind === 'file').map((i) => i.getAsFile()).find((x) => x && x.type.startsWith('image/'));
     if (f) { e.preventDefault(); fromPicture(f); return; } const t = e.clipboardData?.getData('text'); if (t && /pki\.sgit\.ai|m1\./.test(t)) { e.preventDefault(); openCode(t); } }); }
   for (const b of document.querySelectorAll('[data-openv]')) b.addEventListener('click', async () => { const st = (t, bad) => { $('#v-status').textContent = t; $('#v-status').className = bad ? 'warn' : 'muted'; };
-    try { const key = await ME.vaultKey(b.dataset.openv); await loadVault(key, null, false, st, await ME.savedToken()); location.hash = '#/today'; route(); } catch (e) { st('Could not open: ' + e.message, true); } });
+    try { const key = await ME.vaultKey(b.dataset.openv); await loadVault(key, null, false, st, await ME.savedToken()); ME.setLastVault(b.dataset.openv); location.hash = '#/today'; route(); } catch (e) { st('Could not open: ' + e.message, true); } });
   for (const b of document.querySelectorAll('[data-vaultapp]')) b.addEventListener('click', async () => {
     // The vault app takes the key after '#', which a browser never sends to a server. Opened in a new tab, without an opener.
     try { const key = await ME.vaultKey(b.dataset.vaultapp); const bare = String(key).replace(/^sgit_private_vault_/, ''); window.open(`https://dev.vault.sgraph.ai/en-gb/#${bare}`, '_blank', 'noopener'); }
@@ -470,4 +474,13 @@ async function route() {
 $('#me')?.addEventListener('click', askName); showName();
 $('#menu-toggle')?.addEventListener('click', () => document.body.classList.toggle('menu-open'));
 $('#mode')?.addEventListener('click', () => { location.hash = '#/me'; });
-loadDemo().then(() => { addEventListener('hashchange', route); route(); }).catch((e) => { $('#main').innerHTML = `<p class="warn">Could not load the demo: ${esc(e.message)}</p>`; });
+loadDemo().then(async () => {
+  addEventListener('hashchange', route);
+  // Reopen the vault this browser last had open (asking for the passkey if there is one); the demo stays one press away.
+  const last = ME.lastVault();
+  if (last && await ME.loggedIn()) {
+    const v = (await ME.vaults()).find((x) => x.id === last);
+    if (v) { $('#banner').textContent = `Opening ${v.name}…`; try { await loadVault(await ME.vaultKey(last), null, false, () => {}, await ME.savedToken()); } catch (e) { await loadDemo(); $('#banner').textContent = `Could not reopen ${v.name} (${e.message}); showing the demo. Open it again from You.`; } }
+  }
+  route();
+}).catch((e) => { $('#main').innerHTML = `<p class="warn">Could not load the demo: ${esc(e.message)}</p>`; });

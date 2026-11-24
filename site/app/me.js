@@ -59,6 +59,19 @@ export async function myKey() {
 // The vaults this browser holds: [{ id, name, role, added }], kept sealed like the keys themselves.
 export async function vaults() { const id = await existingIdentity(); if (!id) return []; try { return JSON.parse((await recall(id, 'vaults')) || '[]'); } catch { return []; } }
 async function saveVaults(list) { await keep(await existingIdentity(), 'vaults', JSON.stringify(list)); }
+// Add a vault this browser holds (a new personal vault, or one opened by key), kept sealed like the others.
+export async function addVault(key, name, role = 'personal') {
+  const id = await existingIdentity(); if (!id) return false;
+  const vid = String(key).trim().split(':').pop();
+  await keep(id, 'vault:' + vid, String(key).trim());
+  const list = await vaults(), entry = { id: vid, name: name || vid, role, added: new Date().toISOString().slice(0, 10) }, i = list.findIndex((v) => v.id === vid);
+  if (i >= 0) list[i] = { ...list[i], ...entry }; else list.push(entry);
+  await saveVaults(list); return true;
+}
+// The vault last opened in this browser (its id only, not a secret), reopened on the next visit.
+const LAST = 'crm.last';
+export const lastVault = () => ls.get(LAST);
+export const setLastVault = (vid) => (vid ? ls.set(LAST, vid) : ls.del(LAST));
 export async function vaultKey(vid) { await unlock(); return recall(await existingIdentity(), 'vault:' + vid); }
 export async function forgetVault(vid) { await forget('vault:' + vid); await saveVaults((await vaults()).filter((v) => v.id !== vid)); }
 
