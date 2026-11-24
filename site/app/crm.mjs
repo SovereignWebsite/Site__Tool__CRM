@@ -495,14 +495,29 @@ export function importFiles(v, text, { by, at, newId: mk = newId }) {
 // The Day: what to do now, in order (design review round 1: "The first phone screen is the day's list"). Overdue next
 // steps first, then follow-ups (we reached out, no reply in 5 days), then drafts waiting, then next steps due within a
 // week; one card per company, under its most pressing reason. Counts by stage for the top of the page.
-export function theDay(v, now, { soon = 7 } = {}) {
-  const rows = leadBoard(v, now), cards = [], seen = new Set();
-  const push = (r, why, detail, order) => { if (seen.has(r.org)) return; seen.add(r.org); cards.push({ ...r, why, detail, order }); };
+export function theDay(v, now, { soon = 7, owner = null } = {}) {
+  // One card per company, with every reason it is here (a.crm.design, round 5 asks: "Today shows every reason a company has").
+  // The card sorts by its most urgent reason: overdue, then waiting on a reply, then a draft, then due soon.
+  const all = leadBoard(v, now), rows = owner ? all.filter((r) => r.owner === owner) : all;
   const dayOf = (iso) => Date.parse(iso + 'T23:59:59Z');
-  rows.filter((r) => r.overdue).sort((a, b) => dayOf(a.next_step_due) - dayOf(b.next_step_due)).forEach((r) => push(r, 'overdue', `overdue since ${r.next_step_due}`, 0));
-  rows.filter((r) => r.waiting).sort((a, b) => b.waiting.days - a.waiting.days).forEach((r) => push(r, 'follow-up', `no reply in ${r.waiting.days} days`, 1));
-  rows.filter((r) => r.draft.state === 'draft').forEach((r) => push(r, 'draft', 'a draft is waiting', 2));
-  rows.filter((r) => r.next_step_due && !r.overdue && dayOf(r.next_step_due) - now < soon * DAY).sort((a, b) => dayOf(a.next_step_due) - dayOf(b.next_step_due)).forEach((r) => push(r, 'soon', `due ${r.next_step_due}`, 3));
-  const stages = v.stages.map((s) => ({ ...s, count: rows.filter((r) => r.stage === s.id).length }));
-  return { cards, stages, total: rows.length };
+  const byOrg = new Map();
+  const add = (r, why, detail, order, key) => { const c = byOrg.get(r.org) || { ...r, reasons: [], key: [9, 0] }; c.reasons.push({ why, detail }); if (order < c.key[0] || (order === c.key[0] && key < c.key[1])) c.key = [order, key]; byOrg.set(r.org, c); };
+  for (const r of rows) {
+    if (r.overdue) add(r, 'overdue', `since ${r.next_step_due}`, 0, dayOf(r.next_step_due));
+    if (r.waiting) add(r, 'follow-up', `no reply for ${r.waiting.days} days`, 1, -r.waiting.days);
+    if (r.draft.state === 'draft') add(r, 'draft', r.draft.count > 1 ? `${r.draft.count} drafts` : 'ready to review', 2, 0);
+    if (r.next_step_due && !r.overdue && dayOf(r.next_step_due) - now < soon * DAY) add(r, 'soon', `due ${r.next_step_due}`, 3, dayOf(r.next_step_due));
+  }
+  const person = (c) => {
+    // The person to talk to: the one with a waiting draft, else the one on the waiting thread, else the company's first.
+    const d = v.drafts.find((x) => x.status === 'draft' && (x.org ?? v.people.find((p) => p.id === x.person)?.org) === c.org);
+    const t = c.waiting && v.threads.find((x) => x.id === c.waiting.thread);
+    const id = d?.person || t?.person || v.people.find((p) => p.org === c.org)?.id;
+    const p = v.people.find((x) => x.id === id);
+    return p ? { id: p.id, name: p.name, role: p.role || null } : null;
+  };
+  const cards = [...byOrg.values()].sort((x, y) => x.key[0] - y.key[0] || x.key[1] - y.key[1]).map((c) => ({ ...c, why: c.reasons.find((r) => r.why === ['overdue', 'follow-up', 'draft', 'soon'][c.key[0]]).why, detail: c.reasons.find((r) => r.why === ['overdue', 'follow-up', 'draft', 'soon'][c.key[0]]).detail, order: c.key[0], person: person(c) }));
+  const count = (w) => cards.filter((c) => c.reasons.some((r) => r.why === w)).length;
+  const stages = v.stages.map((s) => ({ ...s, count: all.filter((r) => r.stage === s.id).length }));
+  return { cards, stages, total: all.length, counts: { overdue: count('overdue'), 'follow-up': count('follow-up'), draft: count('draft'), soon: count('soon') } };
 }

@@ -66,3 +66,7 @@ async function main() {
   showAnswers();
 }
 main();
+
+// The site's header, as on the app's pages: the Menu button on phones, and your name if this browser has one.
+document.getElementById('menu-toggle')?.addEventListener('click', () => document.body.classList.toggle('menu-open'));
+try { const n = localStorage.getItem('crm.name'); if (n) document.getElementById('me').textContent = 'You: ' + n; } catch {}

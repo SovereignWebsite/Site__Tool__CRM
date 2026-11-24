@@ -272,18 +272,28 @@ function linkButton(thread, org, person) {
   return `<button type="button" class="small quiet" data-link="${esc(thread)}" data-org="${esc(org)}" data-person="${esc(person || '')}">Link to ${esc(orgName(org))}</button>`;
 }
 
-function todayPage() {
-  const d = theDay(V, NOW), why = { overdue: 'Overdue', 'follow-up': 'Follow up', draft: 'Draft waiting', soon: 'Coming up' };
+// "21 Nov" for a yyyy-mm-dd or ISO date; the year only when it is not this year.
+const shortDay = (iso) => { const t = Date.parse(String(iso).length === 10 ? iso + 'T12:00:00Z' : iso); if (!t) return String(iso); const d = new Date(t), y = new Date(NOW).getUTCFullYear(); return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', ...(d.getUTCFullYear() !== y ? { year: 'numeric' } : {}), timeZone: 'UTC' }); };
+const reasonText = (r) => r.detail.replace(/\d{4}-\d{2}-\d{2}/, (m) => shortDay(m));
+function todayPage(query = '') {
+  const mineOnly = /(^|&)who=mine(&|$)/.test(query) && me();
+  const d = theDay(V, NOW, mineOnly ? { owner: me() } : {}), why = { overdue: 'Overdue', 'follow-up': 'Follow up', draft: 'Draft waiting', soon: 'Coming up' };
+  const parts = [[d.counts.overdue, 'overdue'], [d.counts['follow-up'], d.counts['follow-up'] === 1 ? 'follow-up' : 'follow-ups'], [d.counts.draft, d.counts.draft === 1 ? 'draft to review' : 'drafts to review'], [d.counts.soon, 'coming up']].filter(([n]) => n).map(([n, w]) => `${n} ${w}`);
+  const switcher = me() ? `<p class="filters" role="group" aria-label="Whose companies"><a href="#/today"${mineOnly ? '' : ' class="on" aria-current="true"'}>Everyone</a> <a href="#/today?who=mine"${mineOnly ? ' class="on" aria-current="true"' : ''}>Mine (${esc(me())})</a></p>` : '';
   return `<h1>Today</h1>
+  <p class="today-count">${d.cards.length ? `${d.cards.length} ${d.cards.length === 1 ? 'company' : 'companies'} need you: ${parts.join(', ')}.` : 'Nothing needs doing today.'}</p>
+  ${switcher}
   <p class="stages">${d.stages.map((s) => `<a class="stage s-${esc(s.id)}" href="#/board">${esc(s.name)} <strong>${s.count}</strong></a>`).join(' ')}</p>
-  ${d.cards.length ? '' : '<p class="muted">Nothing needs doing today. Well done.</p>'}
-  <ul class="cards">${d.cards.map((c) => `<li class="card why-${esc(c.why)}">
-    <p class="card-why"><span class="badge">${why[c.why]}</span> <span class="small">${esc(c.detail)}</span></p>
+  ${d.cards.length ? '' : `<p class="muted">${mineOnly ? 'None of your companies needs anything today.' : 'Well done.'}</p>`}
+  <ul class="cards">${d.cards.map((c) => { const draft = c.reasons.some((r) => r.why === 'draft') && draftFor(c.org);
+    return `<li class="card why-${esc(c.why)}">
+    <p class="card-why"><span class="badge">${why[c.why]}</span> <span class="small">${esc(reasonText(c))}</span></p>
     <h2><a href="#/company/${esc(c.org)}">${esc(c.name)}</a></h2>
-    <p class="small muted">${esc(stageName(c.stage))} · ${esc(c.owner || 'no owner')}${c.last_contact ? ' · last contact ' + day(c.last_contact.date) : ''}</p>
-    ${c.next_step ? `<p>Next: ${esc(c.next_step)}${c.next_step_due ? ` <span class="small ${c.overdue ? 'warn' : 'muted'}">(${c.overdue ? 'overdue, ' : 'due '}${esc(c.next_step_due)})</span>` : ''}</p>` : ''}
-    <p class="card-actions">${c.why === 'draft' && draftFor(c.org) ? `<a class="button" href="${esc(sendLink(draftFor(c.org).person))}" title="Open the draft in the send screen${SYNTHETIC ? ' (demo)' : ''}">Review and send</a> <a class="button quiet" href="#/company/${esc(c.org)}?log=1">Log an action</a>` : `<a class="button" href="#/company/${esc(c.org)}?log=1">Log the follow-up</a>`}</p>
-  </li>`).join('')}</ul>`;
+    ${c.reasons.length > 1 ? `<p class="small also">Also: ${c.reasons.filter((r) => r.why !== c.why).map((r) => `${why[r.why].toLowerCase()}, ${esc(reasonText(r))}`).join('; ')}</p>` : ''}
+    <p class="small muted">${c.person ? `${esc(c.person.name)}${c.person.role ? ', ' + esc(c.person.role) : ''} · ` : ''}${esc(stageName(c.stage))} · ${esc(c.owner || 'no owner')}${c.last_contact ? ' · last contact ' + shortDay(c.last_contact.date) : ''}</p>
+    ${c.next_step ? `<p>Next: ${esc(c.next_step)}${c.next_step_due && !c.overdue ? ` <span class="small muted">(due ${shortDay(c.next_step_due)})</span>` : ''}</p>` : ''}
+    <p class="card-actions">${draft ? `<a class="button" href="${esc(sendLink(draft.person))}" title="Open the draft in the send screen${SYNTHETIC ? ' (demo)' : ''}">Review and send</a> <a class="button quiet" href="#/company/${esc(c.org)}?log=1">Log an action</a>` : `<a class="button" href="#/company/${esc(c.org)}?log=1">Log the follow-up</a>`}</p>
+  </li>`; }).join('')}</ul>`;
 }
 
 function threadsPage() {
@@ -543,7 +553,7 @@ function wireActions() {
 async function route() {
   const [path, query] = (location.hash.slice(1) || '/today').split('?');
   const [, page, id] = path.split('/');
-  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'today' ? todayPage() : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'me' ? await mePage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : page === 'outbox' ? outboxPage() : board();
+  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'today' ? todayPage(query) : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'me' ? await mePage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : page === 'outbox' ? outboxPage() : board();
   $('#main').innerHTML = newKeyPanel() + pendingPanel() + body;
   if (page === 'open') wireOpen();
   wireActions();

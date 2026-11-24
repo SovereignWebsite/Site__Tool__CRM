@@ -27,7 +27,21 @@
 <body>
 <header class="bar">
   <strong>CRM</strong>
-  <nav><a href="../#/board">Lead board</a> <a href="../#/me">You</a> <a href="./" class="on">Requests</a></nav>
+  <button type="button" id="menu-toggle" class="menu-toggle" aria-label="Menu">Menu</button>
+  <nav>
+    <a href="../#/today">Today</a>
+    <a href="../#/board">Lead board</a>
+    <a href="../#/follow-ups">Follow-ups</a>
+    <a href="../#/contacts">Contacts</a>
+    <a href="../#/outbox">Outbox</a>
+    <a href="../#/import">Import</a>
+    <a href="../#/threads">Unlinked threads</a>
+    <a href="../#/me">You</a>
+    <a href="../#/open">Open your vault</a>
+    <a href="./" class="on" aria-current="page">Requests</a>
+  </nav>
+  <a id="me" class="button quiet small" href="../#/me">You</a>
+  <a id="mode" class="mode" href="../#/me">Vaults ▾</a>
 </header>
 <div class="banner">Requests are real messages to the agent that builds this CRM, whichever vault you have open. Do not put contacts' details in them.</div>
 <main>
