@@ -167,3 +167,58 @@ button.quiet { border: 2px solid var(--accent); }
   .stages .stage { min-height: 44px; }
   button, a.button, a.badge, details.add > summary { min-height: 44px; display: inline-flex; align-items: center; }
 }
+
+/* ---- Round 1 on the live app (a.crm.design, 24 Nov 2026): fixes for crm.dev.a's four points. ---- */
+
+/* 1. The header fits one row down to 1180 px; below that the pages move to their own row, the vault pill stays top right. */
+.bar { gap: 10px; }
+.bar nav { gap: 2px; }
+.bar nav a { padding: 6px 9px; font-size: 15px; white-space: nowrap; }
+#me { white-space: nowrap; }
+@media (min-width: 641px) and (max-width: 1180px) {
+  .bar nav { order: 5; flex-basis: 100%; }
+}
+
+/* On a phone the vault pill stays on the first row, top right; the name button moves below it. */
+@media (max-width: 640px) { .bar { row-gap: 6px; } #mode { order: 2; margin-left: auto; } #me { order: 6; margin-left: 0; } .bar nav { order: 7; } }
+
+/* 2. On a phone the why label sits at the start of the line, not centred. */
+@media (max-width: 640px) { .card > .card-why { justify-content: flex-start; } }
+
+/* 3. Keys on people: words and a shape, like every other status. */
+.badge.key, .badge.key-ok, .badge.key-none, .badge.key-other, .badge.key-bad { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; padding: 1px 8px 1px 6px; border-radius: 6px; vertical-align: middle; white-space: nowrap; }
+.badge.key::before, .badge.key-ok::before, .badge.key-none::before, .badge.key-other::before, .badge.key-bad::before { content: ""; width: 9px; height: 11px; flex: none; background: currentColor; clip-path: polygon(50% 0, 100% 18%, 100% 58%, 50% 100%, 0 58%, 0 18%); }
+.badge.key { color: var(--muted); background: var(--chip); border: 1.5px dotted var(--muted); }              /* checking: dotted */
+.badge.key-ok { color: var(--accent); background: var(--accent-soft); border: 1.5px solid var(--accent); }   /* verified: solid shield */
+.badge.key-none { color: var(--muted); background: transparent; border: 1.5px dashed var(--muted); }         /* none yet: hollow, dashed */
+.badge.key-none::before { background: none; border: 1.5px solid currentColor; clip-path: none; border-radius: 2px 2px 5px 5px; width: 8px; height: 10px; }
+.badge.key-other { color: var(--brass); background: var(--brass-soft); border: 1.5px solid var(--brass); }   /* signed by someone unknown: half shield */
+.badge.key-other::before { clip-path: polygon(50% 0, 50% 100%, 0 58%, 0 18%); }
+.badge.key-bad { color: var(--warn); background: var(--warn-soft); border: 1.5px solid var(--warn); }       /* does not check: a cross */
+.badge.key-bad::before { clip-path: polygon(20% 0, 50% 30%, 80% 0, 100% 20%, 70% 50%, 100% 80%, 80% 100%, 50% 70%, 20% 100%, 0 80%, 30% 50%, 0 20%); height: 9px; }
+details.add.inline { display: inline-block; margin: 0 0 0 4px; vertical-align: middle; }
+details.add.inline > summary { display: inline-flex; align-items: center; min-height: 32px; padding: 0 10px; border: 1.5px dashed var(--accent); border-radius: 6px; font-size: 13px; font-weight: 700; color: var(--accent); list-style: none; }
+details.add.inline > summary::-webkit-details-marker { display: none; }
+details.add.inline > summary::before { content: "+"; margin-right: 5px; }
+details.add.inline[open] { display: block; margin: 8px 0 12px; padding: 10px 12px; border: 1.5px solid var(--accent); border-radius: 10px; background: var(--raise); }
+details.add.inline[open] > summary::before { content: "\2212"; }
+form.add-key { margin: 8px 0 0; }
+
+/* Buttons keep their label on one line. */
+button, a.button { white-space: nowrap; }
+
+/* 4. Phone: "Draft waiting" links and the folded forms at 44 px; tables without sideways scrolling. */
+@media (max-width: 640px) {
+  a.badge, details.add.inline > summary { min-height: 44px; }
+  .scroll { overflow-x: visible; }
+  .grid { min-width: 0; font-size: 14px; }
+  .grid thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .grid, .grid tbody, .grid tr, .grid td, .grid th { display: block; }
+  .grid tr { padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .grid td, .grid th { padding: 2px 0; border: 0; }
+  .grid td:empty { display: none; }
+  .grid td[data-label]::before { content: attr(data-label) ": "; color: var(--muted); font-size: 13px; }
+  .grid td:first-child { font-weight: 700; }
+  .grid .num { text-align: left; }
+  .grid td a, .grid th a { display: inline-flex; align-items: center; min-height: 44px; }
+}

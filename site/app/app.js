@@ -172,9 +172,11 @@ function wireOpen() {
 
 const stageName = (id) => V.stages.find((s) => s.id === id)?.name || id;
 const orgName = (id) => V.orgs.find((o) => o.id === id)?.name || id;
+// The first draft waiting for a company, if any.
+const draftFor = (orgId) => V.drafts.find((x) => x.status === 'draft' && (x.org ?? V.people.find((p) => p.id === x.person)?.org) === orgId) || null;
 function draftBadge(d, orgId) {
   const label = { draft: 'Draft waiting', sent: 'Sent', none: 'No draft' }[d.state];
-  const first = d.state === 'draft' && V.drafts.find((x) => x.status === 'draft' && (x.org ?? V.people.find((p) => p.id === x.person)?.org) === orgId);
+  const first = d.state === 'draft' && draftFor(orgId);
   return first ? `<a class="badge d-draft" href="${esc(sendLink(first.person))}" title="Open the draft in the send screen (demo)">${label} →</a>` : `<span class="badge d-${d.state}">${label}</span>`;
 }
 
@@ -254,7 +256,7 @@ function todayPage() {
     <h2><a href="#/company/${esc(c.org)}">${esc(c.name)}</a></h2>
     <p class="small muted">${esc(stageName(c.stage))} · ${esc(c.owner || 'no owner')}${c.last_contact ? ' · last contact ' + day(c.last_contact.date) : ''}</p>
     ${c.next_step ? `<p>Next: ${esc(c.next_step)}${c.next_step_due ? ` <span class="small ${c.overdue ? 'warn' : 'muted'}">(${c.overdue ? 'overdue, ' : 'due '}${esc(c.next_step_due)})</span>` : ''}</p>` : ''}
-    <p class="card-actions">${c.why === 'draft' ? draftBadge(c.draft, c.org) : ''} <a class="button" href="#/company/${esc(c.org)}?log=1">Log the follow-up</a></p>
+    <p class="card-actions">${c.why === 'draft' && draftFor(c.org) ? `<a class="button" href="${esc(sendLink(draftFor(c.org).person))}" title="Open the draft in the send screen${SYNTHETIC ? ' (demo)' : ''}">Review and send</a> <a class="button quiet" href="#/company/${esc(c.org)}?log=1">Log an action</a>` : `<a class="button" href="#/company/${esc(c.org)}?log=1">Log the follow-up</a>`}</p>
   </li>`).join('')}</ul>`;
 }
 
@@ -480,6 +482,9 @@ function wireActions() {
   $('#edit-lead')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Change this lead?', () => leadEditFile(V, ev.target.dataset.org, { stage: $('#l-stage').value, owner: $('#l-owner').value.trim(), next_step: $('#l-next').value.trim(), next_step_due: $('#l-due').value, at: nowIso() })); });
   $('#add-org')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Add this company?', () => companyFiles(V, { id: newId('o'), name: $('#o-name').value, domain: $('#o-domain').value, kind: $('#o-kind').value, next_step: $('#o-next').value.trim(), owner: me(), at: nowIso() })); });
   checkKeys();
+  // Each .grid cell carries its column's heading as data-label: on a phone the table stacks and the label prints first.
+  for (const t of document.querySelectorAll('table.grid')) { const heads = [...t.querySelectorAll('thead th')].map((h) => h.textContent.trim());
+    for (const tr of t.querySelectorAll('tbody tr')) [...tr.children].forEach((td, i) => { if (heads[i] && !td.hasAttribute('colspan')) td.dataset.label = heads[i]; }); }
   for (const f of document.querySelectorAll('[data-keyfile]')) f.addEventListener('change', async (ev) => { const file = ev.target.files[0], pid = f.dataset.keyfile; if (!file) return;
     try { $(`[data-keytext="${pid}"]`).value = await qrFromPicture(file); $(`[data-keyhow="${pid}"]`).value = 'qr'; } catch (e) { $(`[data-keyerr="${pid}"]`).textContent = e.message; } });
   for (const form of document.querySelectorAll('form.add-key')) form.addEventListener('submit', async (ev) => { ev.preventDefault(); const pid = form.dataset.person, err = $(`[data-keyerr="${pid}"]`);
