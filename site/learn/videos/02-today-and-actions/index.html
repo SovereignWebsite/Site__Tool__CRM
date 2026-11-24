@@ -23,9 +23,10 @@
 <link rel="canonical" href="https://crm.tool.sovereignweb.site/learn/videos/02-today-and-actions/">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'">
 <link rel="stylesheet" href="../player.css">
+<link rel="stylesheet" href="../brand.css">
 <style>
-:root{--bg:#f7f7f5;--fg:#1d1d1b;--muted:#5f5f5a;--line:#deded8;--accent:#0b5cad}
-@media (prefers-color-scheme:dark){:root{--bg:#141413;--fg:#ededea;--muted:#a8a8a2;--line:#33332f;--accent:#7ab8ff}}
+:root{--bg:#fbfaf7;--fg:#1b1c1a;--muted:#5b6460;--line:#dcd9d0;--accent:#1f5446}
+@media (prefers-color-scheme:dark){:root{--bg:#121513;--fg:#e9ece6;--muted:#a3aca7;--line:#303733;--accent:#7cc4ab}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 system-ui,sans-serif}
 main{max-width:60rem;margin:0 auto;padding:5vh 1rem 4rem}.kick{font:600 .78rem/1 system-ui;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 h1{font-size:clamp(1.8rem,5vw,2.5rem);line-height:1.1;margin:.6rem 0 1rem}p,li{color:var(--muted)}a{color:var(--accent)}
@@ -36,9 +37,10 @@ header.site{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1.2rem;max-
 .learn{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.6rem;margin-top:1.4rem;padding:.8rem 1rem;border:1px solid var(--line);border-radius:10px}.learn a{font-weight:600}
 details{margin-top:1.5rem}summary{cursor:pointer}footer{margin-top:3rem;font-size:.85rem;color:var(--muted)}
 </style>
+<style>:root{--accent:#1f5446;--bg:#fbfaf7;--muted:#5b6460}@media (prefers-color-scheme:dark){:root{--accent:#7cc4ab;--bg:#121513;--muted:#a3aca7}}.learn-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.2rem;margin:2rem 0 1rem;padding:1rem 1.2rem;border:2px solid var(--accent);border-radius:12px;font-size:1rem}.learn-nav a{color:var(--accent);font-weight:600;min-height:24px}.learn-nav .learn-step{color:var(--muted)}.learn-nav .learn-next{margin-left:auto;background:var(--accent);color:var(--bg);padding:.55rem 1rem;border-radius:999px;text-decoration:none}.learn-nav .learn-prev{flex-basis:100%;order:3;font-weight:400}</style>
 </head>
 <body>
-<header class="site"><a class="home" href="https://crm.tool.sovereignweb.site/">CRM</a><nav aria-label="CRM"><a href="/app/">Open the CRM</a><a href="/learn/">Learn</a><a href="/how-to/">How to</a><a href="../">Explainers</a></nav></header>
+<header class="site"><a class="home" href="https://crm.tool.sovereignweb.site/">CRM</a><nav aria-label="CRM"><a href="https://crm.tool.sovereignweb.site/app/">Open the CRM</a><a href="https://crm.tool.sovereignweb.site/learn/">Learn</a><a href="/how-to/">How to</a><a href="../">Explainers</a></nav></header>
 <main>
 <div class="kick">CRM explainer · a.crm.studio</div>
 <h1>Today, and logging an action</h1>
@@ -61,7 +63,12 @@ details{margin-top:1.5rem}summary{cursor:pointer}footer{margin-top:3rem;font-siz
 </ol>
 <p>Source: <a href="script.json">script.json</a> (what the capture does) · <a href="scenes.json">scenes.json</a> (what the player shows) · <a href="manifest.json">manifest.json</a> (hashes).</p>
 </details>
-<nav class="learn" aria-label="Learning path"><span>Step 4 of 7</span><a href="/how-to/">← How to use the CRM</a><a href="../03-follow-ups/">Next: Follow-ups →</a></nav>
+<nav class="learn learn-nav" aria-label="Learning path"><span>Step 4 of 7</span><a href="/how-to/">← How to use the CRM</a><a href="../03-follow-ups/">Next: Follow-ups →</a></nav>
+<nav class="learn-nav" aria-label="Learn the CRM: step 4 of 8">
+<a class="learn-all" href="/learn/">Learn the CRM</a> <span class="learn-step">Step 4 of 8</span>
+<a class="learn-prev" rel="prev" href="/how-to/">← Guide: How to use the CRM</a>
+<a class="learn-next" rel="next" href="/learn/videos/03-follow-ups/">Next, video: Follow-ups →</a>
+</nav>
 <footer><a href="../">All CRM explainers</a> · made by a.crm.studio@SovereignWebsite.dinis · <a href="/how-to/">How to use the CRM</a></footer>
 </main>
 <script src="../player.js"></script>
