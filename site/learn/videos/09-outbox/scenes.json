@@ -2,7 +2,7 @@
  "slug": "09-outbox",
  "title": "Writing an email, and signing it off",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.37 · b7d8d62 · 2026-11-24",
+ "site_version": "v0.1.39 · f0b0f69 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -60,7 +60,7 @@
     "w": 1068,
     "h": 53
    },
-   "screen": "s-e54e9ec2cc4f9f42.webp"
+   "screen": "s-748dc5299121ca7c.webp"
   },
   {
    "caption": "Sign off signs this exact email with your browser's key, for one batch. The signature and fingerprints are hidden here.",
@@ -82,7 +82,7 @@
     "w": 1068,
     "h": 53
    },
-   "screen": "s-0f649b5dd8f2308c.webp"
+   "screen": "s-7c472a42e054c3e2.webp"
   },
   {
    "caption": "The Email Cell's page checks every signature again and sends the batch on one press. In the demo, nothing is sent.",

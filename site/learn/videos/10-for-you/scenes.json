@@ -2,7 +2,7 @@
  "slug": "10-for-you",
  "title": "For you: questions from the agents",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.36 · 07ac0dd · 2026-11-24",
+ "site_version": "v0.1.39 · f0b0f69 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -38,7 +38,7 @@
     "w": 1017,
     "h": 33
    },
-   "screen": "s-697ca50d8b5cff60.webp"
+   "screen": "s-bf39b0f41ce6e14e.webp"
   },
   {
    "caption": "It says who asked and by when, and that their signature was checked.",
@@ -49,7 +49,7 @@
     "w": 1017,
     "h": 20
    },
-   "screen": "s-697ca50d8b5cff60.webp"
+   "screen": "s-bf39b0f41ce6e14e.webp"
   },
   {
    "caption": "Pick one option in each group. Here, a made-up question: which view should open first, and in which order.",
@@ -60,7 +60,7 @@
     "w": 560,
     "h": 461
    },
-   "screen": "s-e3e601dcceb8e624.webp"
+   "screen": "s-4dbb1a2c2b541ab3.webp"
   },
   {
    "caption": "Here: Today, overdue first. The recommendation is there too, with its evidence.",
@@ -71,18 +71,18 @@
     "w": 560,
     "h": 461
    },
-   "screen": "s-6c4c1b2efb74acd6.webp"
+   "screen": "s-b6928821e8282d19.webp"
   },
   {
    "caption": "Sign and send my answer signs it with your key and sends it back through the Requests lane. In this explainer nothing is sent.",
    "seconds": 8,
    "box": {
     "x": 134,
-    "y": 465,
+    "y": 469,
     "w": 238,
     "h": 44
    },
-   "screen": "s-fe73b5bdd9a0611c.webp"
+   "screen": "s-925c628bf9977ea9.webp"
   },
   {
    "caption": "The question is sealed to you and the answer signed by you. That is the CRM: open it, and start on Today.",

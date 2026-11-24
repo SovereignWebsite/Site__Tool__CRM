@@ -2,7 +2,7 @@
  "slug": "08-requests",
  "title": "Asking the CRM's agent for something",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.36 · 07ac0dd · 2026-11-24",
+ "site_version": "v0.1.39 · f0b0f69 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -82,7 +82,7 @@
     "w": 1068,
     "h": 24
    },
-   "screen": "s-458a1da368985ec7.webp"
+   "screen": "s-79742a002b78519f.webp"
   },
   {
    "caption": "Next: For you, the questions the agents ask you.",
