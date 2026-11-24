@@ -307,7 +307,8 @@ async function mePage() {
   <h2>Your key, to send</h2>
   <p>To be given a vault, send this to Dinis (a screenshot of the QR code on WhatsApp is fine). It is public: it lets someone seal things that only this browser can open.</p>
   <p><img src="${k.qr}" alt="QR code of this browser's public key" class="qr"></p>
-  <p><textarea id="mykey" rows="3" readonly spellcheck="false">${esc(k.text)}</textarea> <button type="button" id="copykey" class="quiet small">Copy</button></p>
+  <p><button type="button" id="copyqr" class="small">Copy QR image</button> <button type="button" id="copykey" class="small quiet">Copy key text</button> <span id="copy-status" class="muted small" role="status"></span></p>
+  <p><textarea id="mykey" rows="3" readonly spellcheck="false">${esc(k.text)}</textarea></p>
   <h2>Paste a sealed code</h2>
   <p>When you are sent a sealed code (text starting with <code>{"v":1,"kind":"pki.sgit.ai/qr/sealed/v1"</code> or <code>m1.</code>), paste it here. Only codes signed by the CRM's agent are opened.</p>
   <form id="receive" class="open" autocomplete="off"><textarea id="rc-text" rows="4" spellcheck="false"></textarea><button type="submit">Open it</button> <span id="form-error" class="warn"></span></form>
@@ -359,7 +360,12 @@ function addPersonForm(org) {
 
 function wireActions() {
   $('#login')?.addEventListener('submit', async (ev) => { ev.preventDefault(); const n = $('#li-name').value.trim(); if (!n) return; setMyName(n); showName(); $('#form-error').textContent = 'Making this browser\'s key (a few seconds)…'; try { await ME.logIn(n); route(); } catch (e) { $('#form-error').textContent = 'Not logged in: ' + e.message; } });
-  $('#copykey')?.addEventListener('click', () => { $('#mykey').select(); navigator.clipboard?.writeText($('#mykey').value).catch(() => {}); });
+  const copied = (t) => { const el = $('#copy-status'); if (el) el.textContent = t; };
+  $('#copykey')?.addEventListener('click', async () => { $('#mykey').select(); try { await navigator.clipboard.writeText($('#mykey').value); copied('Key text copied: paste it into WhatsApp.'); } catch { copied('Select the text and copy it.'); } });
+  $('#copyqr')?.addEventListener('click', async () => {
+    try { const [head, data] = $('img.qr').src.split(','), type = (head.match(/data:([^;]+)/) || [])[1] || 'image/gif'; const bin = atob(data), bytes = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      const png = await new Promise((ok, no) => { const img = new Image(); img.onload = () => { const c = document.createElement('canvas'); c.width = img.width * 2; c.height = img.height * 2; const x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height); c.toBlob((b) => (b ? ok(b) : no(new Error('no image'))), 'image/png'); }; img.onerror = () => no(new Error('no image')); img.src = URL.createObjectURL(new Blob([bytes], { type })); }); const blob = png; await navigator.clipboard.write([new ClipboardItem({ [blob.type || 'image/png']: blob })]); copied('QR image copied: paste it into WhatsApp.'); }
+    catch { copied('This browser could not copy the picture: right-click it and choose Copy image, or use Copy key text.'); } });
   $('#receive')?.addEventListener('submit', async (ev) => { ev.preventDefault(); const st = $('#rc-status');
     try { st.textContent = 'Opening…'; const r = await ME.receive($('#rc-text').value, async (key) => JSON.parse((await readAll(await openVault(key)))['manifest.json'] || '{}').name);
       $('#rc-text').value = ''; st.className = 'muted'; st.textContent = `From ${r.from}. ${r.added.length ? 'Added: ' + r.added.map((v) => v.name).join(', ') + '.' : 'No vault key in it.'}${r.token ? ' An access token was kept too.' : ''}${r.note ? ' Note: ' + r.note : ''}`; setTimeout(route, 1500);

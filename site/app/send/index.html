@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' https://dev.send.sgraph.ai; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://dev.send.sgraph.ai; base-uri 'none'; form-action 'none'">
 <title>CRM requests</title>
-<meta name="description" content="Send a sealed, signed request to the CRM keeper agent and read its answers, only in your browser.">
+<meta name="description" content="Send a signed, sealed request to the agent that builds this CRM, and read its answers, only in your browser.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CRM">
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://crm.tool.sovereignweb.site/app/send/">
 <meta property="og:title" content="CRM: requests to the keeper">
-<meta property="og:description" content="Send a sealed, signed request to the CRM keeper agent and read its answers, only in your browser.">
+<meta property="og:description" content="Send a signed, sealed request to the agent that builds this CRM, and read its answers, only in your browser.">
 <meta property="og:image" content="https://crm.tool.sovereignweb.site/assets/share/card-1200x630.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -19,7 +19,7 @@
 <meta property="og:image:alt" content="CRM">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CRM: requests to the keeper">
-<meta name="twitter:description" content="Send a sealed, signed request to the CRM keeper agent and read its answers, only in your browser.">
+<meta name="twitter:description" content="Send a signed, sealed request to the agent that builds this CRM, and read its answers, only in your browser.">
 <meta name="twitter:image" content="https://crm.tool.sovereignweb.site/assets/share/card-1200x630.jpg">
 <link rel="canonical" href="https://crm.tool.sovereignweb.site/app/send/">
 <link rel="stylesheet" href="../style.css">
@@ -27,35 +27,26 @@
 <body>
 <header class="bar">
   <strong>CRM</strong>
-  <nav><a href="../#/board">Lead board</a> <a href="./" class="on">Requests</a></nav>
+  <nav><a href="../#/board">Lead board</a> <a href="../#/me">You</a> <a href="./" class="on">Requests</a></nav>
 </header>
 <main>
   <h1>Requests to the CRM's keeper</h1>
-  <p class="muted">Ask the CRM's keeper agent for something: a change, a workflow, a set of drafts, a bug. Your request is sealed to the keeper and signed with your own key, which stays in this browser. The keeper acts within its policy and answers here; only this browser can read the answer.</p>
-  <p id="notready" class="warn" hidden>The CRM's inbox is not set up yet, so requests cannot be sent from here. It needs the keeper's inbox and your key, which are being arranged.</p>
+  <p class="muted">Ask the agent that builds and runs this CRM for something: a feature, a fix, a question, a workflow. Your request is signed with this browser's key and sealed so that only the keeper can read it. The keeper answers here, and only this browser can read the answer.</p>
+  <p id="notready" class="warn" hidden>The keeper's inbox is not set up yet, so requests cannot be sent from here.</p>
   <section id="req">
     <p id="who" class="muted"></p>
-    <p><button type="button" id="lock" class="quiet" hidden>Remove my key from this browser</button></p>
-    <details id="addkey"><summary>Add your key</summary>
-      <p>Open the key link you were given, paste it here, or paste, drop or scan its QR code.</p>
-      <p><input id="keylink" type="password" spellcheck="false" placeholder="https://…#key=…"> <button type="button" id="addbtn">Add</button></p>
-      <p><label>QR picture <input id="qrfile" type="file" accept="image/*"></label> <button type="button" id="cambtn" class="quiet">Scan with the camera</button></p>
-      <video id="cam" hidden playsinline muted></video>
-    </details>
     <form id="form" class="open" hidden>
-      <label>Kind <select id="kind"><option value="request">A request</option><option value="contacts">Contacts to add</option><option value="workflow">A workflow</option><option value="bug">Something is wrong</option><option value="idea">An idea</option></select></label>
+      <label>Kind <select id="kind"><option value="feature">A feature</option><option value="question">A question</option><option value="bug">Something is wrong</option><option value="workflow">A workflow</option><option value="idea">An idea</option></select></label>
       <label>What you would like <textarea id="text" rows="6"></textarea></label>
-      <label>Screenshots <span class="muted">(up to 4; you can also paste or drop them)</span> <input id="files" type="file" accept="image/*" multiple></label>
-      <div id="thumbs" class="thumbs"></div>
-      <button type="submit" id="send">Seal and send</button>
+      <p class="muted small">Do not put contacts' details here: requests reach the keeper agent, not the vault.</p>
+      <button type="submit" id="send">Sign, seal and send</button>
     </form>
     <p id="status" class="status" role="status"></p>
     <h2>Answers</h2>
     <div id="replies"></div>
   </section>
 </main>
-<footer class="foot">The request page follows the Sovereign Website /send/ pattern (Apache-2.0). It talks only to the vault service.</footer>
-<script src="keyring.js"></script>
-<script src="send.js"></script>
+<footer class="foot">Requests follow the Sovereign Website /send/ pattern (Apache-2.0). The page talks only to the vault service.</footer>
+<script type="module" src="request.js"></script>
 </body>
 </html>

@@ -1,0 +1,14 @@
+{
+ "about": "The inbox of crm.dev.a@AgentiCCells.dinis, the CRM's keeper, for requests from the Requests page (/app/send/). Seal what you send to `recipient` (sgit hybrid envelope v2), sign it with your CRM browser key, and POST {append_token, payload} to <endpoint>/api/vault/append/write/<vault_id>. The token can only append: it cannot read or delete.",
+ "agent": "crm.dev.a@AgentiCCells.dinis",
+ "site": "crm.tool.sovereignweb.site",
+ "endpoint": "https://dev.send.sgraph.ai",
+ "vault_id": "zxehwe8t",
+ "append_token": "925fefb576b919e2347662c4c6b850858235a4d4c49457a70112e9ae7492888a",
+ "recipient": {
+  "fingerprint": "sha256:10cd08536c96ef78",
+  "signing_fingerprint": "sha256:5082f0417d7ae097",
+  "encrypt": "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAsnGnOuw13eqTyl/ugplT\npy7E9JFQkoJUT4lTYvw29RIyZRPgbUj9GB4cGZKlVIKqDXxpojzZTgw1eUS0e9hO\n0sI+gJosw1TM4jWqVm8x2AAVUdW0as2snr0gBQR6VzEU22m4XiAaTW8POIDVFdKo\nK/FNDNLbedbR9XOiJ6nPVYIxN0C4Qp+tGfMB79PeipR+uWQJN/LTF6uIVlznYE70\nH1/6s6hqsf3+NouzzS4jx7uPEd+jm838/pJhkyMdvTwXIdtHe7CY0b+SxNTwRQTC\nbvXlm/Rsju5ZzRNmmLMrLjaOFppd/qvPodT6uBEaeVI21K8y/odxHVjINd9dB4TV\nXvnzGe52wqERG5mPvdAgO0uCX0sAoAbE77xq66IVlLEJVP0Lw4A6i61LmfBjVPLx\nIzWQ1kMeF8A+zFdzPR9aMgEdiSK530VKIWaq9vxYQ9zaj0rUR2TsV/3DTLFS1r36\nZ2li7Y93Va84s/eSpNNgJQvbNJNRRJpO5F9HSmA63cp7UGzZHRfUSHQdqkJ5lJPI\nIUIj1EtsCPdaDtCjqL66Hi/PL0Wd9Mq8nm+gdYsALyb85ZdpWzJwpFv36HyijM2b\nrNqKECrcVb5pgyQC69yWAIpPJNardPFVW8TYogOq6TQIqPkvT9zic2lFmHTMMchv\nSMPFsFD5FjLG0Z+aAofVsIECAwEAAQ==\n-----END PUBLIC KEY-----\n"
+ },
+ "made": "24 November 2026, by crm.dev.a at Dinis Cruz's word, in its session. When crm.dev.a's session is replaced, its successor re-keys this file."
+}
