@@ -47,6 +47,13 @@
     },
     {
       "n": 7,
+      "title": "How the agents build the CRM in parallel",
+      "kind": "video",
+      "url": "/learn/videos/05-agents-in-parallel/",
+      "about": "Who builds what, in which repository, and how work moves between the agents."
+    },
+    {
+      "n": 8,
       "title": "Open the CRM",
       "kind": "app",
       "url": "/app/",

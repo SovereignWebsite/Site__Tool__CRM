@@ -1,18 +1,18 @@
 {
   "slug": "03-follow-ups",
-  "site_version": "v0.1.13 · 7abd5e9 · 2026-11-24",
+  "site_version": "v0.1.16 · 44ba0b4 · 2026-11-24",
   "clock": "2026-11-24T10:00:00Z",
   "scenes": 11,
   "screens": {
-    "s-d00ec1c9b5d876c3.webp": "5c12cabf6fdc54056194f12e68a461eee3be4a6f58a51d8aac1d417d0b172d25",
+    "s-62bf156a5336a181.webp": "08c64d1cd297be6893e6e68352b483e8bd0e2d18e4be2054ee79c0048b9b2dee",
     "s-d5946957d0b12035.webp": "2a26ca75b8082467c95578770636423319bd36d350400f2f60adb5e1d5808eaf",
     "s-0cc80acbb28a3f4a.webp": "105b83b100061ef8a5cdead98740d191b90a69c101506000b8914aa0050ccd2f",
     "s-5d91b0b593397e07.webp": "ff0de905324ffdc94df1e50d2e000256c8bc2778eb8a5cf314f10c5f1ab3267e",
-    "s-f1a762aad020ae22.webp": "563918625e9f49f1be7892dad842e82b5c4fca7047bc94826716390db28395ca",
+    "s-8f09c439f690bd60.webp": "f1ef8e3f9be9ff1a861f4b0296b9c68d2f08890816c1a881d076c6f7e64fbfd1",
     "s-ea2590ca04db8d0e.webp": "3000420529c318e5c2937dcc3d1484f062eb06733910b7d96346290ce35546b2",
-    "s-d9f4707149b0dcb9.webp": "ab53ff02c2cb7353ca5e6ae5f70927ea718b2028cadfe3f0eb8e4fb15e8768b7"
+    "s-a5c53c1244f80580.webp": "981459b3071ea0e52eb9640f76c74ced176ce4d44d742f61fe262a2f8bd133f0"
   },
-  "scenes_json_sha256": "10f2671925018add0a025ca525591d5c53c100a9b991b18d10d4a3acd6129c4d",
+  "scenes_json_sha256": "86c4b2ba4ba2763164d4f621a1638cd980420a4c43383a5c75311037f663207e",
   "made_by": "a.crm.studio@SovereignWebsite.dinis",
   "tool": "studio/capture.mjs"
 }

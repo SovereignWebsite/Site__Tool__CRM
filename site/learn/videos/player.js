@@ -24,6 +24,19 @@
     voice = vs.find((v) => v.lang === 'en-GB' && /natural|neural|google|daniel|libby|sonia|ryan/i.test(v.name)) || vs.find((v) => v.lang === 'en-GB') || vs.find((v) => /^en/.test(v.lang)) || null; };
   if (speech) { pickVoice(); speechSynthesis.addEventListener?.('voiceschanged', pickVoice); }
 
+  // A diagram: boxes and arrows in a 1280x720 space, drawn from scenes.json; a scene lights up the ids it names.
+  function drawDiagram(D, on) {
+    const lit = new Set(on === true ? [...D.nodes.map((n) => n.id), ...D.edges.map((e) => e.id)] : on);
+    const N = Object.fromEntries(D.nodes.map((n) => [n.id, n]));
+    const edge = (e) => { const a = N[e.from], b = N[e.to]; const flat = Math.abs(b.y - a.y) < 40, sx = Math.sign(b.x - a.x);
+      const x1 = flat ? a.x + sx * ((a.w || 220) / 2 + 2) : a.x, y1 = flat ? a.y : a.y + (b.y > a.y ? 28 : -28);
+      const x2 = flat ? b.x - sx * ((b.w || 220) / 2 + 4) : b.x, y2 = flat ? b.y : b.y + (a.y > b.y ? 30 : -30);
+      const mx = (x1 + x2) / 2, my = (y1 + y2) / 2 + (e.bend || 0);
+      return `<g class="e${lit.has(e.id) ? ' lit' : ''}"><path d="M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}" fill="none" marker-end="url(#ah)"/>${e.label ? `<text x="${mx}" y="${my - 6}" text-anchor="middle">${esc(e.label)}</text>` : ''}</g>`; };
+    const node = (n) => { const w = n.w || 220; return `<g class="n ${n.kind || ''}${lit.has(n.id) ? ' lit' : ''}"><rect x="${n.x - w / 2}" y="${n.y - 28}" width="${w}" height="56" rx="12"/><text x="${n.x}" y="${n.y - 3}" text-anchor="middle" class="l">${esc(n.label)}</text>${n.sub ? `<text x="${n.x}" y="${n.y + 17}" text-anchor="middle" class="s">${esc(n.sub)}</text>` : ''}</g>`; };
+    return `<svg class="dgm" viewBox="0 0 1280 720" role="img" aria-label="${esc(D.about || 'Diagram')}"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>${D.edges.map(edge).join('')}${D.nodes.map(node).join('')}</svg>`;
+  }
+
   async function mount(root) {
     const base = root.dataset.src.replace(/[^/]*$/, '');
     const data = await (await fetch(root.dataset.src)).json();
@@ -50,8 +63,9 @@
     const show = (k) => {
       const s = data.scenes[k];
       for (const [name, i] of Object.entries(imgs)) i.classList.toggle('on', name === s.screen);
-      card.classList.toggle('on', !!s.card);
-      if (s.card) card.innerHTML = `<div class="kicker">CRM · explainer</div><h2>${esc(s.card.title)}</h2><p>${esc(s.card.sub)}</p>${s.card.foot ? `<p class="foot">${esc(s.card.foot)}</p>` : ''}`;
+      card.classList.toggle('on', !!(s.card || s.diagram)); card.classList.toggle('diagram', !!s.diagram);
+      if (s.diagram) { card.innerHTML = drawDiagram(data.diagram, s.diagram); }
+      else if (s.card) card.innerHTML = `<div class="kicker">CRM · explainer</div><h2>${esc(s.card.title)}</h2><p>${esc(s.card.sub)}</p>${s.card.foot ? `<p class="foot">${esc(s.card.foot)}</p>` : ''}`;
       if (s.box) { const W = data.width, H = data.height; Object.assign(box.style, { left: `${s.box.x / W * 100}%`, top: `${s.box.y / H * 100}%`, width: `${s.box.w / W * 100}%`, height: `${s.box.h / H * 100}%` });
         // A small mark gets a gentle zoom; the screen and its frame zoom together, so the frame stays on its mark.
         view.style.transformOrigin = `${(s.box.x + s.box.w / 2) / W * 100}% ${(s.box.y + s.box.h / 2) / H * 100}%`; view.style.transform = s.box.w * s.box.h < W * H * 0.2 ? 'scale(1.06)' : 'scale(1)'; } else view.style.transform = 'scale(1)';

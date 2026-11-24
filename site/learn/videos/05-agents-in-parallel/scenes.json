@@ -1,0 +1,358 @@
+{
+ "slug": "05-agents-in-parallel",
+ "title": "How the agents build the CRM in parallel",
+ "site": "https://crm.tool.sovereignweb.site",
+ "site_version": "v0.1.16 · 44ba0b4 · 2026-11-24",
+ "clock": "2026-11-24T10:00:00Z",
+ "width": 1280,
+ "height": 720,
+ "seconds": 98,
+ "presenter": "Studio",
+ "diagram": {
+  "about": "Dinis Cruz, the three CRM agents, their repositories and their sites",
+  "nodes": [
+   {
+    "id": "dinis",
+    "label": "Dinis Cruz",
+    "sub": "instructs, in each agent's session",
+    "x": 640,
+    "y": 60,
+    "w": 330,
+    "kind": "person"
+   },
+   {
+    "id": "maestro",
+    "label": "a.maestro",
+    "sub": "starts agents",
+    "x": 170,
+    "y": 60,
+    "w": 220
+   },
+   {
+    "id": "design",
+    "label": "a.crm.design",
+    "sub": "designs",
+    "x": 200,
+    "y": 220
+   },
+   {
+    "id": "dev",
+    "label": "crm.dev.a",
+    "sub": "builds the CRM",
+    "x": 640,
+    "y": 220
+   },
+   {
+    "id": "studio",
+    "label": "a.crm.studio",
+    "sub": "explainers",
+    "x": 1080,
+    "y": 220
+   },
+   {
+    "id": "r-design",
+    "label": "Site__Agent__Design",
+    "sub": "a.crm.design commits",
+    "x": 200,
+    "y": 420,
+    "w": 250,
+    "kind": "repo"
+   },
+   {
+    "id": "r-src",
+    "label": "AgentiCCells__Cell__Email",
+    "sub": "the CRM's source",
+    "x": 500,
+    "y": 420,
+    "w": 270,
+    "kind": "repo"
+   },
+   {
+    "id": "r-tool",
+    "label": "Site__Tool__CRM",
+    "sub": "the built site, checked",
+    "x": 790,
+    "y": 420,
+    "w": 250,
+    "kind": "repo"
+   },
+   {
+    "id": "r-agent",
+    "label": "Site__Agent__CRM",
+    "sub": "a.crm.studio commits",
+    "x": 1120,
+    "y": 420,
+    "w": 250,
+    "kind": "repo"
+   },
+   {
+    "id": "s-design",
+    "label": "design.agents…",
+    "sub": "the designs",
+    "x": 200,
+    "y": 620,
+    "w": 230,
+    "kind": "site"
+   },
+   {
+    "id": "s-tool",
+    "label": "crm.tool.sovereignweb.site",
+    "sub": "the CRM and Learn",
+    "x": 760,
+    "y": 620,
+    "w": 300,
+    "kind": "site"
+   },
+   {
+    "id": "s-agent",
+    "label": "crm.agents…",
+    "sub": "these explainers",
+    "x": 1120,
+    "y": 620,
+    "w": 230,
+    "kind": "site"
+   }
+  ],
+  "edges": [
+   {
+    "id": "i-design",
+    "from": "dinis",
+    "to": "design"
+   },
+   {
+    "id": "i-dev",
+    "from": "dinis",
+    "to": "dev"
+   },
+   {
+    "id": "i-studio",
+    "from": "dinis",
+    "to": "studio"
+   },
+   {
+    "id": "m-start",
+    "from": "maestro",
+    "to": "design",
+    "label": "starts"
+   },
+   {
+    "id": "c-design",
+    "from": "design",
+    "to": "r-design",
+    "label": "commits"
+   },
+   {
+    "id": "c-src",
+    "from": "dev",
+    "to": "r-src",
+    "label": "commits"
+   },
+   {
+    "id": "c-tool",
+    "from": "dev",
+    "to": "r-tool",
+    "label": "builds, commits"
+   },
+   {
+    "id": "c-agent",
+    "from": "studio",
+    "to": "r-agent",
+    "label": "commits"
+   },
+   {
+    "id": "d-design",
+    "from": "r-design",
+    "to": "s-design",
+    "label": "deploys"
+   },
+   {
+    "id": "d-tool",
+    "from": "r-tool",
+    "to": "s-tool",
+    "label": "checks, deploys"
+   },
+   {
+    "id": "d-agent",
+    "from": "r-agent",
+    "to": "s-agent",
+    "label": "deploys"
+   },
+   {
+    "id": "msg-design",
+    "from": "design",
+    "to": "dev",
+    "label": "CSS patch, by message"
+   },
+   {
+    "id": "msg-studio",
+    "from": "studio",
+    "to": "dev",
+    "label": "bug found, by message",
+    "bend": -30
+   },
+   {
+    "id": "cap",
+    "from": "s-tool",
+    "to": "studio",
+    "label": "captures the demo",
+    "bend": 60
+   },
+   {
+    "id": "mirror",
+    "from": "s-agent",
+    "to": "s-tool",
+    "label": "mirrored",
+    "bend": -70
+   }
+  ]
+ },
+ "scenes": [
+  {
+   "caption": "Three agents work on the CRM at once, each in its own repository, joined by messages and pinned versions.",
+   "seconds": 6,
+   "card": {
+    "title": "How the agents build the CRM in parallel",
+    "sub": "Three agents work on the CRM at once, each in its own repository, joined by messages and pinned versions.",
+    "foot": "Every commit id and time here is from git, in UTC, 24 November 2026."
+   }
+  },
+  {
+   "caption": "Dinis Cruz instructs each agent in its own session. a.maestro starts the agents.",
+   "seconds": 7,
+   "diagram": [
+    "dinis",
+    "maestro",
+    "design",
+    "dev",
+    "studio",
+    "i-design",
+    "i-dev",
+    "i-studio",
+    "m-start"
+   ]
+  },
+  {
+   "caption": "a.crm.design draws the CRM's designs in its own repository, Site__Agent__Design, published on its own site.",
+   "seconds": 7,
+   "diagram": [
+    "design",
+    "r-design",
+    "s-design",
+    "c-design",
+    "d-design"
+   ]
+  },
+  {
+   "caption": "Five design directions, a brand, and The Day: a CSS patch for the live app.",
+   "seconds": 6,
+   "box": {
+    "x": 120,
+    "y": 144,
+    "w": 1040,
+    "h": 55
+   },
+   "screen": "s-22fbf2e5b7330a93.webp"
+  },
+  {
+   "caption": "crm.dev.a writes the CRM's source in AgentiCCells__Cell__Email, then builds it and commits the site to Site__Tool__CRM.",
+   "seconds": 8,
+   "diagram": [
+    "dev",
+    "r-src",
+    "r-tool",
+    "s-tool",
+    "c-src",
+    "c-tool",
+    "d-tool"
+   ]
+  },
+  {
+   "caption": "There, every new commit's signer is checked against published keys, then links, leaks, HTML and accessibility are checked before it deploys.",
+   "seconds": 8,
+   "diagram": [
+    "r-tool",
+    "s-tool",
+    "d-tool"
+   ]
+  },
+  {
+   "caption": "a.crm.studio makes these explainers in Site__Agent__CRM, and commits only to its own area there.",
+   "seconds": 7,
+   "diagram": [
+    "studio",
+    "r-agent",
+    "s-agent",
+    "c-agent",
+    "d-agent"
+   ]
+  },
+  {
+   "caption": "Work moves by message. At 14:41 a.crm.design published The Day patch; crm.dev.a checked it, committed it as db678c1 and shipped it at 14:52 as 60306db.",
+   "seconds": 9,
+   "diagram": [
+    "design",
+    "dev",
+    "msg-design",
+    "r-src",
+    "r-tool",
+    "c-src",
+    "c-tool"
+   ]
+  },
+  {
+   "caption": "That is the look of the CRM you see today.",
+   "seconds": 5,
+   "box": {
+    "x": 106,
+    "y": 124,
+    "w": 1068,
+    "h": 60
+   },
+   "screen": "s-0e13a92a043ea56f.webp"
+  },
+  {
+   "caption": "It works the other way too. Scripting an explainer, a.crm.studio found Follow-ups ignoring logged replies. The fix shipped at 14:23, as 548ae6e.",
+   "seconds": 9,
+   "diagram": [
+    "studio",
+    "dev",
+    "msg-studio",
+    "r-tool"
+   ]
+  },
+  {
+   "caption": "Each capture records the CRM version it was made from, so the same script on the same version gives the same screens.",
+   "seconds": 7,
+   "diagram": [
+    "s-tool",
+    "studio",
+    "cap"
+   ]
+  },
+  {
+   "caption": "And the CRM's own site mirrors the explainers at /learn/videos/, in one learning path.",
+   "seconds": 6,
+   "diagram": [
+    "s-agent",
+    "s-tool",
+    "mirror"
+   ]
+  },
+  {
+   "caption": "Learn the CRM: the presentation, the explainers and the guide, in order.",
+   "seconds": 6,
+   "box": {
+    "x": 304,
+    "y": 178,
+    "w": 672,
+    "h": 53
+   },
+   "screen": "s-379be92e5b1918c2.webp"
+  },
+  {
+   "caption": "Each agent commits only to its own repository, signed with its own key. Dinis decides what they work on.",
+   "seconds": 7,
+   "diagram": true
+  }
+ ]
+}

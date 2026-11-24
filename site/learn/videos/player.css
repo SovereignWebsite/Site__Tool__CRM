@@ -54,3 +54,12 @@
 @media (prefers-reduced-motion:reduce){.player *{animation:none!important;transition:none!important}}
 .p-card a.p-next{display:inline-block;margin-top:1.5cqw;font:700 2.6cqw/1 system-ui,sans-serif;color:#fff;background:var(--accent);padding:1.4cqw 2.4cqw;border-radius:1cqw;text-decoration:none}
 .p-card a.p-next:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.p-card.diagram{padding:1.5%}
+.dgm{width:100%;height:100%}
+.dgm .n rect{fill:#f4f5f6;stroke:#c9ced4;stroke-width:2;transition:all .5s ease}
+.dgm .n text{fill:#8a8f95;transition:fill .5s ease}.dgm .n .l{font:700 19px system-ui,sans-serif}.dgm .n .s{font:400 14px system-ui,sans-serif}
+.dgm .n.lit rect{fill:#fff;stroke:#2f6b4f;stroke-width:3}.dgm .n.lit text{fill:#16181a}.dgm .n.lit .s{fill:#5d6166}
+.dgm .n.person.lit rect{fill:#fff3cc;stroke:#e0a100}.dgm .n.repo.lit rect{stroke:#4b5563}.dgm .n.site.lit rect{fill:#eef6f1}
+.dgm .e path{stroke:#d5d9de;stroke-width:2.5;transition:all .5s ease}.dgm .e text{font:600 14px system-ui,sans-serif;fill:transparent;transition:fill .5s ease}
+.dgm marker path{fill:#9aa1a8}
+.dgm .e.lit path{stroke:#e0a100;stroke-width:4}.dgm .e.lit text{fill:#5a4100;paint-order:stroke;stroke:#fff;stroke-width:5px}
