@@ -280,7 +280,8 @@ export function companyFiles(v, { id, name, domain = '', kind = 'prospect', owne
 }
 
 // A new person at a company: one file.
-export function personFile(v, { id, name, email, org, role = '', by, at }) {
+// met: where we met them, in a few words (a.crm.design, round 2 asks: 'the person on each card, and where we met').
+export function personFile(v, { id, name, email, org, role = '', met = '', by, at }) {
   name = String(name || '').trim(); email = String(email || '').trim().toLowerCase();
   if (!name) throw new Error('a person needs a name');
   if (!EMAIL.test(email)) throw new Error(`"${email}" is not an email address`);
@@ -288,7 +289,7 @@ export function personFile(v, { id, name, email, org, role = '', by, at }) {
   if (v.people.some((p) => (p.emails || []).map((e) => e.toLowerCase()).includes(email))) throw new Error(`${email} is already here`);
   if (!ISO.test(at || '')) throw new Error('needs the time, as an ISO time');
   const first = name.split(/\s+/)[0];
-  const person = { schema: 'crm.person/1', id, name, first, emails: [email], org, ...(role ? { role: String(role).trim() } : {}), added_by: by, added_at: at };
+  const person = { schema: 'crm.person/1', id, name, first, emails: [email], org, ...(role ? { role: String(role).trim() } : {}), ...(String(met || '').trim() ? { met: String(met).trim().slice(0, 120) } : {}), added_by: by, added_at: at };
   return [{ path: `people/${id}.json`, record: person, text: JSON.stringify(person, null, 2) + '\n' }];
 }
 
@@ -421,7 +422,7 @@ export function nudgeWarning(v, { org, person = null, direction }) {
 // Import: a spreadsheet the team fills in (CSV, one row per person or per company), turned into the CRM's own
 // files, shown first, written in one go. A person supplies and enters the data; nothing is guessed: a cell left
 // empty stays empty. Columns (header row, any order, case-insensitive; only "company" is required):
-export const IMPORT_COLUMNS = ['company', 'domain', 'kind', 'person', 'email', 'role', 'stage', 'owner', 'next_step', 'next_step_due', 'last_contact_date', 'last_contact_kind', 'last_contact_direction', 'last_contact_summary'];
+export const IMPORT_COLUMNS = ['company', 'domain', 'kind', 'person', 'email', 'role', 'met', 'stage', 'owner', 'next_step', 'next_step_due', 'last_contact_date', 'last_contact_kind', 'last_contact_direction', 'last_contact_summary'];
 
 // RFC 4180 CSV: quoted fields, doubled quotes, commas and newlines inside quotes. Returns rows of strings.
 export function parseCsv(text) {
@@ -476,7 +477,7 @@ export function importFiles(v, text, { by, at, newId: mk = newId }) {
       else if (emails.has(r.email.toLowerCase())) personId = people.find((p) => (p.emails || []).map((e) => e.toLowerCase()).includes(r.email.toLowerCase()))?.id || null;
       else {
         try {
-          const [pf] = personFile({ ...v, orgs, people }, { id: mk('p'), name: r.person || r.email.split('@')[0], email: r.email, role: r.role, org: org.id, by, at });
+          const [pf] = personFile({ ...v, orgs, people }, { id: mk('p'), name: r.person || r.email.split('@')[0], email: r.email, role: r.role, met: r.met, org: org.id, by, at });
           files.push(pf); people.push(pf.record); emails.add(r.email.toLowerCase()); personId = pf.record.id; report.people++;
         } catch (e) { skip(e.message); }
       }
@@ -514,7 +515,7 @@ export function theDay(v, now, { soon = 7, owner = null } = {}) {
     const t = c.waiting && v.threads.find((x) => x.id === c.waiting.thread);
     const id = d?.person || t?.person || v.people.find((p) => p.org === c.org)?.id;
     const p = v.people.find((x) => x.id === id);
-    return p ? { id: p.id, name: p.name, role: p.role || null } : null;
+    return p ? { id: p.id, name: p.name, role: p.role || null, met: p.met || null } : null;
   };
   const cards = [...byOrg.values()].sort((x, y) => x.key[0] - y.key[0] || x.key[1] - y.key[1]).map((c) => ({ ...c, why: c.reasons.find((r) => r.why === ['overdue', 'follow-up', 'draft', 'soon'][c.key[0]]).why, detail: c.reasons.find((r) => r.why === ['overdue', 'follow-up', 'draft', 'soon'][c.key[0]]).detail, order: c.key[0], person: person(c) }));
   const count = (w) => cards.filter((c) => c.reasons.some((r) => r.why === w)).length;

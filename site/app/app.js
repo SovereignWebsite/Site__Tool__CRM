@@ -219,7 +219,7 @@ function companyPage(id) {
   <h2>Activity</h2>${logActionForm(c)}
   <ul class="list timeline">${timeline(V, c.org).map((e) => `<li><span class="when">${day(e.at)}</span> <span class="badge">${esc(e.kind)}</span> ${e.direction === 'out' ? 'we reached out' : e.direction === 'in' ? '<strong>they replied</strong>' : 'note'}${e.person ? ' · ' + esc(who(e.person)) : ''} · ${esc(e.summary)}${e.by ? ` <span class="muted small">(${esc(e.by)})</span>` : ''}</li>`).join('') || '<li class="muted">Nothing logged yet.</li>'}</ul>
   <h2>People</h2>${addPersonForm(c.org)}
-  <ul class="list">${c.contacts.map((p) => `<li>${esc(p.name)} <span class="muted">${esc(p.role || '')} · ${esc((p.emails || [])[0] || '')}</span> ${keyMark(p)}</li>`).join('') || '<li class="muted">None yet</li>'}</ul>
+  <ul class="list">${c.contacts.map((p) => `<li>${esc(p.name)} <span class="muted">${esc(p.role || '')} · ${esc((p.emails || [])[0] || '')}${p.met ? ` · met at ${esc(p.met)}` : ''}</span> ${keyMark(p)}</li>`).join('') || '<li class="muted">None yet</li>'}</ul>
   <h2>Mail threads</h2>
   <ul class="list">${c.threads.map((t) => `<li id="t-${esc(t.id)}"><strong>${esc(t.subject)}</strong> <span class="muted">${day(t.last_date)} · ${t.direction === 'outbound' ? 'we wrote last' : 'they wrote last'} · ${esc(who(t.person))} · ${t.linked ? 'linked' : 'matched by address'}</span> ${linkButton(t.id, t.linked ? null : c.org, t.person)}</li>`).join('') || '<li class="muted">None</li>'}</ul>
   <h2>Drafts</h2>${writeEmailForm(c)}${outbox(V, c.org).length ? `<p><a href="#/outbox">${outbox(V, c.org).length} in the Outbox →</a></p>` : ''}
@@ -318,7 +318,7 @@ function todayPage(query = '') {
     <p class="card-why"><span class="badge">${why[c.why]}</span> <span class="small">${esc(reasonText(c))}</span></p>
     <h2><a href="#/company/${esc(c.org)}">${esc(c.name)}</a></h2>
     ${c.reasons.length > 1 ? `<p class="small also">Also: ${c.reasons.filter((r) => r.why !== c.why).map((r) => `${why[r.why].toLowerCase()}, ${esc(reasonText(r))}`).join('; ')}</p>` : ''}
-    <p class="small muted">${c.person ? `${esc(c.person.name)}${c.person.role ? ', ' + esc(c.person.role) : ''} · ` : ''}${esc(stageName(c.stage))} · ${esc(c.owner || 'no owner')}${c.last_contact ? ' · last contact ' + shortDay(c.last_contact.date) : ''}</p>
+    <p class="small muted">${c.person ? `${esc(c.person.name)}${c.person.role ? ', ' + esc(c.person.role) : ''}${c.person.met ? ` (met at ${esc(c.person.met)})` : ''} · ` : ''}${esc(stageName(c.stage))} · ${esc(c.owner || 'no owner')}${c.last_contact ? ' · last contact ' + shortDay(c.last_contact.date) : ''}</p>
     ${c.next_step ? `<p>Next: ${esc(c.next_step)}${c.next_step_due && !c.overdue ? ` <span class="small muted">(due ${shortDay(c.next_step_due)})</span>` : ''}</p>` : ''}
     <p class="card-actions">${draft ? `<a class="button" href="${esc(sendLink(draft.person))}" title="Open the draft in the send screen${SYNTHETIC ? ' (demo)' : ''}">Review and send</a> <a class="button quiet" href="#/company/${esc(c.org)}?log=1">Log an action</a>` : `<a class="button" href="#/company/${esc(c.org)}?log=1">Log the follow-up</a>`}</p>
   </li>`; }).join('')}</ul>`;
@@ -482,6 +482,7 @@ function addPersonForm(org) {
     <label>Name <input id="p-name" required></label>
     <label>Email <input id="p-email" type="email" required></label>
     <label>Role <span class="muted">(optional)</span> <input id="p-role"></label>
+    <label>Where we met <span class="muted">(optional, e.g. Web Summit 2026)</span> <input id="p-met" maxlength="120"></label>
     <button type="submit">Show what will be written</button> <span id="form-error" class="warn"></span></form></details>`;
 }
 
@@ -572,7 +573,7 @@ function wireActions() {
       const rec = await ME.signKeyRecord(keyRecord(V, { person: pid, ...got, how: $(`[data-keyhow="${pid}"]`).value, verified_by: me(), verified_at: nowIso(), ...mine }));
       ask(`Record ${V.people.find((p) => p.id === pid)?.name}'s key?`, () => ({ files: [keyFile(rec)], note: `Key ${rec.fp}${rec.label ? ` (${rec.label})` : ''}, signed for by you (${rec.verifier_fp}).` }));
     } catch (e) { err.className = 'warn'; err.textContent = 'Not added: ' + e.message; } });
-  $('#add-person')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Add this person?', () => personFile(V, { id: newId('p'), name: $('#p-name').value, email: $('#p-email').value, role: $('#p-role').value, org: ev.target.dataset.org, by: me(), at: nowIso() })); });
+  $('#add-person')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Add this person?', () => personFile(V, { id: newId('p'), name: $('#p-name').value, email: $('#p-email').value, role: $('#p-role').value, met: $('#p-met').value, org: ev.target.dataset.org, by: me(), at: nowIso() })); });
   $('#nk-copy')?.addEventListener('click', () => { $('#nk').select(); navigator.clipboard?.writeText($('#nk').value).catch(() => {}); });
   $('#nk-done')?.addEventListener('click', () => { NEWKEY = null; route(); });
   for (const b of document.querySelectorAll('[data-link]')) b.addEventListener('click', () => {
