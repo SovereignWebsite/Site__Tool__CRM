@@ -475,7 +475,8 @@ function wireActions() {
   $('#i-file')?.addEventListener('change', async (ev) => { const f = ev.target.files[0]; if (f) $('#i-text').value = await f.text(); });
   $('#import')?.addEventListener('submit', (ev) => { ev.preventDefault(); if (!me()) return askName(); ask('Import these?', () => {
     const { files, report } = importFiles(V, $('#i-text').value, { by: me(), at: nowIso() });
-    const note = `${report.orgs} new companies (each with its lead row), ${report.people} new people, ${report.actions} contacts logged as actions.` + (report.skipped.length ? ` Skipped ${report.skipped.length}: ${report.skipped.join('; ')}.` : '') + (report.unknown_columns.length ? ` Columns ignored: ${report.unknown_columns.join(', ')}.` : '');
+    const plural = (k, one, many) => `${k} ${k === 1 ? one : many}`;
+    const note = `${plural(report.orgs, 'new company (with its lead row)', 'new companies (each with its lead row)')}, ${plural(report.people, 'new person', 'new people')}, ${plural(report.actions, 'contact logged as an action', 'contacts logged as actions')}.` + (report.skipped.length ? ` Skipped ${report.skipped.length}: ${report.skipped.join('; ')}.` : '') + (report.unknown_columns.length ? ` Columns ignored: ${report.unknown_columns.join(', ')}.` : '');
     return { files, note };
   }); });
   $('#log-action')?.addEventListener('submit', (ev) => { ev.preventDefault(); if (!me()) return askName(); ask('Log this action?', () => actionFile(V, { id: newId('a'), org: ev.target.dataset.org, person: $('#a-person').value || null, kind: $('#a-kind').value, direction: $('#a-dir').value, at: $('#a-at').value, by: me(), summary: $('#a-sum').value, logged_at: nowIso() })); });
