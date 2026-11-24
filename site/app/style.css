@@ -180,7 +180,7 @@ button.quiet { border: 2px solid var(--accent); }
 }
 
 /* On a phone the vault pill stays on the first row, top right; the name button moves below it. */
-@media (max-width: 640px) { .bar { row-gap: 6px; } #mode { order: 2; margin-left: auto; } #me { order: 6; margin-left: 0; } .bar nav { order: 7; } }
+@media (max-width: 640px) { .bar { row-gap: 6px; } .bar #mode, .bar #me + #mode { order: 2; margin-left: auto; } .bar #me { order: 6; margin-left: 0; } .bar nav { order: 7; } }
 
 /* 2. On a phone the why label sits at the start of the line, not centred. */
 @media (max-width: 640px) { .card > .card-why { justify-content: flex-start; } }

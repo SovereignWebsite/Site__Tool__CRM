@@ -1,0 +1,36 @@
+/* The SovereignWeb.site CRM brand for the site's own pages (/, /learn/, /learn/videos/, /how-to/, /start/), on their existing frame.
+   For crm.dev.a: link it after the frame's inline <style> on each page, as <link rel="stylesheet" href="/app/brand/site-frame.css">
+   (copy this file to site/app/brand/), or paste it at the end of the frame's style. Class names unchanged.
+   a.crm.design, 24 Nov 2026. */
+:root { --bg: #fbfaf7; --fg: #1b1c1a; --muted: #5b6460; --accent: #1f5446; --line: #dcd9d0; --focus: #1a73c8;
+  --serif: ui-serif, Charter, "Bitstream Charter", "Iowan Old Style", "Palatino Linotype", Georgia, serif; }
+@media (prefers-color-scheme: dark) { :root { --bg: #121513; --fg: #e9ece6; --muted: #a3aca7; --accent: #7cc4ab; --line: #303733; --focus: #8ec5ff; } }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+h1, h2 { font-family: var(--serif); }
+h1 { letter-spacing: -.01em; }
+.mark { color: var(--accent); }
+
+/* The header: the mark before the name, as in the app. */
+.top .name { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-family: var(--serif); font-size: 1.3rem; font-weight: 700; }
+.top .name::before { content: ""; width: 32px; height: 32px; background: url(/app/brand/mark.svg) center / contain no-repeat; }
+/* The explainers' header (.sws-top, a.crm.studio's markup): the same mark and targets. */
+.sws-top a { display: inline-flex; align-items: center; min-height: 44px; }
+.sws-top > a:first-child { gap: 8px; font-family: var(--serif); font-size: 1.3rem; }
+.sws-top > a:first-child::before { content: ""; width: 32px; height: 32px; background: url(/app/brand/mark.svg) center / contain no-repeat; }
+.own a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 4px; }
+
+/* The learning path: each step a ruled line; the next step a clear button. */
+.path { padding-left: 1.6rem; }
+.path li { padding: .4rem 0 .8rem; border-bottom: 1px solid var(--line); }
+.path li > a { font-family: var(--serif); font-size: 1.15rem; display: inline-flex; align-items: center; min-height: 44px; }
+.path .kind { display: inline-block; padding: 0 .5rem; border: 1px solid var(--line); border-radius: 999px; font-weight: 700; }
+.start, .learn-nav .learn-next { display: inline-flex; align-items: center; min-height: 44px; background: var(--accent); color: var(--bg); border-radius: 8px; }
+.learn-nav { border-radius: 10px; }
+.learn-nav a { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* Phone: 44 px targets for every link outside running text. */
+@media (max-width: 640px) {
+  .skip { min-height: 44px; display: inline-flex; align-items: center; }
+  .own { gap: .25rem 1rem; flex-wrap: wrap; }
+  .site-links a, footer a { display: inline-flex; align-items: center; min-height: 44px; }
+}
