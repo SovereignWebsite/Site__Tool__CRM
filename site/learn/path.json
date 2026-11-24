@@ -82,6 +82,13 @@
     },
     {
       "n": 12,
+      "title": "For you: questions from the agents",
+      "kind": "video",
+      "url": "/learn/videos/10-for-you/",
+      "about": "A question sealed to your key, answered on the site and signed with it."
+    },
+    {
+      "n": 13,
       "title": "Open the CRM",
       "kind": "app",
       "url": "/app/",
