@@ -93,3 +93,77 @@ button, .filters a, a.badge { min-height: 24px; }
 .badge.key-none { background: transparent; color: var(--muted); outline: 1px dashed var(--line); }
 details.add.inline { display: inline-block; vertical-align: top; }
 details.add.inline[open] { display: block; margin: 6px 0 10px; }
+
+/* The Day and the SovereignWeb.site CRM brand, for the live app's own markup.
+   For crm.dev.a: append to crm/site/style.css (after everything else), and copy brand/ (mark.svg, favicon.svg,
+   favicon-32.png) next to index.html. It only restyles the classes the app already has; no markup must change for it
+   to work. Optional markup changes are in NOTES.md beside this file. a.crm.design, 24 Nov 2026. */
+
+/* 1. The brand, through the app's seven variables, plus the status colours. */
+:root { --bg: #fbfaf7; --fg: #1b1c1a; --muted: #5b6460; --line: #dcd9d0; --accent: #1f5446; --warn: #a63a17; --chip: #f1efe8;
+  --raise: #ffffff; --accent-soft: #e3eee9; --warn-soft: #fbe9e2; --brass: #7d5300; --brass-soft: #fbf0d6; --sky: #24537a; --sky-soft: #e4eef6;
+  --band: #f3d36b; --band-ink: #1b1c1a; --focus: #1a73c8;
+  --serif: ui-serif, Charter, "Bitstream Charter", "Iowan Old Style", "Palatino Linotype", Georgia, serif; }
+@media (prefers-color-scheme: dark) { :root { --bg: #121513; --fg: #e9ece6; --muted: #a3aca7; --line: #303733; --accent: #7cc4ab; --warn: #f39a78; --chip: #0d0f0e;
+  --raise: #1a1e1c; --accent-soft: #1b2e28; --warn-soft: #3a1e14; --brass: #e7b84a; --brass-soft: #33280f; --sky: #93c1ea; --sky-soft: #15283a;
+  --band: #e7b84a; --band-ink: #141210; --focus: #8ec5ff; } }
+body { font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+h1, h2 { font-family: var(--serif); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+/* 2. The header: the mark before "CRM", the vault switcher as a pill. */
+.bar strong:first-child { display: inline-flex; align-items: center; gap: 8px; font-family: var(--serif); font-size: 21px; min-height: 44px; }
+.bar strong:first-child::before { content: ""; width: 32px; height: 32px; background: url(brand/mark.svg) center / contain no-repeat; }
+.bar nav a { min-height: 40px; display: inline-flex; align-items: center; color: var(--fg); font-weight: 600; }
+.bar nav a.on { background: var(--accent-soft); box-shadow: inset 0 -3px 0 var(--accent); }
+button.mode, #mode { min-height: 44px; padding: 6px 14px; font-size: 15px; font-weight: 600; color: var(--fg); background: var(--accent-soft); border: 2px solid var(--accent); border-radius: 999px; }
+
+/* 3. The demo band: hazard stripes at its edge, words in bold; it stays sticky as round 1 asked. */
+.banner { background: var(--band); color: var(--band-ink); font-weight: 600; padding: 6px 16px 6px 22px; border-bottom: 2px solid var(--band-ink);
+  background-image: repeating-linear-gradient(135deg, var(--band-ink) 0 6px, transparent 6px 12px); background-size: 10px 100%; background-repeat: no-repeat; }
+.banner a { color: var(--band-ink); }
+
+/* 4. Today as a diary: one ruled line per company, why on the left, the action on the right. */
+main h1 { font-size: clamp(28px, 5vw, 40px); }
+.stages { margin: 4px 0 16px; padding-bottom: 12px; border-bottom: 3px double var(--fg); }
+.stages .stage { min-height: 40px; display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid var(--line); border-radius: 8px; background: transparent; }
+.cards { display: block; margin: 0; }
+.card { display: grid; grid-template-columns: 9rem minmax(0, 1fr) auto; column-gap: 18px; align-items: center; border: 0; border-radius: 0; border-bottom: 1px solid var(--line); padding: 14px 0; }
+.card.why-overdue, .card.why-follow-up { border-left: 0; }
+.card > .card-why { grid-column: 1; grid-row: 1 / span 4; align-self: stretch; display: flex; flex-direction: column; justify-content: center; gap: 4px; padding-right: 12px; border-right: 2px solid var(--line); margin: 0; }
+.card > h2 { grid-column: 2; font-size: 20px; margin: 0; }
+.card > h2 a { color: var(--fg); text-underline-offset: 3px; }
+.card > p:not(.card-why):not(.card-actions) { grid-column: 2; }
+.card > .card-actions { grid-column: 3; grid-row: 1 / span 4; margin: 0 !important; justify-content: flex-end; }
+.card .card-actions a.button { background: var(--accent); color: var(--bg); border: 2px solid var(--accent); font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; padding: 8px 16px; border-radius: 8px; }
+
+/* Status by words and shape: the badge in each line's left column takes a shape from the line's kind. */
+.card-why .badge { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; font-size: 13px; font-weight: 700; padding: 2px 9px 2px 7px; border-radius: 6px; border: 1.5px solid currentColor; background: var(--chip); }
+.card-why .badge::before { content: ""; width: 9px; height: 9px; background: currentColor; flex: none; }
+.why-overdue .card-why .badge { color: var(--warn); background: var(--warn-soft); }
+.why-overdue .card-why .badge::before { width: 10px; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.why-overdue .card-why { border-right-color: var(--warn); }
+.why-draft .card-why .badge { color: var(--brass); background: var(--brass-soft); }
+.why-draft .card-why .badge::before { clip-path: polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%); }
+.why-follow-up .card-why .badge { color: var(--sky); background: var(--sky-soft); }
+.why-follow-up .card-why .badge::before { background: none; border: 2px solid currentColor; border-radius: 50%; width: 8px; height: 8px; }
+.why-soon .card-why .badge { color: var(--accent); background: var(--accent-soft); }
+.why-soon .card-why .badge::before { clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.d-draft { color: var(--brass); font-weight: 700; } .d-sent { color: var(--accent); }
+
+/* 5. Buttons and the You page's two halves in the brand. */
+button { border-radius: 8px; min-height: 36px; font-weight: 600; }
+button.quiet { border: 2px solid var(--accent); }
+.handover section { background: var(--raise); }
+.drop { background: var(--accent-soft); font-weight: 700; color: var(--fg); }
+
+/* 6. Phone: each line stacks, the action full width; 44 px targets. */
+@media (max-width: 640px) {
+  .card { grid-template-columns: 1fr; row-gap: 4px; }
+  .card > .card-why, .card > h2, .card > p:not(.card-why):not(.card-actions), .card > .card-actions { grid-column: 1; grid-row: auto; }
+  .card > .card-why { flex-direction: row; flex-wrap: wrap; align-items: center; border-right: 0; padding: 0; }
+  .card > .card-actions { justify-content: stretch; margin-top: 6px !important; }
+  .card .card-actions a.button { flex: 1; justify-content: center; }
+  .stages .stage { min-height: 44px; }
+  button, a.button, a.badge, details.add > summary { min-height: 44px; display: inline-flex; align-items: center; }
+}
