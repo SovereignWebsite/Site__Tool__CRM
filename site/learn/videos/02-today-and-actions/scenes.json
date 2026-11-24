@@ -2,7 +2,7 @@
  "slug": "02-today-and-actions",
  "title": "Today, and logging an action",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.28 · ecdcdae · 2026-11-24",
+ "site_version": "v0.1.30 · 278d1c5 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -27,29 +27,29 @@
     "w": 1068,
     "h": 60
    },
-   "screen": "s-4d73c06652a6d5f3.webp"
+   "screen": "s-a999dc0c5e364352.webp"
   },
   {
    "caption": "First, overdue. Example Ventures asked questions on our proposal, and the answer was due on 21 November.",
    "seconds": 6,
    "box": {
     "x": 106,
-    "y": 351,
+    "y": 360,
     "w": 1068,
-    "h": 119
+    "h": 120
    },
-   "screen": "s-4d73c06652a6d5f3.webp"
+   "screen": "s-a999dc0c5e364352.webp"
   },
   {
    "caption": "Say we have answered them by email. Press Log the follow-up on its card.",
    "seconds": 5,
    "box": {
     "x": 1002,
-    "y": 388,
+    "y": 398,
     "w": 172,
     "h": 44
    },
-   "screen": "s-4d73c06652a6d5f3.webp"
+   "screen": "s-a999dc0c5e364352.webp"
   },
   {
    "caption": "The company's page opens on Log an action: what, which way, when, who, and one line on what happened.",
@@ -104,7 +104,7 @@
     "w": 1068,
     "h": 394
    },
-   "screen": "s-78de2923dcd541aa.webp"
+   "screen": "s-1bb940e4da0f7e84.webp"
   },
   {
    "caption": "The next step becomes: wait for their decision, due 30 November.",
@@ -115,7 +115,7 @@
     "w": 1068,
     "h": 394
    },
-   "screen": "s-86e847e3286eae2d.webp"
+   "screen": "s-e02a32432d11dfd5.webp"
   },
   {
    "caption": "Show what will be written, then Write it. The company now shows the new next step.",
@@ -126,18 +126,18 @@
     "w": 1068,
     "h": 60
    },
-   "screen": "s-ac411776bd12c511.webp"
+   "screen": "s-c9ea9f10d8448869.webp"
   },
   {
    "caption": "Back on Today, Example Ventures is no longer overdue. Do this for each card, every day.",
    "seconds": 6,
    "box": {
     "x": 106,
-    "y": 351,
+    "y": 360,
     "w": 1068,
-    "h": 365
+    "h": 356
    },
-   "screen": "s-5be28eb1bcf73daf.webp"
+   "screen": "s-8b6291541bb5d856.webp"
   },
   {
    "caption": "Next: follow-ups.",

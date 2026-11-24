@@ -1,14 +1,14 @@
 {
   "slug": "05-agents-in-parallel",
-  "site_version": "v0.1.28 · ecdcdae · 2026-11-24",
+  "site_version": "v0.1.30 · 278d1c5 · 2026-11-24",
   "clock": "2026-11-24T10:00:00Z",
   "scenes": 14,
   "screens": {
     "s-22fbf2e5b7330a93.webp": "977fb7c85b02696b486608e8d945c63f14db48f9b5ec23c11c839e3450e6f47b",
-    "s-4d73c06652a6d5f3.webp": "53b02f6b3e2e46451a53bdeb4e4aabad8c2244e0126791629c6d77fc68db5739",
-    "s-fe0a071608f1a5c1.webp": "79e79c816f356a0dbe9d29d2f6f64acf36f036855a0efcef46c906016f97a673"
+    "s-a999dc0c5e364352.webp": "20022792f52065f0f87e7b8e90d89f16db16a2cf326ed30a31e28a074f2a5380",
+    "s-3525f07722b4d87b.webp": "b7414f6800dfa3f647fcc5f2daec7a363f598f36daa8ef50c20b28fb94848c11"
   },
-  "scenes_json_sha256": "a988af9e0c925332abe78f9bdba066d99b2e68605a29e8e1359be5e9b93c1b12",
+  "scenes_json_sha256": "cfc2f2ebea88edb9156b4013127b570fbc5d8ca5e9cba33de568541403811736",
   "made_by": "a.crm.studio@SovereignWebsite.dinis",
   "tool": "studio/capture.mjs"
 }

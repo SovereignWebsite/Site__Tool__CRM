@@ -1,0 +1,98 @@
+{
+  "slug": "08-requests",
+  "title": "Asking the CRM's agent for something",
+  "base": "https://crm.tool.sovereignweb.site",
+  "clock": "2026-11-24T10:00:00Z",
+  "seed": 42,
+  "share": 4,
+  "redact": [
+    "#who"
+  ],
+  "scenes": [
+    {
+      "card": {
+        "title": "Asking the CRM's agent for something",
+        "sub": "Requests: a feature, a fix, a question or a workflow, sent to the agent that builds the CRM, readable only by it.",
+        "foot": "A made-up person, Sam Sample. In this explainer nothing is sent."
+      },
+      "caption": "Requests: ask the agent that builds the CRM for a feature, a fix, a question or a workflow.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/me"
+        },
+        {
+          "fill": [
+            "#li-name",
+            "Sam Sample"
+          ]
+        },
+        {
+          "click": "main button:has-text(\"Log in\")"
+        },
+        {
+          "wait": "#mykey"
+        },
+        {
+          "goto": "/app/send/"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "div.banner",
+      "caption": "Requests are real messages to the agent that builds the CRM, whichever vault you have open. Do not put contacts' details in them.",
+      "seconds": 8
+    },
+    {
+      "mark": "main h1 + p",
+      "caption": "Your request is signed with this browser's key and sealed so that only the keeper can read it.",
+      "seconds": 7
+    },
+    {
+      "mark": "#who",
+      "caption": "Log in first, on You: requests are signed with your browser's key. Here, Sam Sample, with the key's fingerprint hidden.",
+      "seconds": 7
+    },
+    {
+      "do": [
+        {
+          "select": [
+            "#kind",
+            "A feature"
+          ]
+        },
+        {
+          "fill": [
+            "#text",
+            "Could the lead board be downloaded as a spreadsheet?"
+          ]
+        }
+      ],
+      "mark": "#form",
+      "caption": "Choose the kind: a feature, a question, something wrong, a workflow or an idea. Then write what you would like.",
+      "seconds": 8
+    },
+    {
+      "mark": "#send",
+      "caption": "Sign, seal and send. In this explainer nothing is sent: a request is a real message, so the capture stops here.",
+      "seconds": 7
+    },
+    {
+      "mark": "#replies",
+      "caption": "The keeper answers on this page, and only this browser can read the answer.",
+      "seconds": 6
+    },
+    {
+      "card": {
+        "title": "That is the CRM",
+        "sub": "Today, actions, follow-ups, import, your key and your vaults, verified keys, and requests.",
+        "foot": "Open it: crm.tool.sovereignweb.site/app/"
+      },
+      "caption": "That is the CRM. Open it, and start on Today.",
+      "seconds": 5
+    }
+  ]
+}

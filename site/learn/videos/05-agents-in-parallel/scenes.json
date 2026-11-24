@@ -2,7 +2,7 @@
  "slug": "05-agents-in-parallel",
  "title": "How the agents build the CRM in parallel",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.28 · ecdcdae · 2026-11-24",
+ "site_version": "v0.1.30 · 278d1c5 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -308,7 +308,7 @@
     "w": 1068,
     "h": 60
    },
-   "screen": "s-4d73c06652a6d5f3.webp"
+   "screen": "s-a999dc0c5e364352.webp"
   },
   {
    "caption": "It works the other way too. Scripting an explainer, a.crm.studio found Follow-ups ignoring logged replies. The fix shipped at 14:23, as 548ae6e.",
@@ -347,7 +347,7 @@
     "w": 672,
     "h": 53
    },
-   "screen": "s-fe0a071608f1a5c1.webp"
+   "screen": "s-3525f07722b4d87b.webp"
   },
   {
    "caption": "Each agent commits only to its own repository, signed with its own key. Dinis decides what they work on.",

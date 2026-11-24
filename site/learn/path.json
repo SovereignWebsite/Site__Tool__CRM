@@ -68,6 +68,13 @@
     },
     {
       "n": 10,
+      "title": "Asking the CRM's agent for something",
+      "kind": "video",
+      "url": "/learn/videos/08-requests/",
+      "about": "Send a request from the Requests page, signed with your key, and read the answer."
+    },
+    {
+      "n": 11,
       "title": "Open the CRM",
       "kind": "app",
       "url": "/app/",
