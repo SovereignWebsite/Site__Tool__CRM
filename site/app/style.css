@@ -294,3 +294,7 @@ p.filters[role=group] a.on, p.filters[role=group] a[aria-current] { background: 
 .decision details a { overflow-wrap: anywhere; }
 .decision form.decide > label { margin-top: 10px; }
 .decision form.decide > button[type=submit] { background: var(--accent); color: var(--bg); border: 2px solid var(--accent); min-height: 44px; padding: 8px 18px; font-size: 16px; }
+/* Round 6b, from the live stills: tighter rhythm between the groups (the form's grid gap already spaces them). */
+.decision form.decide { gap: 8px; }
+.decision fieldset { margin: 4px 0; }
+.decision details { margin: 0; }
