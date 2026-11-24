@@ -1,0 +1,107 @@
+{
+  "slug": "10-for-you",
+  "title": "For you: questions from the agents",
+  "base": "https://crm.tool.sovereignweb.site",
+  "clock": "2026-11-24T10:00:00Z",
+  "seed": 42,
+  "share": 3,
+  "profile": true,
+  "fixtures": {
+    "**/app/for/sha256-2f9a543a73b96d8d/index.json": "for-you.fixture.json"
+  },
+  "redact": [
+    "main"
+  ],
+  "scenes": [
+    {
+      "card": {
+        "title": "For you: questions from the agents",
+        "sub": "When an agent needs you to decide something, it seals the question to your browser's key. You pick, and your answer goes back signed.",
+        "foot": "A made-up person, Sam Sample, and a made-up question. In this explainer nothing is sent."
+      },
+      "caption": "When an agent needs you to decide something, it seals the question to your browser's key.",
+      "seconds": 7
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/today"
+        },
+        {
+          "wait": "#for-you-note:not([hidden])"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "#for-you-note",
+      "caption": "Today says so: 1 decision for you.",
+      "seconds": 5
+    },
+    {
+      "do": [
+        {
+          "click": "#for-you-note a"
+        },
+        {
+          "wait": "form.decide"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main h2:has-text(\"Which view\")",
+      "caption": "For you lists each question. It was sealed to this browser's key by the agent that asks, so only this browser can open it.",
+      "seconds": 8
+    },
+    {
+      "mark": "main p:has-text(\"signature checked\")",
+      "caption": "It says who asked and by when, and that their signature was checked.",
+      "seconds": 6
+    },
+    {
+      "mark": "form.decide",
+      "caption": "Pick one option in each group. Here, a made-up question: which view should open first, and in which order.",
+      "seconds": 7,
+      "do": [
+        {
+          "top": true
+        }
+      ],
+      "stay": true,
+      "scroll_by": 150
+    },
+    {
+      "do": [
+        {
+          "click": "input[name=\"g-view\"][value=\"a\"]"
+        },
+        {
+          "click": "input[name=\"g-order\"][value=\"a\"]"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "form.decide",
+      "caption": "Here: Today, overdue first. The recommendation is there too, with its evidence.",
+      "seconds": 7,
+      "stay": true,
+      "scroll_by": 150
+    },
+    {
+      "mark": "form.decide button[type=submit]",
+      "caption": "Sign and send my answer signs it with your key and sends it back through the Requests lane. In this explainer nothing is sent.",
+      "seconds": 8
+    },
+    {
+      "card": {
+        "title": "Decisions, kept",
+        "sub": "The question is sealed to you, and the answer is signed by you, so both ends know who asked and who answered.",
+        "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+      },
+      "caption": "The question is sealed to you, and the answer is signed by you: both ends know who asked and who answered.",
+      "seconds": 7
+    }
+  ]
+}

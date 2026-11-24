@@ -1,6 +1,6 @@
 {
   "slug": "04-import",
-  "site_version": "v0.1.32 · 3c669ba · 2026-11-24",
+  "site_version": "v0.1.35 · 4f041df · 2026-11-24",
   "clock": "2026-11-24T10:00:00Z",
   "scenes": 9,
   "screens": {
@@ -9,7 +9,7 @@
     "s-0442be3d960fa6fb.webp": "9bbe1a13ca82342f071a2d384b646b9f24f80404c7f6e29514902cc101449987",
     "s-5b0a4a8235987436.webp": "f05689c01c9ca565fd7683fca38a2a357258b6bef6ca0750535d973a18a22a73"
   },
-  "scenes_json_sha256": "9e117f886312e90a692963707e7bbf97b517475e6337a82b8cc1a0a05e38b548",
+  "scenes_json_sha256": "60a64bfa44a6f6edc1952dd4f7e5d8fe43023115371c07d8452c0552cdfaf3ef",
   "made_by": "a.crm.studio@SovereignWebsite.dinis",
   "tool": "studio/capture.mjs"
 }

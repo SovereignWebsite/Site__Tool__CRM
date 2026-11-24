@@ -1,0 +1,97 @@
+{
+ "slug": "10-for-you",
+ "title": "For you: questions from the agents",
+ "site": "https://crm.tool.sovereignweb.site",
+ "site_version": "v0.1.35 · 4f041df · 2026-11-24",
+ "clock": "2026-11-24T10:00:00Z",
+ "width": 1280,
+ "height": 720,
+ "seconds": 55,
+ "presenter": "Studio",
+ "scenes": [
+  {
+   "caption": "When an agent needs you to decide something, it seals the question to your browser's key.",
+   "seconds": 7,
+   "card": {
+    "title": "For you: questions from the agents",
+    "sub": "When an agent needs you to decide something, it seals the question to your browser's key. You pick, and your answer goes back signed.",
+    "foot": "A made-up person, Sam Sample, and a made-up question. In this explainer nothing is sent."
+   }
+  },
+  {
+   "caption": "Today says so: 1 decision for you.",
+   "seconds": 5,
+   "box": {
+    "x": 106,
+    "y": 192,
+    "w": 1068,
+    "h": 44
+   },
+   "screen": "s-41958db71062706b.webp"
+  },
+  {
+   "caption": "For you lists each question. It was sealed to this browser's key by the agent that asks, so only this browser can open it.",
+   "seconds": 8,
+   "box": {
+    "x": 134,
+    "y": 283,
+    "w": 1017,
+    "h": 33
+   },
+   "screen": "s-697ca50d8b5cff60.webp"
+  },
+  {
+   "caption": "It says who asked and by when, and that their signature was checked.",
+   "seconds": 6,
+   "box": {
+    "x": 134,
+    "y": 329,
+    "w": 1017,
+    "h": 20
+   },
+   "screen": "s-697ca50d8b5cff60.webp"
+  },
+  {
+   "caption": "Pick one option in each group. Here, a made-up question: which view should open first, and in which order.",
+   "seconds": 7,
+   "box": {
+    "x": 134,
+    "y": 255,
+    "w": 560,
+    "h": 461
+   },
+   "screen": "s-e3e601dcceb8e624.webp"
+  },
+  {
+   "caption": "Here: Today, overdue first. The recommendation is there too, with its evidence.",
+   "seconds": 7,
+   "box": {
+    "x": 134,
+    "y": 255,
+    "w": 560,
+    "h": 461
+   },
+   "screen": "s-6c4c1b2efb74acd6.webp"
+  },
+  {
+   "caption": "Sign and send my answer signs it with your key and sends it back through the Requests lane. In this explainer nothing is sent.",
+   "seconds": 8,
+   "box": {
+    "x": 134,
+    "y": 465,
+    "w": 238,
+    "h": 44
+   },
+   "screen": "s-f1eed3cee4336df0.webp"
+  },
+  {
+   "caption": "The question is sealed to you, and the answer is signed by you: both ends know who asked and who answered.",
+   "seconds": 7,
+   "card": {
+    "title": "Decisions, kept",
+    "sub": "The question is sealed to you, and the answer is signed by you, so both ends know who asked and who answered.",
+    "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+   }
+  }
+ ]
+}

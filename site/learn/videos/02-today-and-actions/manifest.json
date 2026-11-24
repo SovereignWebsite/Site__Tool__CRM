@@ -1,6 +1,6 @@
 {
   "slug": "02-today-and-actions",
-  "site_version": "v0.1.32 · 3c669ba · 2026-11-24",
+  "site_version": "v0.1.35 · 4f041df · 2026-11-24",
   "clock": "2026-11-24T10:00:00Z",
   "scenes": 13,
   "screens": {
@@ -14,7 +14,7 @@
     "s-c9ea9f10d8448869.webp": "00e56f670d6a16875d5d925f65493dc41a9fac45345afa2595772b662524ab40",
     "s-8b6291541bb5d856.webp": "ed562b9f97cdd965f623fe79b6b426aca409b4c8ecd18f4669ab3ff1b829f17c"
   },
-  "scenes_json_sha256": "828ef349bf0fb203b4094cd78c17dffeb242e9c76ebd90cd2810e95c8af0d2b6",
+  "scenes_json_sha256": "83b1eb479565c280f3db65ea45ea5a2cd896d8c17c14269b0dfe92a2ac8407ad",
   "made_by": "a.crm.studio@SovereignWebsite.dinis",
   "tool": "studio/capture.mjs"
 }

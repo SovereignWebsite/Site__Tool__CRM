@@ -2,7 +2,7 @@
  "slug": "01-what-it-is",
  "title": "The CRM, and its demo",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.32 · 3c669ba · 2026-11-24",
+ "site_version": "v0.1.35 · 4f041df · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -104,7 +104,7 @@
     "w": 1068,
     "h": 211
    },
-   "screen": "s-9a23979d0d8d1f2b.webp"
+   "screen": "s-78c769fbd45eff09.webp"
   },
   {
    "caption": "Contacts: everyone, with their company and when we were last in touch. Demo emails use reserved example domains.",
