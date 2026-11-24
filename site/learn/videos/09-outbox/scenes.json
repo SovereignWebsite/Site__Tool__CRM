@@ -1,0 +1,97 @@
+{
+ "slug": "09-outbox",
+ "title": "Writing an email, and signing it off",
+ "site": "https://crm.tool.sovereignweb.site",
+ "site_version": "v0.1.31 · 6f5908f · 2026-11-24",
+ "clock": "2026-11-24T10:00:00Z",
+ "width": 1280,
+ "height": 720,
+ "seconds": 53,
+ "presenter": "Studio",
+ "scenes": [
+  {
+   "caption": "Write an email from a company's page. It waits in the Outbox until you sign it off.",
+   "seconds": 6,
+   "card": {
+    "title": "Writing an email, and signing it off",
+    "sub": "Write an email from a company's page. It waits in the Outbox until you sign it off with your browser's key.",
+    "foot": "A made-up person, Sam Sample. In the demo nothing is written anywhere and nothing is sent."
+   }
+  },
+  {
+   "caption": "On a company's page, open Write an email: who it goes to, a subject and the text. Nothing is sent from here.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 145,
+    "w": 1068,
+    "h": 515
+   },
+   "screen": "s-c871639c23d774c6.webp"
+  },
+  {
+   "caption": "Here, to Rui Kowalski, with the answers to their questions on the proposal.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 85,
+    "w": 1068,
+    "h": 515
+   },
+   "screen": "s-135ae9cb3fe3f068.webp"
+  },
+  {
+   "caption": "Show what will be written shows the email as the file it becomes in the Outbox. Then Write it.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 124,
+    "w": 1068,
+    "h": 557
+   },
+   "screen": "s-0ce66897509f46f4.webp"
+  },
+  {
+   "caption": "In the Outbox it waits: Not signed off.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 333,
+    "w": 1068,
+    "h": 53
+   },
+   "screen": "s-37c4b50c228220c5.webp"
+  },
+  {
+   "caption": "Sign off signs this exact email with your browser's key, for one batch. The signature and fingerprints are hidden here.",
+   "seconds": 8,
+   "box": {
+    "x": 106,
+    "y": 124,
+    "w": 1068,
+    "h": 465
+   },
+   "screen": "s-af943f3266fb7502.webp"
+  },
+  {
+   "caption": "Write it, and the Outbox shows Signed off by you, ready for its batch.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 333,
+    "w": 1068,
+    "h": 53
+   },
+   "screen": "s-af17fc283c4181aa.webp"
+  },
+  {
+   "caption": "The Email Cell's page checks every signature again and sends the batch on one press. In the demo, nothing is sent.",
+   "seconds": 7,
+   "card": {
+    "title": "Then it is sent",
+    "sub": "The Email Cell's page checks every signature again and sends the batch on one press. In the demo, nothing is sent.",
+    "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+   }
+  }
+ ]
+}

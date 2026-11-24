@@ -2,7 +2,7 @@
  "slug": "08-requests",
  "title": "Asking the CRM's agent for something",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.30 · 278d1c5 · 2026-11-24",
+ "site_version": "v0.1.31 · 6f5908f · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -60,7 +60,7 @@
     "w": 560,
     "h": 374
    },
-   "screen": "s-34d0dd49dff51846.webp"
+   "screen": "s-f0c6e8600029521c.webp"
   },
   {
    "caption": "Sign, seal and send. In this explainer nothing is sent: a request is a real message, so the capture stops here.",
@@ -71,7 +71,7 @@
     "w": 180,
     "h": 38
    },
-   "screen": "s-34d0dd49dff51846.webp"
+   "screen": "s-f0c6e8600029521c.webp"
   },
   {
    "caption": "The keeper answers on this page, and only this browser can read the answer.",
@@ -82,7 +82,7 @@
     "w": 1068,
     "h": 24
    },
-   "screen": "s-bc648f1e4ef4d898.webp"
+   "screen": "s-19aa5611bd9ef2e1.webp"
   },
   {
    "caption": "That is the CRM. Open it, and start on Today.",

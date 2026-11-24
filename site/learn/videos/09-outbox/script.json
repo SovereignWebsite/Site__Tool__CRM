@@ -1,0 +1,148 @@
+{
+  "slug": "09-outbox",
+  "title": "Writing an email, and signing it off",
+  "base": "https://crm.tool.sovereignweb.site",
+  "clock": "2026-11-24T10:00:00Z",
+  "seed": 42,
+  "share": 4,
+  "mask": [
+    "#pending:has-text(\"Sign off\") pre:visible"
+  ],
+  "redact": [
+    "#pending"
+  ],
+  "scenes": [
+    {
+      "card": {
+        "title": "Writing an email, and signing it off",
+        "sub": "Write an email from a company's page. It waits in the Outbox until you sign it off with your browser's key.",
+        "foot": "A made-up person, Sam Sample. In the demo nothing is written anywhere and nothing is sent."
+      },
+      "caption": "Write an email from a company's page. It waits in the Outbox until you sign it off.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/me"
+        },
+        {
+          "fill": [
+            "#li-name",
+            "Sam Sample"
+          ]
+        },
+        {
+          "click": "main button:has-text(\"Log in\")"
+        },
+        {
+          "wait": "#mykey"
+        },
+        {
+          "hash": "#/company/o06"
+        },
+        {
+          "click": "summary:has-text(\"Write an email\")"
+        }
+      ],
+      "mark": "details:has(#write-email)",
+      "scroll_by": 60,
+      "caption": "On a company's page, open Write an email: who it goes to, a subject and the text. Nothing is sent from here.",
+      "seconds": 7
+    },
+    {
+      "do": [
+        {
+          "select": [
+            "#e-person",
+            "p06"
+          ]
+        },
+        {
+          "fill": [
+            "#e-subject",
+            "Answers on the proposal"
+          ]
+        },
+        {
+          "fill": [
+            "#e-text",
+            "Hello Rui, here are the answers to your questions on the proposal."
+          ]
+        }
+      ],
+      "mark": "details:has(#write-email)",
+      "scroll_by": 60,
+      "caption": "Here, to Rui Kowalski, with the answers to their questions on the proposal.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "click": "#write-email button[type=submit]"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "#pending",
+      "stay": true,
+      "caption": "Show what will be written shows the email as the file it becomes in the Outbox. Then Write it.",
+      "seconds": 7
+    },
+    {
+      "do": [
+        {
+          "click": "#w-go"
+        },
+        {
+          "hash": "#/outbox"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main tr:has-text(\"Answers on the proposal\")",
+      "stay": true,
+      "caption": "In the Outbox it waits: Not signed off.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "click": "main tr:has-text(\"Answers on the proposal\") button:has-text(\"Sign off\")"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "#pending",
+      "stay": true,
+      "caption": "Sign off signs this exact email with your browser's key, for one batch. The signature and fingerprints are hidden here.",
+      "seconds": 8
+    },
+    {
+      "do": [
+        {
+          "click": "#w-go"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main tr:has-text(\"Answers on the proposal\")",
+      "stay": true,
+      "caption": "Write it, and the Outbox shows Signed off by you, ready for its batch.",
+      "seconds": 6
+    },
+    {
+      "card": {
+        "title": "Then it is sent",
+        "sub": "The Email Cell's page checks every signature again and sends the batch on one press. In the demo, nothing is sent.",
+        "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+      },
+      "caption": "The Email Cell's page checks every signature again and sends the batch on one press. In the demo, nothing is sent.",
+      "seconds": 7
+    }
+  ]
+}

@@ -47,34 +47,41 @@
     },
     {
       "n": 7,
+      "title": "Writing an email, and signing it off",
+      "kind": "video",
+      "url": "/learn/videos/09-outbox/",
+      "about": "Write an email from a company page and sign it off with your key, for the Email Cell to send."
+    },
+    {
+      "n": 8,
       "title": "Importing a spreadsheet",
       "kind": "video",
       "url": "/learn/videos/04-import/",
       "about": "Bring your contacts in from a CSV file: what is matched, what is skipped."
     },
     {
-      "n": 8,
+      "n": 9,
       "title": "Verified keys on people",
       "kind": "video",
       "url": "/learn/videos/07-verified-keys/",
       "about": "Add a contact's key from the QR code they sent, checked and signed for with yours."
     },
     {
-      "n": 9,
+      "n": 10,
       "title": "How the agents build the CRM in parallel",
       "kind": "video",
       "url": "/learn/videos/05-agents-in-parallel/",
       "about": "Who builds what, in which repository, and how work moves between the agents."
     },
     {
-      "n": 10,
+      "n": 11,
       "title": "Asking the CRM's agent for something",
       "kind": "video",
       "url": "/learn/videos/08-requests/",
       "about": "Send a request from the Requests page, signed with your key, and read the answer."
     },
     {
-      "n": 11,
+      "n": 12,
       "title": "Open the CRM",
       "kind": "app",
       "url": "/app/",

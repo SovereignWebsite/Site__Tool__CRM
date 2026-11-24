@@ -1,0 +1,17 @@
+{
+  "slug": "09-outbox",
+  "site_version": "v0.1.31 · 6f5908f · 2026-11-24",
+  "clock": "2026-11-24T10:00:00Z",
+  "scenes": 8,
+  "screens": {
+    "s-c871639c23d774c6.webp": "1142cb77ea64dbb4a42fbeb9dbae4ff495a6bb3d362902a31260d7117788288f",
+    "s-135ae9cb3fe3f068.webp": "5087a059c38dbf574034acfc10aede031f6494cb68dbc69bc6a26e4ff3833b6c",
+    "s-0ce66897509f46f4.webp": "2c893bc25aa2727a261398eb19d9ab37a26fb97c3a16c0f21adeae1205ad0054",
+    "s-37c4b50c228220c5.webp": "9e6376e60a6019f5e4b60d91adbdebe5666da40891f856b349bfbda8d524a3bc",
+    "s-af943f3266fb7502.webp": "8d131a58b0cce026720e692fe79324cc23e6e3b1db8a8103371a0d8e8b0150eb",
+    "s-af17fc283c4181aa.webp": "a601f3f42aa78dd07a312c599f6d659135c817a1dfa9ba1fbc605369d4355c7c"
+  },
+  "scenes_json_sha256": "12510000f0707b7c6810b70162a3e920277f6ccfe5b86c624d86c35f859bb0f3",
+  "made_by": "a.crm.studio@SovereignWebsite.dinis",
+  "tool": "studio/capture.mjs"
+}
