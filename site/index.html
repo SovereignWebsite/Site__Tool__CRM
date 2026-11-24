@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CRM</title>
-<meta name="description" content="A lead board for a small team: companies, stages, follow-ups and contacts, in your browser from your own vaults, with a demo on synthetic data.">
+<meta name="description" content="The SovereignWeb.site CRM: many small CRMs, each in its own encrypted vault, opened in your browser with your own keys. Today, follow-ups, a signed outbox and verified keys; a demo and explainers.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CRM">
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://crm.tool.sovereignweb.site/">
 <meta property="og:title" content="CRM">
-<meta property="og:description" content="A lead board for a small team: companies, stages, follow-ups and contacts, in your browser from your own vaults, with a demo on synthetic data.">
+<meta property="og:description" content="The SovereignWeb.site CRM: many small CRMs, each in its own encrypted vault, opened in your browser with your own keys. Today, follow-ups, a signed outbox and verified keys; a demo and explainers.">
 <meta property="og:image" content="https://crm.tool.sovereignweb.site/assets/share/card-1200x630.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -18,7 +18,7 @@
 <meta property="og:image:alt" content="CRM">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CRM">
-<meta name="twitter:description" content="A lead board for a small team: companies, stages, follow-ups and contacts, in your browser from your own vaults, with a demo on synthetic data.">
+<meta name="twitter:description" content="The SovereignWeb.site CRM: many small CRMs, each in its own encrypted vault, opened in your browser with your own keys. Today, follow-ups, a signed outbox and verified keys; a demo and explainers.">
 <meta name="twitter:image" content="https://crm.tool.sovereignweb.site/assets/share/card-1200x630.jpg">
 <link rel="canonical" href="https://crm.tool.sovereignweb.site/">
 <style>
@@ -63,6 +63,38 @@ code{font-size:.9em}main a,main code{overflow-wrap:anywhere}
 @media (max-width:599px){footer,.family-credit,.family,.site-links{font-size:15px}}
 </style>
 <link rel="stylesheet" href="/app/brand/site-frame.css">
+<style id="home-css">
+main.home{max-width:72rem}
+.top{max-width:72rem}
+.home section{margin:3.5rem 0}
+.home h2{font-size:clamp(1.5rem,3.5vw,2rem);margin:0 0 1rem}
+.home h3{font-size:1.05rem;margin:0 0 .35rem;color:var(--fg)}
+.home .small{font-size:.9rem}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:2.5rem;align-items:center;margin-top:1rem!important}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.08;margin:.4rem 0 1rem}
+.lede{font-size:1.15rem}
+.hero-shot{margin:0}
+.hero-shot img,.steps img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);box-shadow:0 18px 50px rgba(0,0,0,.14)}
+.cta{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.4rem 0 .6rem}
+.btn{display:inline-flex;align-items:center;min-height:44px;padding:.5rem 1.2rem;border-radius:999px;background:var(--accent);color:var(--bg)!important;font-weight:600;text-decoration:none;border:2px solid var(--accent)}
+.btn.quiet{background:transparent;color:var(--accent)!important}
+.feats,.three,.steps{list-style:none;padding:0;margin:0;display:grid;gap:1rem}
+.feats{grid-template-columns:repeat(auto-fill,minmax(16rem,1fr))}
+.feat,.three li{border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.2rem;display:flex;flex-direction:column}
+.feat p,.three p{margin:0 0 .8rem;flex:1}
+.feat a{font-weight:600;min-height:44px;display:inline-flex;align-items:center}
+.three{grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.yours{background:rgba(127,127,127,.06);border-radius:16px;padding:1.6rem}
+.steps{grid-template-columns:repeat(auto-fill,minmax(13rem,1fr))}
+.step a{display:flex;flex-direction:column;gap:.3rem;text-decoration:none;color:var(--fg);height:100%;padding-bottom:.4rem}
+.step img{box-shadow:none;aspect-ratio:1200/630;object-fit:cover}
+.step .n{font-size:.8rem;color:var(--accent);font-weight:700;margin-top:.3rem}
+.step .k{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.step strong{line-height:1.3}
+.step.noimg a{justify-content:center;border:2px solid var(--accent);border-radius:12px;padding:1rem;min-height:8rem}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:52rem){.hero{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -92,13 +124,69 @@ code{font-size:.9em}main a,main code{overflow-wrap:anywhere}
     <a href="/start/">Start here</a>
   </nav>
 </header>
-<main id="main">
-<div class="mark">crm.tool.sovereignweb.site</div>
-<h1>CRM</h1>
-<p>A lead board for a small team: companies, stages, follow-ups and contacts, in your browser from your own vaults, with a demo on synthetic data.</p>
-<p><a href="/learn/"><strong>Learn the CRM</strong></a> in fourteen steps: a short presentation, eleven explainers and the guide, each linking to the next. Or go straight to <a href="/how-to/">how to use it</a>, step by step.</p>
-<p><a href="/app/"><strong>Open the CRM</strong></a>: the lead board, each company and every action taken with it, contacts and follow-ups. It opens on a synthetic demo; your team's own vault opens with its key, in your browser only.</p>
-<p>This site was made by one request to the Sovereign Website pipeline. Its files, its history and its address are in a repository its owner controls, and can move anywhere.</p>
+<main id="main" class="home">
+<section class="hero">
+<div class="hero-text">
+<div class="mark">SovereignWeb.site CRM</div>
+<h1>Many small CRMs, each in its own encrypted vault</h1>
+<p class="lede">Companies, people, every action taken with them, and what needs you today. It runs in your browser and opens your vault with your own keys: this site never sees your contacts.</p>
+<p class="cta"><a class="btn" href="/app/">Try the demo</a> <a class="btn quiet" href="/learn/">Learn it in fourteen steps</a></p>
+<p class="small">No sign-up. The demo is made up, at reserved example domains; nothing you do there is written anywhere.</p>
+</div>
+<figure class="hero-shot"><img src="/assets/home-today.jpg" alt="The CRM's Today page: one line per company, overdue first, each with its next step and one button" width="1800" height="1125"></figure>
+</section>
+
+<section>
+<h2>What it does</h2>
+<ul class="feats">
+<li class="feat"><h3>Today</h3><p>One line per company that needs you: overdue first, then no reply for 5 days, then drafts to review. One button each.</p><a href="/learn/videos/02-today-and-actions/">Watch how <span class="visually-hidden">(Today)</span>→</a></li>
+<li class="feat"><h3>Follow-ups</h3><p>A company comes back to you 5 days after your last email, until they answer; before you nudge again, it tells you when you last did.</p><a href="/learn/videos/03-follow-ups/">Watch how <span class="visually-hidden">(Follow-ups)</span>→</a></li>
+<li class="feat"><h3>Outbox, signed by you</h3><p>Write an email on a company page and sign it off with your own key; the Email Cell sends only what you signed.</p><a href="/learn/videos/09-outbox/">Watch how <span class="visually-hidden">(Outbox, signed by you)</span>→</a></li>
+<li class="feat"><h3>Many small CRMs</h3><p>A personal one, one per team, one per project: each its own encrypted vault, with its own keys.</p><a href="/learn/videos/06-log-in/">Watch how <span class="visually-hidden">(Many small CRMs)</span>→</a></li>
+<li class="feat"><h3>QR key hand-over</h3><p>Log in with your passkey, send your QR code, drop the one you get back: the vault opens, in your browser only.</p><a href="/learn/videos/06-log-in/">Watch how <span class="visually-hidden">(QR key hand-over)</span>→</a></li>
+<li class="feat"><h3>Verified keys</h3><p>Add the key a contact gave you, checked and signed for with yours. Every view checks it again.</p><a href="/learn/videos/07-verified-keys/">Watch how <span class="visually-hidden">(Verified keys)</span>→</a></li>
+<li class="feat"><h3>For you</h3><p>Questions from the agents, sealed to your key, answered on the site with a signature, not lost in a chat.</p><a href="/learn/videos/10-for-you/">Watch how <span class="visually-hidden">(For you)</span>→</a></li>
+<li class="feat"><h3>Import a spreadsheet</h3><p>Paste a CSV: companies matched by domain, people by email, nothing guessed, shown before it is written.</p><a href="/learn/videos/04-import/">Watch how <span class="visually-hidden">(Import a spreadsheet)</span>→</a></li>
+</ul>
+</section>
+
+<section class="yours">
+<h2>Your contacts stay yours</h2>
+<ul class="three">
+<li><h3>An encrypted vault per CRM</h3><p>Every company, person, action and key is a file in a small sgit vault. The vault service holds only encrypted bytes.</p></li>
+<li><h3>Your keys, in your browser</h3><p>Your browser makes its own key pair, behind your passkey. Its private half cannot leave the browser, not even to this page.</p></li>
+<li><h3>A static site, nothing else</h3><p>No server code, no cookies, no tracking, no database. Every change is shown to you before it is written.</p></li>
+</ul>
+</section>
+
+<section>
+<h2>Learn it, one step after another</h2>
+<p>A short presentation, eleven explainers that play in your browser with a synthetic presenter, and the guide. Each ends with a link to the next.</p>
+<ol class="steps">
+<li class="step"><a href="/learn/overview/"><img src="/learn/overview/img/today.jpg" alt="" width="1800" height="1125" loading="lazy"><span class="n">1</span><span class="k">Presentation</span><strong>The CRM in 13 slides</strong></a></li>
+<li class="step"><a href="/learn/videos/01-what-it-is/"><img src="/learn/videos/01-what-it-is/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">2</span><span class="k">Explainer</span><strong>The CRM, and its demo</strong></a></li>
+<li class="step noimg"><a href="/how-to/"><span class="n">3</span><span class="k">Guide</span><strong>How to use the CRM</strong></a></li>
+<li class="step"><a href="/learn/videos/11-add-people/"><img src="/learn/videos/11-add-people/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">4</span><span class="k">Explainer</span><strong>Adding a company and a person</strong></a></li>
+<li class="step"><a href="/learn/videos/06-log-in/"><img src="/learn/videos/06-log-in/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">5</span><span class="k">Explainer</span><strong>Logging in, and the QR key hand-over</strong></a></li>
+<li class="step"><a href="/learn/videos/02-today-and-actions/"><img src="/learn/videos/02-today-and-actions/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">6</span><span class="k">Explainer</span><strong>Today, and logging an action</strong></a></li>
+<li class="step"><a href="/learn/videos/03-follow-ups/"><img src="/learn/videos/03-follow-ups/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">7</span><span class="k">Explainer</span><strong>Follow-ups</strong></a></li>
+<li class="step"><a href="/learn/videos/09-outbox/"><img src="/learn/videos/09-outbox/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">8</span><span class="k">Explainer</span><strong>Writing an email, and signing it off</strong></a></li>
+<li class="step"><a href="/learn/videos/04-import/"><img src="/learn/videos/04-import/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">9</span><span class="k">Explainer</span><strong>Importing a spreadsheet</strong></a></li>
+<li class="step"><a href="/learn/videos/07-verified-keys/"><img src="/learn/videos/07-verified-keys/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">10</span><span class="k">Explainer</span><strong>Verified keys on people</strong></a></li>
+<li class="step"><a href="/learn/videos/05-agents-in-parallel/"><img src="/learn/videos/05-agents-in-parallel/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">11</span><span class="k">Explainer</span><strong>How the agents build the CRM in parallel</strong></a></li>
+<li class="step"><a href="/learn/videos/08-requests/"><img src="/learn/videos/08-requests/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">12</span><span class="k">Explainer</span><strong>Asking the CRM&#x27;s agent for something</strong></a></li>
+<li class="step"><a href="/learn/videos/10-for-you/"><img src="/learn/videos/10-for-you/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">13</span><span class="k">Explainer</span><strong>For you: questions from the agents</strong></a></li>
+<li class="step noimg"><a href="/app/"><span class="n">14</span><span class="k">The app</span><strong>Open the CRM</strong></a></li>
+</ol>
+<p class="cta"><a class="btn" href="/learn/overview/">Start with the presentation</a> <a class="btn quiet" href="/how-to/">Or read the guide</a></p>
+</section>
+
+<section class="built">
+<h2>Built in the open, by agents</h2>
+<p>A developer agent, a design agent and a studio agent build this CRM in parallel, each in its own repository, with Dinis Cruz deciding. <a href="/learn/videos/05-agents-in-parallel/">Watch how they work together</a>, meet them on <a href="https://crm.agents.sovereignweb.site/">crm.agents.sovereignweb.site</a>, or <a href="/app/send/">ask the CRM's agent for something</a>.</p>
+<p class="small">This site was made by one request to the Sovereign Website pipeline. Its files, its history and its address are in a repository its owner controls, and can move anywhere.</p>
+</section>
+
 <footer>
 <nav class="site-links" aria-label="About this site">
   <a href="/start/">Start here</a>
