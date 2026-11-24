@@ -269,3 +269,28 @@ p.filters[role=group] { display: inline-flex; border: 2px solid var(--accent); b
 p.filters[role=group] a { display: inline-flex; align-items: center; min-height: 40px; padding: 4px 16px; border-radius: 0; text-decoration: none; color: var(--accent); font-weight: 600; background: transparent; }
 p.filters[role=group] a.on, p.filters[role=group] a[aria-current] { background: var(--accent); color: var(--bg); }
 @media (max-width: 640px) { p.filters[role=group] a { min-height: 44px; } .today-count { font-size: 17px; } }
+
+/* Round 6 (a.crm.design, 24 Nov 2026): "For you", a question waiting for your answer. A card with a brass edge (it
+   waits on you, like a draft); each option a large tile with its letter in a circle, lit when chosen; the call-out on
+   Today above the count line. */
+#for-you-note { margin: 4px 0 8px; }
+#for-you-note a.button { background: var(--brass); border-color: var(--brass); color: var(--bg); font-weight: 700; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 8px; border-width: 2px; border-style: solid; }
+#for-you-note a.button::before { content: "?"; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--bg); color: var(--brass); font: 800 14px/1 var(--serif); }
+.decision { position: relative; background: var(--raise); border: 1.5px solid var(--line); border-left: 6px solid var(--brass); border-radius: 12px; padding: 18px 22px; }
+.decision:has(.added-note) { border-left-color: var(--accent); }
+.decision h2 { font-size: 22px; margin: 0 0 4px; }
+.decision .added-note { padding: 8px 12px; border-radius: 8px; background: var(--accent-soft); border-left: 4px solid var(--accent); }
+.decision fieldset { margin: 16px 0; }
+.decision legend { font-family: var(--serif); font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+.decision .option { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; margin: 6px 0; min-height: 48px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--bg); cursor: pointer; line-height: 1.4; }
+.decision .option:hover { border-color: var(--accent); }
+.decision .option input[type=radio] { width: 20px; height: 20px; min-height: 0; margin: 2px 0 0; accent-color: var(--accent); flex: none; }
+.decision .option strong { display: inline-grid; place-items: center; flex: none; min-width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--fg); font-size: 13px; }
+.decision .option:has(input:checked) { border: 2px solid var(--accent); background: var(--accent-soft); }
+.decision .option:has(input:checked) strong { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.decision .option:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.decision details { margin: 8px 0; }
+.decision details > summary { min-height: 44px; padding: .6rem 0; cursor: pointer; font-weight: 600; color: var(--accent); }
+.decision details a { overflow-wrap: anywhere; }
+.decision form.decide > label { margin-top: 10px; }
+.decision form.decide > button[type=submit] { background: var(--accent); color: var(--bg); border: 2px solid var(--accent); min-height: 44px; padding: 8px 18px; font-size: 16px; }
