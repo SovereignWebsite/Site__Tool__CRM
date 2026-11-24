@@ -1,0 +1,14 @@
+// Built by crm/scripts/build-site.mjs from team/keys/: the senders whose sealed codes this site opens.
+export const TRUSTED = [
+  {
+    "label": "crm.dev.a@AgentiCCells.dinis",
+    "bundle": {
+      "v": 1,
+      "encrypt": "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAsnGnOuw13eqTyl/ugplT\npy7E9JFQkoJUT4lTYvw29RIyZRPgbUj9GB4cGZKlVIKqDXxpojzZTgw1eUS0e9hO\n0sI+gJosw1TM4jWqVm8x2AAVUdW0as2snr0gBQR6VzEU22m4XiAaTW8POIDVFdKo\nK/FNDNLbedbR9XOiJ6nPVYIxN0C4Qp+tGfMB79PeipR+uWQJN/LTF6uIVlznYE70\nH1/6s6hqsf3+NouzzS4jx7uPEd+jm838/pJhkyMdvTwXIdtHe7CY0b+SxNTwRQTC\nbvXlm/Rsju5ZzRNmmLMrLjaOFppd/qvPodT6uBEaeVI21K8y/odxHVjINd9dB4TV\nXvnzGe52wqERG5mPvdAgO0uCX0sAoAbE77xq66IVlLEJVP0Lw4A6i61LmfBjVPLx\nIzWQ1kMeF8A+zFdzPR9aMgEdiSK530VKIWaq9vxYQ9zaj0rUR2TsV/3DTLFS1r36\nZ2li7Y93Va84s/eSpNNgJQvbNJNRRJpO5F9HSmA63cp7UGzZHRfUSHQdqkJ5lJPI\nIUIj1EtsCPdaDtCjqL66Hi/PL0Wd9Mq8nm+gdYsALyb85ZdpWzJwpFv36HyijM2b\nrNqKECrcVb5pgyQC69yWAIpPJNardPFVW8TYogOq6TQIqPkvT9zic2lFmHTMMchv\nSMPFsFD5FjLG0Z+aAofVsIECAwEAAQ==\n-----END PUBLIC KEY-----\n",
+      "sign": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAECtuc3KuOPLSsdloOBzvVTb/C+ABv\nojlh397UVB5e+9ErLsZE/0srUnpJGzZvINjzBYPIXfNXU3wmHAHKCumEpQ==\n-----END PUBLIC KEY-----\n",
+      "label": "crm-dev-a-agenticcells",
+      "fingerprint": "sha256:10cd08536c96ef78",
+      "signing_fingerprint": "sha256:5082f0417d7ae097"
+    }
+  }
+];

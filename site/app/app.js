@@ -7,6 +7,7 @@
 import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedThreads, linkFile, companyFiles, personFile, newVaultFiles, newId, KINDS, actionFile, leadEditFile, timeline, ACTION_KINDS, importFiles, IMPORT_COLUMNS, FOLLOW_UP_DAYS } from './crm.mjs';
 import { keyKind, openVault, readAll, merge, whyNotWritable, writeFiles, createCrmVault } from './vault.js';
 import { identity, existingIdentity, keep, recall, forget, kept } from './pki.js';
+import * as ME from './me.js';
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -292,6 +293,28 @@ function addCompanyForm() {
     <label>Next step <span class="muted">(optional)</span> <input id="o-next"></label>
     <button type="submit">Show what will be written</button> <span id="form-error" class="warn"></span></form></details>`;
 }
+async function mePage() {
+  if (!(await ME.loggedIn())) return `<h1>Log in</h1>
+  <p>Logging in makes this browser's own key. Its private half never leaves this browser and cannot be copied out. If this device has a passkey (Touch ID, Face ID, Windows Hello), the page also makes one for this site and asks for it before it uses any vault key.</p>
+  <form id="login" class="open" autocomplete="off"><label>Your name <input id="li-name" value="${esc(myName())}" required></label><button type="submit">Log in</button> <span id="form-error" class="warn"></span></form>
+  <p class="muted small">${(await ME.passkeyAvailable()) ? 'This device can use a passkey.' : 'This device has no passkey: the key is tied to this browser only.'}</p>`;
+  const k = await ME.myKey(), list = await ME.vaults();
+  return `<h1>You${myName() ? ': ' + esc(myName()) : ''}</h1>
+  <p class="muted">This browser's key: <code>${esc(k.fp)}</code>. ${ME.hasPasskey() ? 'Locked with a passkey.' : 'No passkey on this device: the key is tied to this browser.'}</p>
+  <h2>Your vaults</h2>
+  <ul class="list">${list.map((v) => `<li><strong>${esc(v.name)}</strong> <span class="muted small">${esc(v.id)} · added ${esc(v.added)}</span> <button type="button" class="small" data-openv="${esc(v.id)}">Open</button> <button type="button" class="small quiet" data-forgetv="${esc(v.id)}">Forget</button></li>`).join('') || '<li class="muted">None yet. Send your key (below) to be given one, or start your own on Open your vault.</li>'}</ul>
+  <p id="v-status" class="muted" role="status"></p>
+  <h2>Your key, to send</h2>
+  <p>To be given a vault, send this to Dinis (a screenshot of the QR code on WhatsApp is fine). It is public: it lets someone seal things that only this browser can open.</p>
+  <p><img src="${k.qr}" alt="QR code of this browser's public key" class="qr"></p>
+  <p><textarea id="mykey" rows="3" readonly spellcheck="false">${esc(k.text)}</textarea> <button type="button" id="copykey" class="quiet small">Copy</button></p>
+  <h2>Paste a sealed code</h2>
+  <p>When you are sent a sealed code (text starting with <code>{"v":1,"kind":"pki.sgit.ai/qr/sealed/v1"</code> or <code>m1.</code>), paste it here. Only codes signed by the CRM's agent are opened.</p>
+  <form id="receive" class="open" autocomplete="off"><textarea id="rc-text" rows="4" spellcheck="false"></textarea><button type="submit">Open it</button> <span id="form-error" class="warn"></span></form>
+  <p id="rc-status" class="muted" role="status"></p>
+  <p><button type="button" id="logout" class="quiet small">Log out of this browser</button> <span class="muted small">removes the vault keys kept here; your vaults themselves are not touched</span></p>`;
+}
+
 function importPage() {
   if (!canEdit()) return `<h1>Import</h1><p>Open your CRM vault with a key that can write to import into it.</p>`;
   return `<h1>Import contacts</h1>
@@ -335,6 +358,16 @@ function addPersonForm(org) {
 }
 
 function wireActions() {
+  $('#login')?.addEventListener('submit', async (ev) => { ev.preventDefault(); const n = $('#li-name').value.trim(); if (!n) return; setMyName(n); showName(); $('#form-error').textContent = 'Making this browser\'s key (a few seconds)…'; try { await ME.logIn(n); route(); } catch (e) { $('#form-error').textContent = 'Not logged in: ' + e.message; } });
+  $('#copykey')?.addEventListener('click', () => { $('#mykey').select(); navigator.clipboard?.writeText($('#mykey').value).catch(() => {}); });
+  $('#receive')?.addEventListener('submit', async (ev) => { ev.preventDefault(); const st = $('#rc-status');
+    try { st.textContent = 'Opening…'; const r = await ME.receive($('#rc-text').value, async (key) => JSON.parse((await readAll(await openVault(key)))['manifest.json'] || '{}').name);
+      $('#rc-text').value = ''; st.className = 'muted'; st.textContent = `From ${r.from}. ${r.added.length ? 'Added: ' + r.added.map((v) => v.name).join(', ') + '.' : 'No vault key in it.'}${r.token ? ' An access token was kept too.' : ''}${r.note ? ' Note: ' + r.note : ''}`; setTimeout(route, 1500);
+    } catch (e) { st.className = 'warn'; st.textContent = 'Not opened: ' + e.message; } });
+  for (const b of document.querySelectorAll('[data-openv]')) b.addEventListener('click', async () => { const st = (t, bad) => { $('#v-status').textContent = t; $('#v-status').className = bad ? 'warn' : 'muted'; };
+    try { const key = await ME.vaultKey(b.dataset.openv); await loadVault(key, null, false, st, await ME.savedToken()); location.hash = '#/board'; route(); } catch (e) { st('Could not open: ' + e.message, true); } });
+  for (const b of document.querySelectorAll('[data-forgetv]')) b.addEventListener('click', async () => { if (confirm('Forget this vault in this browser? The vault itself is not touched.')) { await ME.forgetVault(b.dataset.forgetv); route(); } });
+  $('#logout')?.addEventListener('click', async () => { if (confirm('Log out of this browser? The vault keys kept here are removed.')) { await ME.logOut(); await loadDemo(); location.hash = '#/me'; route(); } });
   $('#i-file')?.addEventListener('change', async (ev) => { const f = ev.target.files[0]; if (f) $('#i-text').value = await f.text(); });
   $('#import')?.addEventListener('submit', (ev) => { ev.preventDefault(); if (!me()) return askName(); ask('Import these?', () => {
     const { files, report } = importFiles(V, $('#i-text').value, { by: me(), at: nowIso() });
@@ -360,7 +393,7 @@ function wireActions() {
 async function route() {
   const [path] = (location.hash.slice(1) || '/board').split('?');
   const [, page, id] = path.split('/');
-  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : board();
+  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'me' ? await mePage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : board();
   $('#main').innerHTML = newKeyPanel() + pendingPanel() + body;
   if (page === 'open') wireOpen();
   wireActions();

@@ -51,3 +51,5 @@ html.dropping body { outline: 3px dashed var(--accent); outline-offset: -6px; }
 .open.inline { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); max-width: none; align-items: end; }
 .open.inline .wide { grid-column: 1 / -1; }
 #me { margin-left: auto; } #me + .mode { margin-left: 0; }
+img.qr { width: min(100%, 320px); image-rendering: pixelated; background: #fff; padding: 8px; border-radius: 6px; }
+#mykey { width: min(100%, 640px); font: 12px ui-monospace, monospace; }
