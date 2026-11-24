@@ -325,3 +325,77 @@ export function timeline(v, org) {
   const mail = v.threads.filter((t) => threadOrg(v, t, idx)?.org === org).map((t) => { const m = lastMessage(v, t); return m && { type: 'mail', at: m.date, time: Date.parse(m.date), kind: 'email', direction: m.direction === 'outbound' ? 'out' : 'in', person: threadOrg(v, t, idx).person, summary: t.subject, id: t.id }; }).filter(Boolean);
   return [...acts, ...mail].sort((a, b) => b.time - a.time);
 }
+
+// Import: a spreadsheet the team fills in (CSV, one row per person or per company), turned into the CRM's own
+// files, shown first, written in one go. A person supplies and enters the data; nothing is guessed: a cell left
+// empty stays empty. Columns (header row, any order, case-insensitive; only "company" is required):
+export const IMPORT_COLUMNS = ['company', 'domain', 'kind', 'person', 'email', 'role', 'stage', 'owner', 'next_step', 'next_step_due', 'last_contact_date', 'last_contact_kind', 'last_contact_direction', 'last_contact_summary'];
+
+// RFC 4180 CSV: quoted fields, doubled quotes, commas and newlines inside quotes. Returns rows of strings.
+export function parseCsv(text) {
+  const rows = []; let row = [], f = '', q = false;
+  const s = String(text || '').replace(/^﻿/, '');
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (q) { if (c === '"') { if (s[i + 1] === '"') { f += '"'; i++; } else q = false; } else f += c; continue; }
+    if (c === '"') q = true;
+    else if (c === ',') { row.push(f); f = ''; }
+    else if (c === '\n' || c === '\r') { if (c === '\r' && s[i + 1] === '\n') i++; row.push(f); rows.push(row); row = []; f = ''; }
+    else f += c;
+  }
+  if (f !== '' || row.length) { row.push(f); rows.push(row); }
+  return rows.filter((r) => r.some((x) => x.trim() !== ''));
+}
+
+// The files an import writes, and a plain report: { files, report: { orgs, people, leads, actions, skipped: [..] } }.
+// Companies match existing ones by domain, then by name; people by email. Existing records are never changed.
+export function importFiles(v, text, { by, at, newId: mk = newId }) {
+  if (!by) throw new Error('set your name first (top right)');
+  if (!ISO.test(at || '')) throw new Error('needs the time, as an ISO time');
+  const rows = parseCsv(text);
+  if (rows.length < 2) throw new Error('no rows: the first line is the header, then one line per contact');
+  const head = rows[0].map((h) => h.trim().toLowerCase().replace(/\s+/g, '_'));
+  if (!head.includes('company')) throw new Error('the header needs a "company" column');
+  const unknown = head.filter((h) => h && !IMPORT_COLUMNS.includes(h));
+  const files = [], report = { orgs: 0, people: 0, leads: 0, actions: 0, skipped: [], unknown_columns: unknown };
+  const orgs = [...v.orgs], people = [...v.people];
+  const byDomain = new Map(orgs.filter((o) => o.domain).map((o) => [o.domain.toLowerCase(), o]));
+  const byName = new Map(orgs.map((o) => [o.name.toLowerCase(), o]));
+  const emails = new Set(people.flatMap((p) => (p.emails || []).map((e) => e.toLowerCase())));
+  const leadOrgs = new Set(v.leads.map((l) => l.org));
+  rows.slice(1).forEach((cells, n) => {
+    const line = n + 2, r = Object.fromEntries(head.map((h, i) => [h, String(cells[i] ?? '').trim()]));
+    const skip = (why) => report.skipped.push(`line ${line}: ${why}`);
+    if (!r.company) return skip('no company');
+    const view = { ...v, orgs, people };
+    let org = (r.domain && byDomain.get(r.domain.toLowerCase())) || byName.get(r.company.toLowerCase());
+    if (!org) {
+      const id = mk('o');
+      let fs;
+      try { fs = companyFiles(view, { id, name: r.company, domain: r.domain, kind: (r.kind || 'prospect').toLowerCase(), owner: r.owner || by, at, stage: v.stages.some((s) => s.id === (r.stage || '').toLowerCase()) ? r.stage.toLowerCase() : 'new', next_step: r.next_step }); }
+      catch (e) { return skip(e.message); }
+      if (r.next_step_due && /^\d{4}-\d{2}-\d{2}$/.test(r.next_step_due)) { fs[1].record.next_step_due = r.next_step_due; fs[1].text = JSON.stringify(fs[1].record, null, 2) + '\n'; }
+      files.push(...fs); org = fs[0].record; orgs.push(org); leadOrgs.add(id); report.orgs++; report.leads++;
+      if (org.domain) byDomain.set(org.domain, org); byName.set(org.name.toLowerCase(), org);
+    }
+    let personId = null;
+    if (r.email || r.person) {
+      if (!r.email) skip('a person with no email is not added (add their email, or leave the person out)');
+      else if (emails.has(r.email.toLowerCase())) personId = people.find((p) => (p.emails || []).map((e) => e.toLowerCase()).includes(r.email.toLowerCase()))?.id || null;
+      else {
+        try {
+          const [pf] = personFile({ ...v, orgs, people }, { id: mk('p'), name: r.person || r.email.split('@')[0], email: r.email, role: r.role, org: org.id, by, at });
+          files.push(pf); people.push(pf.record); emails.add(r.email.toLowerCase()); personId = pf.record.id; report.people++;
+        } catch (e) { skip(e.message); }
+      }
+    }
+    if (r.last_contact_date) {
+      const dir = { out: 'out', 'we reached out': 'out', in: 'in', 'they replied': 'in', none: 'none', note: 'none' }[(r.last_contact_direction || 'out').toLowerCase()] || 'out';
+      try {
+        const [af] = actionFile({ ...v, orgs, people }, { id: mk('a'), org: org.id, person: personId && people.find((p) => p.id === personId)?.org === org.id ? personId : null, kind: (r.last_contact_kind || 'email').toLowerCase(), direction: dir, at: r.last_contact_date, by, summary: r.last_contact_summary || `${r.last_contact_kind || 'contact'} (imported)`, logged_at: at });
+        files.push(af); report.actions++;
+      } catch (e) { skip(e.message); }
+    }
+  });
+  return { files, report };
+}

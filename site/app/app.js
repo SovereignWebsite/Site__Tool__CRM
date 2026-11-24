@@ -4,7 +4,7 @@
 // person's own keys, in this browser only (vault.js); remembered keys are sealed to this browser's
 // own key with the Email Cell's pki.js keep/recall, unedited.
 // By crm.dev.a@AgentiCCells.dinis, 2026-11-23. Apache-2.0.
-import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedThreads, linkFile, companyFiles, personFile, newVaultFiles, newId, KINDS, actionFile, leadEditFile, timeline, ACTION_KINDS, FOLLOW_UP_DAYS } from './crm.mjs';
+import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedThreads, linkFile, companyFiles, personFile, newVaultFiles, newId, KINDS, actionFile, leadEditFile, timeline, ACTION_KINDS, importFiles, IMPORT_COLUMNS, FOLLOW_UP_DAYS } from './crm.mjs';
 import { keyKind, openVault, readAll, merge, whyNotWritable, writeFiles, createCrmVault } from './vault.js';
 import { identity, existingIdentity, keep, recall, forget, kept } from './pki.js';
 
@@ -249,7 +249,8 @@ function pendingPanel() {
   if (!PENDING) return '';
   const where = MODE === 'demo' ? 'the demo, in this tab only: nothing is written anywhere' : `your CRM vault ${esc(OPENED.split(' + ')[0])}`;
   const blocked = MODE === 'vault' ? whyNotWritable(CRMV, CRM_MANIFEST) : null;
-  const files = PENDING.files.map((f) => `<p><code>${esc(f.path)}</code>${f.text == null ? ' <span class="warn">removed (the vault keeps it in its history)</span>' : ''}</p>${f.text == null ? '' : `<pre>${esc(f.text)}</pre>`}`).join('');
+  const one = (f) => `<p><code>${esc(f.path)}</code>${f.text == null ? ' <span class="warn">removed (the vault keeps it in its history)</span>' : ''}</p>${f.text == null ? '' : `<pre>${esc(f.text)}</pre>`}`;
+  const files = (PENDING.note ? `<p>${esc(PENDING.note)}</p>` : '') + (PENDING.files.length > 5 ? `<details><summary>Show all ${PENDING.files.length} files</summary>${PENDING.files.map(one).join('')}</details>` : PENDING.files.map(one).join(''));
   return `<section class="pending" id="pending"><h2>${esc(PENDING.title)}</h2>
   <p>${PENDING.files.length === 1 ? 'This file' : `These ${PENDING.files.length} files`} will be written to ${where}:</p>${files}
   ${blocked ? `<p class="warn">Cannot write: ${esc(blocked)}.</p>` : ''}
@@ -259,7 +260,7 @@ function pendingPanel() {
 }
 
 function ask(title, make) {
-  try { PENDING = { title, files: make() }; }
+  try { const r = make(); PENDING = Array.isArray(r) ? { title, files: r } : { title, files: r.files, note: r.note }; if (!PENDING.files.length) throw new Error(PENDING.note || 'nothing to write'); }
   catch (e) { const el = $('#form-error'); if (el) el.textContent = e.message; else alert(e.message); return; }
   route();
 }
@@ -291,6 +292,19 @@ function addCompanyForm() {
     <label>Next step <span class="muted">(optional)</span> <input id="o-next"></label>
     <button type="submit">Show what will be written</button> <span id="form-error" class="warn"></span></form></details>`;
 }
+function importPage() {
+  if (!canEdit()) return `<h1>Import</h1><p>Open your CRM vault with a key that can write to import into it.</p>`;
+  return `<h1>Import contacts</h1>
+  <p>Fill in a spreadsheet, one line per person (or per company), save it as CSV and paste it below or choose the file. <a href="template.csv" download>Download the template</a>.</p>
+  <p class="muted small">Columns: ${IMPORT_COLUMNS.map(esc).join(', ')}. Only <strong>company</strong> is required. Empty cells stay empty: nothing is guessed. Companies already here are matched by domain, then name; people by email; existing records are not changed. A date in <em>last_contact_date</em> (yyyy-mm-dd) logs that contact as an action.</p>
+  <p class="muted small">Enter only people you have a reason to keep in touch with, and only what they shared with you. In demo mode nothing is written anywhere.</p>
+  <form id="import" class="open" autocomplete="off">
+    <label>CSV file <input id="i-file" type="file" accept=".csv,text/csv"></label>
+    <label>Or paste it <textarea id="i-text" rows="8" spellcheck="false"></textarea></label>
+    <button type="submit">Show what will be written</button> <span id="form-error" class="warn"></span>
+  </form>`;
+}
+
 function editLeadForm(c) {
   if (!canEdit()) return '';
   return `<details class="add"><summary>Edit stage, owner and next step</summary><form id="edit-lead" data-org="${esc(c.org)}" class="open" autocomplete="off">
@@ -321,6 +335,12 @@ function addPersonForm(org) {
 }
 
 function wireActions() {
+  $('#i-file')?.addEventListener('change', async (ev) => { const f = ev.target.files[0]; if (f) $('#i-text').value = await f.text(); });
+  $('#import')?.addEventListener('submit', (ev) => { ev.preventDefault(); if (!me()) return askName(); ask('Import these?', () => {
+    const { files, report } = importFiles(V, $('#i-text').value, { by: me(), at: nowIso() });
+    const note = `${report.orgs} new companies (each with its lead row), ${report.people} new people, ${report.actions} contacts logged as actions.` + (report.skipped.length ? ` Skipped ${report.skipped.length}: ${report.skipped.join('; ')}.` : '') + (report.unknown_columns.length ? ` Columns ignored: ${report.unknown_columns.join(', ')}.` : '');
+    return { files, note };
+  }); });
   $('#log-action')?.addEventListener('submit', (ev) => { ev.preventDefault(); if (!me()) return askName(); ask('Log this action?', () => actionFile(V, { id: newId('a'), org: ev.target.dataset.org, person: $('#a-person').value || null, kind: $('#a-kind').value, direction: $('#a-dir').value, at: $('#a-at').value, by: me(), summary: $('#a-sum').value, logged_at: nowIso() })); });
   $('#edit-lead')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Change this lead?', () => leadEditFile(V, ev.target.dataset.org, { stage: $('#l-stage').value, owner: $('#l-owner').value.trim(), next_step: $('#l-next').value.trim(), next_step_due: $('#l-due').value, at: nowIso() })); });
   $('#add-org')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Add this company?', () => companyFiles(V, { id: newId('o'), name: $('#o-name').value, domain: $('#o-domain').value, kind: $('#o-kind').value, next_step: $('#o-next').value.trim(), owner: me(), at: nowIso() })); });
@@ -340,7 +360,7 @@ function wireActions() {
 async function route() {
   const [path] = (location.hash.slice(1) || '/board').split('?');
   const [, page, id] = path.split('/');
-  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'threads' ? threadsPage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : board();
+  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : board();
   $('#main').innerHTML = newKeyPanel() + pendingPanel() + body;
   if (page === 'open') wireOpen();
   wireActions();

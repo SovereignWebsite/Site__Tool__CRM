@@ -1,0 +1,4 @@
+company,domain,kind,person,email,role,stage,owner,next_step,next_step_due,last_contact_date,last_contact_kind,last_contact_direction,last_contact_summary
+Example Harbour (demo),harbour.example.com,investor,Ana Example,ana@harbour.example.com,Partner,contacted,Owner A,Send the deck,2026-11-28,2026-11-20,linkedin,out,Note after the summit
+Example Harbour (demo),harbour.example.com,investor,Bruno Example,bruno@harbour.example.com,Analyst,,,,,,,,
+Example Lisbon Lab (demo),lab.example.org,partner,,,,new,Owner B,Find the right person,,,,,
