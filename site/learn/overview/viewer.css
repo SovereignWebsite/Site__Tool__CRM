@@ -1,0 +1,28 @@
+/* The presentation page: a 1920x1080 canvas scaled to the column, and one slide per page when printed. */
+main.wide { max-width: 72rem; }
+.deck-frame { position: relative; width: 100%; overflow: hidden; border-radius: 12px; box-shadow: 0 12px 40px rgba(0, 0, 0, .16); background: #14201B; }
+.deck-frame:fullscreen { display: flex; align-items: center; justify-content: center; border-radius: 0; }
+.deck { width: 1920px; height: 1080px; transform: scale(var(--scale, .5)); transform-origin: 0 0; position: absolute; left: 0; top: 0; }
+.deck-frame:fullscreen .deck { position: relative; transform-origin: center; flex: none; }
+.deck > section.slide { width: 1920px; height: 1080px; overflow: hidden; position: relative; isolation: isolate; }
+.deck > section.slide[hidden] { display: none; }
+.deck aside.notes { display: none; }
+.deck h1, .deck h2, .deck h3, .deck p { margin: 0; }
+.deck img { display: block; }
+.deck .foot { margin: 0; }
+.deck-controls { display: flex; align-items: center; gap: .8rem; margin: 1rem 0; flex-wrap: wrap; }
+.deck-controls button { font: inherit; font-weight: 600; min-height: 44px; padding: .4rem 1.1rem; border-radius: 999px; border: 2px solid var(--accent); background: var(--accent); color: var(--bg); cursor: pointer; }
+.deck-controls button.quiet, .deck-controls #prev { background: transparent; color: var(--accent); }
+.deck-controls button:disabled { opacity: .45; cursor: default; }
+.deck-controls #count { min-width: 4.5rem; text-align: center; color: var(--muted); font-variant-numeric: tabular-nums; }
+@media print {
+  @page { size: 1920px 1080px; margin: 0; }
+  body { background: #fff; }
+  body > *:not(main), main > *:not(.deck-frame) { display: none !important; }
+  main.wide { max-width: none; padding: 0; margin: 0; }
+  .deck-frame { height: auto !important; overflow: visible; box-shadow: none; border-radius: 0; background: none; }
+  .deck { position: static; transform: none; height: auto; }
+  .deck > section.slide, .deck > section.slide[hidden] { display: flex !important; break-after: page; page-break-after: always; }
+  .deck .rise, .deck .fade { animation: none !important; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

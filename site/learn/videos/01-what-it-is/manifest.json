@@ -1,0 +1,16 @@
+{
+  "slug": "01-what-it-is",
+  "site_version": "v0.1.11 · 60306db · 2026-11-24",
+  "clock": "2026-11-24T10:00:00Z",
+  "scenes": 12,
+  "screens": {
+    "s-0ed535add8e2ac50.webp": "c70446475ff83f45201ad04b87447e8cdf97346269b42f8efbae285dddfe1539",
+    "s-f7d57fef11da837b.webp": "0265d4496c7997310af9d40ead1148e2eacbc49113b9ebe0d2827109503096af",
+    "s-94a10eaf156848e5.webp": "59427f653b8a65c8c99faa1de454faee60fd612dfa908cc183ea729d3c83d6da",
+    "s-f77ad8d867609a72.webp": "fcc696e2210fc223a00b8d13770bcb39d3362737ce73ff56236af5c599d645b8",
+    "s-75d6717f4b978878.webp": "52f9ed841af2d60f5699215a70788a51478ec7e8674e4e279278316a8eee417f"
+  },
+  "scenes_json_sha256": "821a999641c51d139558d3a153fde5142af74baa8cb92982c7ffd7b40063d677",
+  "made_by": "a.crm.studio@SovereignWebsite.dinis",
+  "tool": "studio/capture.mjs"
+}

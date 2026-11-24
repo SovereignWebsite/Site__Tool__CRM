@@ -1,0 +1,120 @@
+{
+  "slug": "01-what-it-is",
+  "title": "The CRM, and its demo",
+  "base": "https://crm.tool.sovereignweb.site",
+  "clock": "2026-11-24T10:00:00Z",
+  "scenes": [
+    {
+      "card": {
+        "title": "The CRM, and its demo",
+        "sub": "One place for every company, every person and every action the team takes with them, so nobody falls through the gaps.",
+        "foot": "Everything in this video is the demo: every company, person and email is made up."
+      },
+      "caption": "The CRM keeps a small team's companies, people and actions in one place.",
+      "seconds": 5
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/today"
+        }
+      ],
+      "mark": "#banner",
+      "caption": "It runs in your browser, and opens in demo mode. This banner says every company, person and email here is made up.",
+      "seconds": 6
+    },
+    {
+      "mark": "#mode",
+      "caption": "The top right always says which vault is open. Here: Vault: Demo. Nothing you do in the demo is saved anywhere.",
+      "seconds": 6
+    },
+    {
+      "mark": "p.stages",
+      "caption": "Today opens on how many companies sit at each stage, from New to Won and Parked.",
+      "seconds": 5
+    },
+    {
+      "mark": "li.card.why-overdue",
+      "scroll_by": -120,
+      "caption": "Then what to do now. Overdue comes first: here, a next step that was due on 21 November.",
+      "seconds": 6
+    },
+    {
+      "mark": "li.card.why-follow-up",
+      "scroll_by": -200,
+      "caption": "Next, follow-ups: we wrote and have had no reply for 5 days or more.",
+      "seconds": 5
+    },
+    {
+      "mark": "li.card.why-overdue .card-actions .button",
+      "scroll_by": -200,
+      "caption": "Each card has its action. Log the follow-up records what you did next.",
+      "seconds": 5
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/board"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main table",
+      "caption": "The lead board: one row per company, with its stage, owner, draft, last contact and next step.",
+      "seconds": 6,
+      "stay": true
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/follow-ups"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main table",
+      "caption": "Follow-ups: everyone we reached out to who has not replied in 5 days or more. Check it every day.",
+      "seconds": 6,
+      "stay": true
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/contacts"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main table",
+      "caption": "Contacts: everyone, with their company and when we were last in touch. Demo emails use reserved example domains.",
+      "seconds": 6,
+      "stay": true
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/company/o06"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main h1",
+      "caption": "Open a company to see its stage, owner, next step, people and every action logged with them.",
+      "seconds": 6
+    },
+    {
+      "card": {
+        "title": "Next",
+        "sub": "Log in, get a vault through the QR key hand-over, and log every action. Your real contacts live in an encrypted vault that only people with its key can open; the site never sees them.",
+        "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+      },
+      "caption": "That is the demo. Next: logging in and opening a vault.",
+      "seconds": 6
+    }
+  ],
+  "share": 7
+}

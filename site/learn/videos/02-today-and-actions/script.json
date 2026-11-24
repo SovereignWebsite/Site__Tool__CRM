@@ -1,0 +1,181 @@
+{
+  "slug": "02-today-and-actions",
+  "title": "Today, and logging an action",
+  "base": "https://crm.tool.sovereignweb.site",
+  "clock": "2026-11-24T10:00:00Z",
+  "seed": 42,
+  "scenes": [
+    {
+      "card": {
+        "title": "Today, and logging an action",
+        "sub": "The daily loop: see what is due, do it, log it, and set the next step.",
+        "foot": "Demo mode: every company, person and email here is made up, and nothing is saved."
+      },
+      "caption": "The daily loop: see what is due, do it, log it, set the next step.",
+      "seconds": 5
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/today"
+        }
+      ],
+      "mark": "main h1",
+      "caption": "Start every day on Today. It lists what to do now, each with its action.",
+      "seconds": 5
+    },
+    {
+      "mark": "li.card:has(a[href=\"#/company/o06\"])",
+      "scroll_by": -120,
+      "caption": "First, overdue. Example Ventures asked questions on our proposal, and the answer was due on 21 November.",
+      "seconds": 6
+    },
+    {
+      "mark": "li.card:has(a[href=\"#/company/o06\"]) .card-actions .button",
+      "scroll_by": -200,
+      "caption": "Say we have answered them by email. Press Log the follow-up on its card.",
+      "seconds": 5
+    },
+    {
+      "do": [
+        {
+          "click": "li.card:has(a[href=\"#/company/o06\"]) .card-actions .button"
+        }
+      ],
+      "mark": "#log-action",
+      "scroll_by": -60,
+      "caption": "The company's page opens on Log an action: what, which way, when, who, and one line on what happened.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "select": [
+            "#a-kind",
+            "email"
+          ]
+        },
+        {
+          "select": [
+            "#a-dir",
+            "out"
+          ]
+        },
+        {
+          "select": [
+            "#a-person",
+            {
+              "label": "Diogo Quinn"
+            }
+          ]
+        },
+        {
+          "fill": [
+            "#a-sum",
+            "Answered their questions on the proposal"
+          ]
+        }
+      ],
+      "mark": "#log-action",
+      "scroll_by": -60,
+      "caption": "Here: an email, we reached out, on 23 November, to Diogo Quinn, answering their questions.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "click": "#log-action button[type=submit]"
+        }
+      ],
+      "mark": "#pending",
+      "scroll_by": -100,
+      "caption": "Show what will be written shows the exact file first. In the demo it stays in this tab: nothing is written anywhere.",
+      "seconds": 7
+    },
+    {
+      "do": [
+        {
+          "click": "#w-go"
+        }
+      ],
+      "mark": "li:has-text(\"Answered their questions on the proposal\")",
+      "caption": "Press Write it. The action is now first in the company's Activity. In a real vault, it is one change you can see in its history.",
+      "seconds": 7,
+      "scroll_by": 0
+    },
+    {
+      "do": [
+        {
+          "click": "details:has(#edit-lead) > summary"
+        },
+        {
+          "scroll": "#edit-lead"
+        }
+      ],
+      "mark": "details:has(#edit-lead)",
+      "scroll_by": 90,
+      "caption": "Now the next step. Edit stage, owner and next step keeps the lead row up to date.",
+      "seconds": 5
+    },
+    {
+      "do": [
+        {
+          "fill": [
+            "#l-next",
+            "Wait for their decision"
+          ]
+        },
+        {
+          "fill": [
+            "#l-due",
+            "2026-11-30"
+          ]
+        }
+      ],
+      "mark": "details:has(#edit-lead)",
+      "scroll_by": 90,
+      "caption": "The next step becomes: wait for their decision, due 30 November.",
+      "seconds": 5
+    },
+    {
+      "do": [
+        {
+          "click": "#edit-lead button[type=submit]"
+        },
+        {
+          "click": "#w-go"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main h1",
+      "caption": "Show what will be written, then Write it. The company now shows the new next step.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "hash": "#/today"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "ul.cards",
+      "caption": "Back on Today, Example Ventures is no longer overdue. Do this for each card, every day.",
+      "seconds": 6,
+      "stay": true
+    },
+    {
+      "card": {
+        "title": "Next",
+        "sub": "Follow-ups: who has not replied, and how to log the chase.",
+        "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+      },
+      "caption": "Next: follow-ups.",
+      "seconds": 4
+    }
+  ],
+  "share": 6
+}

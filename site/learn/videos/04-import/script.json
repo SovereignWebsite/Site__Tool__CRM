@@ -1,0 +1,101 @@
+{
+  "slug": "04-import",
+  "title": "Importing a spreadsheet",
+  "base": "https://crm.tool.sovereignweb.site",
+  "clock": "2026-11-24T10:00:00Z",
+  "seed": 42,
+  "share": 5,
+  "scenes": [
+    {
+      "card": {
+        "title": "Importing a spreadsheet",
+        "sub": "Bring in the companies and people you already have, from one CSV file.",
+        "foot": "Demo mode: every company, person and email here is made up, and nothing is saved."
+      },
+      "caption": "Bring in the companies and people you already have, from one CSV file.",
+      "seconds": 5
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/import"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main h1",
+      "caption": "Open Import. Fill in a spreadsheet, one line per person, or per company, and save it as CSV.",
+      "seconds": 6
+    },
+    {
+      "mark": "main a[href$=\"template.csv\"]",
+      "caption": "Start from the template: it has every column. Only the company is required, and empty cells stay empty: nothing is guessed.",
+      "seconds": 7
+    },
+    {
+      "do": [
+        {
+          "fill": [
+            "#i-text",
+            "company,domain,kind,person,email,role,stage,owner,next_step,next_step_due,last_contact_date,last_contact_kind,last_contact_direction,last_contact_summary\nExample Foundry (demo),foundry.example.com,prospect,Ana Sample,ana.sample@foundry.example.com,CTO,new,Owner A,Send the intro deck,2026-11-30,2026-11-20,email,out,Intro after the meetup\nExample Foundry (demo),foundry.example.com,prospect,Ben Sample,ben.sample@foundry.example.com,CISO,,,,,,,,\nExample Ventures (demo),ventures.example.net,,Carla Sample,carla.sample@ventures.example.net,Analyst,,,,,,,,\n,,,Dan Sample,dan.sample@nowhere.example.org,,,,,,,,,\n"
+          ]
+        }
+      ],
+      "mark": "#i-text",
+      "caption": "Paste it, or choose the file. Here, four lines: two people at a new company, one person at a company we already have, and a line with no company.",
+      "seconds": 8
+    },
+    {
+      "do": [
+        {
+          "click": "main button:has-text(\"Show what will be written\")"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "#pending",
+      "stay": true,
+      "caption": "Show what will be written says what it will add: 1 new company, 3 new people, 1 contact logged as an action.",
+      "seconds": 7
+    },
+    {
+      "mark": "#pending",
+      "stay": true,
+      "caption": "And any line it cannot use, with the reason: line 5 has no company, so it is skipped.",
+      "seconds": 6
+    },
+    {
+      "caption": "Example Ventures was already here, matched by its domain: its person is added, and nothing already there is changed.",
+      "seconds": 7,
+      "mark": "#pending",
+      "stay": true
+    },
+    {
+      "do": [
+        {
+          "click": "#w-go"
+        },
+        {
+          "hash": "#/board"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main tr:has-text(\"Example Foundry\")",
+      "caption": "Press Write it. The new company is on the lead board, with its stage, owner, last contact and next step from the sheet.",
+      "seconds": 7
+    },
+    {
+      "card": {
+        "title": "One rule",
+        "sub": "Enter only people you have a reason to keep in touch with, and only what they shared with you.",
+        "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+      },
+      "caption": "One rule: enter only people you have a reason to keep in touch with, and only what they shared with you.",
+      "seconds": 6
+    }
+  ]
+}

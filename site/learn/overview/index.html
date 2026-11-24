@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The CRM in 13 slides</title>
+<meta name="description" content="A short presentation of the SovereignWeb.site CRM: Today, the lead board, logging actions, follow-ups, many small CRMs, QR handover and verified keys.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CRM">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://crm.tool.sovereignweb.site/learn/overview/">
+<meta property="og:title" content="The CRM in 13 slides">
+<meta property="og:description" content="A short presentation of the SovereignWeb.site CRM: Today, the lead board, logging actions, follow-ups, many small CRMs, QR handover and verified keys.">
+<meta property="og:image" content="https://crm.tool.sovereignweb.site/assets/share/card-1200x630.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CRM">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The CRM in 13 slides">
+<meta name="twitter:description" content="A short presentation of the SovereignWeb.site CRM: Today, the lead board, logging actions, follow-ups, many small CRMs, QR handover and verified keys.">
+<meta name="twitter:image" content="https://crm.tool.sovereignweb.site/assets/share/card-1200x630.jpg">
+<link rel="canonical" href="https://crm.tool.sovereignweb.site/learn/overview/">
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1d1b;--muted:#5d5c57;--accent:#2f6b4f;--line:#e4e1d8}
+@media (prefers-color-scheme:dark){:root{--bg:#141513;--fg:#ecebe6;--muted:#a8a69e;--accent:#7fc3a0;--line:#2c2d29}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.6 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:44rem;margin:0 auto;padding:10vh 1rem 4rem}
+.skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1rem}
+.mark{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-size:clamp(2rem,6vw,3rem);line-height:1.1;margin:.4rem 0 1rem}
+p{color:var(--muted);margin:0 0 1rem}a{color:var(--accent)}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted)}
+/* The Sovereign Website credit on a customer's site: one small, muted control at the far top right that opens a
+   pop-up menu of the family links. Not a strip and not a menu bar: the site is about its owner (Dinis, 20 November
+   2026: "It needs to fundamentally be about the site and who is it about ... top right pop-up menu").
+   CSS only (details/summary), so no script and no CSP issue. It sits in the page's corner, above the owner's header;
+   a site whose own header uses that corner moves it with --family-top / --family-right.
+   To remove it, the owner sets one attribute: <html data-family-credit="off">. */
+.family-credit{--fam-fg:var(--family-fg,#5a5a5a);--fam-strong:var(--family-fg-strong,#111);--fam-bg:var(--family-bg,#fff);
+  position:absolute;top:var(--family-top,.4rem);right:var(--family-right,.75rem);z-index:50;font-size:.75rem;line-height:1.4}
+@media (prefers-color-scheme:dark){.family-credit{--fam-fg:var(--family-fg,#b5b5b5);--fam-strong:var(--family-fg-strong,#fff);--fam-bg:var(--family-bg,#1c1c1c)}}
+.family-credit summary{display:inline-flex;align-items:center;gap:.3rem;cursor:pointer;color:var(--fam-fg);list-style:none;min-height:24px;padding:.15rem .3rem;border-radius:4px}
+.family-credit summary::-webkit-details-marker{display:none}
+.family-credit summary::after{content:"";width:.35rem;height:.35rem;border:solid currentColor;border-width:0 1px 1px 0;transform:rotate(45deg) translateY(-2px)}
+.family-credit summary:hover,.family-credit summary:focus-visible,.family-credit[open] summary{color:var(--fam-strong)}
+.family-credit ul{position:absolute;right:0;top:100%;margin:.25rem 0 0;padding:.35rem 0;list-style:none;min-width:11rem;
+  background:var(--fam-bg);border:1px solid rgba(127,127,127,.3);border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.family-credit a{display:block;padding:.3rem .8rem;min-height:24px;color:var(--fam-fg);text-decoration:none}
+.family-credit a:hover,.family-credit a:focus-visible{color:var(--fam-strong);background:rgba(127,127,127,.1)}
+.family-credit .family-gap{border-bottom:1px solid rgba(127,127,127,.25);padding-bottom:.3rem;margin-bottom:.3rem}
+[data-family-credit="off"] .family-credit{display:none}
+@media print{.family-credit{display:none}}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1.5rem;max-width:44rem;margin:0 auto;padding:2.2rem 1rem 0}
+.top .name{font-weight:600;color:var(--fg);text-decoration:none}
+.own{display:flex;gap:1rem;margin-left:auto;font-size:.95rem}
+.own a,.site-links a{color:var(--accent);font-weight:600}
+.site-links{display:flex;flex-wrap:wrap;gap:.25rem 1.25rem;margin-bottom:.8rem;font-size:.95rem}
+@media (max-width:40rem){.own{margin:0;width:100%}}
+h2{font-size:1.25rem;margin:2rem 0 .5rem}ol,ul.plain{color:var(--muted);padding-left:1.2rem}li{margin:.35rem 0}
+pre{background:rgba(127,127,127,.1);padding:.8rem 1rem;border-radius:6px;white-space:pre-wrap;font-size:.9rem;color:var(--fg)}
+code{font-size:.9em}main a,main code{overflow-wrap:anywhere}
+@media (max-width:599px){footer,.family-credit,.family,.site-links{font-size:15px}}
+.learn-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.2rem;margin:2rem 0 1rem;padding:1rem 1.2rem;border:2px solid var(--accent);border-radius:12px;font-size:1rem}
+.learn-nav a{color:var(--accent);font-weight:600;min-height:24px}
+.learn-nav .learn-step{color:var(--muted)}
+.learn-nav .learn-next{margin-left:auto;background:var(--accent);color:var(--bg);padding:.55rem 1rem;border-radius:999px;text-decoration:none}
+.learn-nav .learn-prev{flex-basis:100%;order:3;font-weight:400}
+</style><link rel="stylesheet" href="deck.css">
+<link rel="stylesheet" href="viewer.css">
+<script src="viewer.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<details class="family-credit">
+  <summary>Sovereign Website</summary>
+  <ul>
+    <li><a href="/start/">Start here</a></li>
+    <li><a href="/agents/">Use with your AI</a></li>
+    <li class="family-gap"><a href="/admin/">How this site was made</a></li>
+    <li><a href="https://sovereignwebsite.ai/">Sovereign Website</a></li>
+    <li><a href="https://sovereignwebsite.org/">Principles</a></li>
+    <li><a href="https://sovereignwebsite.site/">Hosted</a></li>
+    <li><a href="https://hub.sovereignweb.site/">Hub</a></li>
+    <li><a href="https://agents.sovereignweb.site/">Agents</a></li>
+    <li><a href="https://vault.sovereignwebsite.site/">Vault</a></li>
+    <li><a href="https://agenticcells.ai/">AgentiCCells</a></li>
+    <li><a href="https://riskmandate.ai/">RiskMandate</a></li>
+    <li><a href="https://newsroom.sgit.ai/">Newsroom</a></li>
+  </ul>
+</details>
+<header class="top">
+  <a class="name" href="/">CRM</a>
+  <nav class="own" aria-label="This site">
+    <a href="/app/">Open the CRM</a>
+    <a href="/learn/">Learn</a>
+    <a href="/how-to/">How to</a>
+    <a href="/start/">Start here</a>
+  </nav>
+</header>
+<main id="main" class="wide">
+<div class="mark">Presentation</div>
+<h1>The CRM in 13 slides</h1>
+<p>What the CRM is and what it does, made from its demo: every company and person in it is made up. Use the arrow keys, or the buttons. <a href="#" id="pdf">Save as PDF</a> prints one slide per page.</p>
+<div class="deck-frame"><div class="deck" id="deck" tabindex="0" role="region" aria-roledescription="slide deck" aria-label="The CRM in 13 slides">
+<section id="cover" class="slide dark" data-transition="fade">
+<img class="shot fade" src="img/today.jpg" alt="The Today page of the CRM: one line per company, overdue first" style="position:absolute; left:1100px; top:400px; width:820px; height:512px; object-fit:cover; border-radius:16px 0 0 16px; --i:3">
+<div style="width:940px; display:flex; flex-direction:column; gap:40px; flex:1; justify-content:center;">
+<img class="rise" src="/app/brand/mark.svg" alt="The SovereignWeb.site CRM mark: a kept card with a keyhole" style="width:128px; height:128px; --i:0">
+<h1 class="rise" style="font-size:96px; --i:1">SovereignWeb.site<br>CRM</h1>
+<p class="lede rise" style="color:#B9C6BF; width:900px; --i:2">Many small CRMs, each kept in its own encrypted vault, opened with your own keys.</p>
+</div>
+<p class="foot"><span>crm.tool.sovereignweb.site</span><span>24 November 2026</span></p>
+<aside class="notes">Introduce the CRM: a team CRM where the contacts never live on our servers. Each CRM is a small encrypted vault; the page opens it in your browser with your keys.</aside>
+</section>
+
+<section id="idea" class="slide alt">
+<p class="eyebrow">The idea</p>
+<h2 class="rise" style="width:1500px; --i:0">Your contacts stay in your vault, not on our servers.</h2>
+<div class="cards">
+<div class="card rise" style="--i:1"><p class="num">1</p><h3>An encrypted vault per CRM</h3><p>Companies, people, actions and keys are files in a small sgit vault. The server only ever holds encrypted bytes.</p></div>
+<div class="card rise" style="--i:2"><p class="num">2</p><h3>Opened in your browser</h3><p>The page decrypts with your own keys, kept in this browser behind your passkey. Nothing to install.</p></div>
+<div class="card rise" style="--i:3"><p class="num">3</p><h3>A static site, no tracking</h3><p>No server code, no cookies, no database. A demo with made-up data is always one press away.</p></div>
+</div>
+<aside class="notes">Three properties hold everything else up. The vault is the record; the site is only a lens on it. Because the demo is synthetic, anyone can try every feature without touching real contacts.</aside>
+</section>
+
+<section id="today" class="slide">
+<p class="eyebrow">Today</p>
+<h2>What to do today, in order</h2>
+<div class="split">
+<img class="shot fade" src="img/today.jpg" alt="The Today page: a ruled line per company with its reason, next step and one button" style="width:1000px; height:625px; --i:1">
+<div class="col points">
+<div class="point rust rise" style="--i:2"><h3>Overdue first</h3><p>A next step past its due date comes to the top.</p></div>
+<div class="point sky rise" style="--i:3"><h3>Then follow-ups</h3><p>Mail with no reply for 5 days or more.</p></div>
+<div class="point brass rise" style="--i:4"><h3>Then drafts</h3><p>A draft waiting to be reviewed and sent.</p></div>
+<div class="point rise" style="--i:5"><h3>One line per company</h3><p>One button: log what you did.</p></div>
+</div>
+</div>
+<aside class="notes">Today is the home page. It answers one question: who do I need to talk to now, and why. Each company appears once, with the most urgent reason.</aside>
+</section>
+
+<section id="board" class="slide alt">
+<p class="eyebrow">Lead board</p>
+<h2>Every company, its stage, owner and next step</h2>
+<div style="display:flex; gap:64px; margin-top:48px; flex:1; align-items:flex-start;">
+<img class="shot fade" src="img/board.jpg" alt="The lead board: companies with stage, owner, draft state, last contact and next step" style="width:1000px; height:625px; --i:1">
+<div class="points" style="width:600px;">
+<div class="point rise" style="--i:2"><h3>Six stages</h3><p>New, contacted, talking, proposal, won, parked.</p></div>
+<div class="point rise" style="--i:3"><h3>Filter by owner</h3><p>See your own leads, or the team’s.</p></div>
+<div class="point rise" style="--i:4"><h3>Draft and last contact</h3><p>Worked out from the mail threads, never typed twice.</p></div>
+</div>
+</div>
+<aside class="notes">The board is the whole pipeline on one page. Draft state, last contact and waiting threads are derived from the mail and the actions, so they cannot drift out of date.</aside>
+</section>
+
+<section id="log" class="slide">
+<p class="eyebrow">Logging an action</p>
+<h2>You see exactly what will be written</h2>
+<div style="display:flex; gap:64px; margin-top:40px;">
+<div class="step rise" style="--i:1; flex:1;"><p class="n">1</p><p>Log what happened: email, LinkedIn, call, meeting, message or note, <span class="muted">who, which way and when.</span></p></div>
+<div class="step rise" style="--i:2; flex:1;"><p class="n">2</p><p>The page shows the file and its contents. <span class="muted">Nothing is written yet.</span></p></div>
+<div class="step rise" style="--i:3; flex:1;"><p class="n">3</p><p>Write it: one commit to your vault. <span class="muted">In the demo, this tab only.</span></p></div>
+</div>
+<img class="shot fade" src="img/log-preview.jpg" alt="The preview before writing: the action file crm/actions/a-a2b52a59.json, its fields, and the Write it and Cancel buttons" style="width:1664px; height:529px; margin-top:48px; --i:4">
+<aside class="notes">Every change works the same way: a company, a person, a link between a mail thread and a company, an import, a verified key. The page shows the files, then writes them in one commit. The vault keeps every earlier version.</aside>
+</section>
+
+<section id="followups" class="slide alt">
+<p class="eyebrow">Follow-ups</p>
+<h2>No reply in 5 days? It comes back to you.</h2>
+<div class="split">
+<div class="col" style="flex:0 0 640px;">
+<div class="points">
+<div class="point sky rise" style="--i:1"><h3>Waiting mail</h3><p>Our last email with no answer for 5 days shows here and on Today.</p></div>
+<div class="point rise" style="--i:2"><h3>A reply clears it</h3><p>Log their call or answer, and the company leaves the list.</p></div>
+<div class="point brass rise" style="--i:3"><h3>A nudge restarts the clock</h3><p>Our own new contact counts from its date, 5 more days.</p></div>
+<div class="point rust rise" style="--i:4"><h3>Notes never count</h3><p>Only real contact, in or out, moves the clock.</p></div>
+</div>
+</div>
+<img class="shot fade" src="img/followups.jpg" alt="The Follow-ups page: companies waiting on a reply, with days waited and a Log the follow-up button" style="width:960px; height:600px; --i:2">
+</div>
+<aside class="notes">The 5-day rule is the CRM’s memory. A bug here was found by the studio agent while scripting a video: a reply logged after the last email did not clear the follow-up. It is fixed and tested.</aside>
+</section>
+
+<section id="many" class="slide accent" data-transition="fade">
+<p class="eyebrow">Many small CRMs</p>
+<h2 class="rise" style="width:1500px; color:#FBFAF7; --i:0">Not one big database. Lots of little CRMs, one per need.</h2>
+<div class="cards">
+<div class="card rise" style="--i:1"><h3>Just you</h3><p>A personal CRM for your own contacts. Only your keys open it.</p></div>
+<div class="card rise" style="--i:2"><h3>Shared by two</h3><p>A partnership or an introduction, kept between the two of you.</p></div>
+<div class="card rise" style="--i:3"><h3>A team</h3><p>A company’s pipeline, for the people who hold its key.</p></div>
+<div class="card rise" style="--i:4"><h3>A project</h3><p>An event or a campaign, opened for as long as it runs.</p></div>
+</div>
+<p class="rise" style="margin-top:56px; --i:5">Each is its own vault with its own keys. The switcher in the header moves between the ones you hold.</p>
+<aside class="notes">Small vaults limit what any one key can open. Giving someone access to a project CRM gives them nothing else. Start a personal vault from Open your vault; team vaults are handed over by QR code, next slide.</aside>
+</section>
+
+<section id="handover" class="slide">
+<p class="eyebrow">Getting a vault: QR handover</p>
+<h2>Give your QR code, drop the one you get back</h2>
+<div class="split">
+<img class="shot fade" src="img/you.jpg" alt="The You page in two halves: on the left your QR code with Copy buttons, on the right a drop area for the QR code you are sent" style="width:960px; height:600px; --i:1">
+<div class="col steps">
+<div class="step rise" style="--i:2"><p class="n">1</p><p>Log in. <span class="muted">Your browser makes its key pair, behind your passkey.</span></p></div>
+<div class="step rise" style="--i:3"><p class="n">2</p><p>Your QR code is copied by itself. <span class="muted">It is public.</span></p></div>
+<div class="step rise" style="--i:4"><p class="n">3</p><p>Send it on WhatsApp.</p></div>
+<div class="step rise" style="--i:5"><p class="n">4</p><p>You get a sealed QR code back. <span class="muted">Only your browser can open it.</span></p></div>
+<div class="step rise" style="--i:6"><p class="n">5</p><p>Drop or paste it. The vault opens.</p></div>
+</div>
+</div>
+<aside class="notes">The private key never leaves the browser and cannot be exported, even by the page. The vault key travels sealed to that one browser and signed by a key the site trusts; anything else is refused. The passkey is a lock in front of the browser key: it proves the person is there.</aside>
+</section>
+
+<section id="keys" class="slide alt">
+<p class="eyebrow">New: verified keys</p>
+<h2>Every contact can have a key you have checked</h2>
+<div style="display:flex; gap:64px; margin-top:40px; flex:1;">
+<div style="display:flex; flex-direction:column; gap:28px;">
+<img class="shot fade" src="img/people.jpg" alt="People on a company page: one with a green Verified key mark, one with No key yet and an Add their key link" style="width:1100px; height:229px; --i:1">
+<img class="shot fade" src="img/key-preview.jpg" alt="The key record before writing: crm/keys/p03.json with the key, its fingerprints, who verified it, when, and the signature" style="width:1100px; height:391px; --i:2">
+</div>
+<div class="points" style="width:500px;">
+<div class="point rise" style="--i:3"><h3>From their QR code</h3><p>Drop the QR they gave you, or paste its text.</p></div>
+<div class="point rise" style="--i:4"><h3>Checked, then signed</h3><p>The page checks the key, and you sign for it with yours.</p></div>
+<div class="point rise" style="--i:5"><h3>Checked again on every view</h3><p>A record that does not check shows a warning.</p></div>
+</div>
+</div>
+<aside class="notes">This is the start of a public key directory for the people we work with. The record says whose key it is, who verified it, when and how it reached them, and carries the verifier’s signature. One key belongs to one person: the same key for a second person is refused. Keys open the way to sealing to each contact directly.</aside>
+</section>
+
+<section id="anywhere" class="slide dark">
+<p class="eyebrow">On a phone, in the dark</p>
+<h2>The same CRM on every screen</h2>
+<div style="display:flex; gap:56px; margin-top:48px; align-items:flex-start;">
+<img class="shot fade" src="img/phone.jpg" alt="Today on a phone: each company stacked, with a full-width Log the follow-up button" style="width:300px; height:649px; --i:1">
+<img class="shot fade" src="img/today-dark.jpg" alt="Today in dark mode on a desktop" style="width:1000px; height:625px; --i:2">
+<div class="points" style="width:250px;">
+<div class="point rise" style="--i:3"><h3>Phone</h3><p>Stacked for a narrow screen, no sideways scrolling.</p></div>
+<div class="point rise" style="--i:4"><h3>Dark</h3><p>Follows your system setting.</p></div>
+</div>
+</div>
+<aside class="notes">Every release is checked at phone and desktop widths, in light and dark, with an automated accessibility scan.</aside>
+</section>
+
+<section id="designs" class="slide">
+<p class="eyebrow">Five design directions</p>
+<h2>The Day is live; four more to choose from</h2>
+<div style="display:flex; gap:40px; margin-top:48px;">
+<div style="display:flex; flex-direction:column; gap:16px;">
+<img class="shot fade" src="img/design-day.jpg" alt="Design 1, The Day: today as a diary, one ruled line per company" style="width:840px; height:564px; --i:1">
+<p class="small" style="color:#1B1C1A;"><b>The Day</b>, a diary of what to do. Now the working default.</p>
+</div>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:24px 24px; flex:1;">
+<div style="display:flex; flex-direction:column; gap:8px;"><img class="shot fade" src="img/design-board.jpg" alt="Design 2, The Board: stages as columns of cards" style="width:390px; height:262px; --i:2"><p class="small"><b style="color:#1B1C1A;">The Board</b>, stages as columns</p></div>
+<div style="display:flex; flex-direction:column; gap:8px;"><img class="shot fade" src="img/design-thread.jpg" alt="Design 3, The Thread: a company as one conversation" style="width:390px; height:262px; --i:3"><p class="small"><b style="color:#1B1C1A;">The Thread</b>, a conversation</p></div>
+<div style="display:flex; flex-direction:column; gap:8px;"><img class="shot fade" src="img/design-map.jpg" alt="Design 4, The Map: companies and people as a map of relationships" style="width:390px; height:262px; --i:4"><p class="small"><b style="color:#1B1C1A;">The Map</b>, who knows whom</p></div>
+<div style="display:flex; flex-direction:column; gap:8px;"><img class="shot fade" src="img/design-ledger.jpg" alt="Design 5, The Ledger: every action as a ruled ledger" style="width:390px; height:262px; --i:5"><p class="small"><b style="color:#1B1C1A;">The Ledger</b>, every action in rows</p></div>
+</div>
+</div>
+<aside class="notes">All five were made by the design agent as working prototypes with the same synthetic data, checked for accessibility. The Day and the brand mark (a kept card with a keyhole) are live as the working default; the choice is still open.</aside>
+</section>
+
+<section id="team" class="slide alt">
+<p class="eyebrow">How it is built</p>
+<h2>Agents working in parallel, each in its own repository</h2>
+<div class="cards" style="margin-top:56px;">
+<div class="card rise" style="--i:1"><h3>Developer agent</h3><p>The app, the vault code and the tests. Deploys the site.</p></div>
+<div class="card rise" style="--i:2"><h3>Design agent</h3><p>Designs and brand on its own site, sent as patches to the app.</p></div>
+<div class="card rise" style="--i:3"><h3>Studio agent</h3><p>Explainer videos, captured from the live demo. It found a follow-up bug.</p></div>
+</div>
+<div class="rise" style="margin-top:40px; background:#E3EEE9; border-radius:20px; padding:36px 40px; display:flex; gap:28px; align-items:center; --i:4">
+<p style="color:#1B1C1A;"><b>The feedback loop:</b> the Requests page sends a request signed with your key and sealed to the developer agent, into an append-only inbox. Answers come back sealed to you.</p>
+</div>
+<aside class="notes">Each agent signs its own commits with its own key. Requests are timed end to end, so we can see where work waits.</aside>
+</section>
+
+<section id="tryit" class="slide dark" style="justify-content:center;">
+<p class="eyebrow">Try it</p>
+<h1 class="rise" style="font-size:96px; --i:0">crm.tool.sovereignweb.site/app/</h1>
+<div style="display:flex; gap:64px; margin-top:72px;">
+<div class="points" style="flex:1;">
+<div class="point rise" style="--i:1"><h3>Start in the demo</h3><p>Every company, person and email is made up. Try anything.</p></div>
+<div class="point rise" style="--i:2"><h3>Then log in on You</h3><p>Send your QR code, and drop the one you get back.</p></div>
+</div>
+<div class="points" style="flex:1;">
+<div class="point rise" style="--i:3"><h3>Or start your own</h3><p>Open your vault, then Start a personal CRM vault.</p></div>
+<div class="point rise" style="--i:4"><h3>Ask for anything</h3><p>The Requests page reaches the developer agent.</p></div>
+</div>
+</div>
+<p class="foot"><span>SovereignWeb.site CRM</span><span>Code Apache-2.0 · text CC BY 4.0</span></p>
+<aside class="notes">Next: real contacts in the team vault, verified keys for the team, and the summit CRM. The demo stays available whatever else changes.</aside>
+</section>
+
+</div></div>
+<div class="deck-controls">
+<button type="button" id="prev">← Previous</button>
+<span id="count" aria-live="polite">1 / 13</span>
+<button type="button" id="next">Next →</button>
+<button type="button" id="full" class="quiet">Full screen</button>
+</div>
+<nav class="learn-nav" aria-label="Learn the CRM: step 1 of 7">
+<a class="learn-all" href="/learn/">Learn the CRM</a> <span class="learn-step">Step 1 of 7</span>
+<span class="learn-prev"></span>
+<a class="learn-next" rel="next" href="/learn/videos/01-what-it-is/">Next, video: The CRM, and its demo →</a>
+</nav>
+<footer>
+<nav class="site-links" aria-label="About this site">
+  <a href="/start/">Start here</a>
+  <a href="/agents/">Use with your AI</a>
+  <a href="/admin/">How this site was made</a>
+  <a href="/policy/">How this site is governed</a>
+</nav>
+A sovereign website, made with the <a href="https://sovereignwebsite.org/">open pattern</a>. Source: <a href="https://github.com/SovereignWebsite/Site__Tool__CRM">github.com/SovereignWebsite/Site__Tool__CRM</a>.
+</footer>
+</main>
+</body>
+</html>

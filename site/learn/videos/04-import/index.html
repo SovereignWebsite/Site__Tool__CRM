@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Importing a spreadsheet</title>
+<meta name="description" content="Importing a spreadsheet: a 1-minute explainer of the CRM, played in your browser from its demo mode (synthetic data only).">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CRM agents">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://crm.tool.sovereignweb.site/learn/videos/04-import/">
+<meta property="og:title" content="Importing a spreadsheet">
+<meta property="og:description" content="Importing a spreadsheet: a 1-minute explainer of the CRM, played in your browser from its demo mode (synthetic data only).">
+<meta property="og:image" content="https://crm.tool.sovereignweb.site/learn/videos/04-import/share.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A screen of the CRM demo, from Importing a spreadsheet">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Importing a spreadsheet">
+<meta name="twitter:description" content="Importing a spreadsheet: a 1-minute explainer of the CRM, played in your browser from its demo mode (synthetic data only).">
+<meta name="twitter:image" content="https://crm.tool.sovereignweb.site/learn/videos/04-import/share.jpg">
+<link rel="canonical" href="https://crm.tool.sovereignweb.site/learn/videos/04-import/">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'">
+<link rel="stylesheet" href="../player.css">
+<style>
+:root{--bg:#f7f7f5;--fg:#1d1d1b;--muted:#5f5f5a;--line:#deded8;--accent:#0b5cad}
+@media (prefers-color-scheme:dark){:root{--bg:#141413;--fg:#ededea;--muted:#a8a8a2;--line:#33332f;--accent:#7ab8ff}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 system-ui,sans-serif}
+main{max-width:60rem;margin:0 auto;padding:5vh 1rem 4rem}.kick{font:600 .78rem/1 system-ui;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(1.8rem,5vw,2.5rem);line-height:1.1;margin:.6rem 0 1rem}p,li{color:var(--muted)}a{color:var(--accent)}
+.list{list-style:none;padding:0;display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr))}
+.list a{display:block;text-decoration:none;color:var(--fg);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.list img{display:block;width:100%;height:auto}.list span{display:block;padding:.6rem .8rem;font-weight:600}.list small{display:block;padding:0 .8rem .7rem;color:var(--muted)}
+details{margin-top:1.5rem}summary{cursor:pointer}footer{margin-top:3rem;font-size:.85rem;color:var(--muted)}
+</style>
+<style>:root{--accent:#1f5446;--bg:#fbfaf7;--muted:#5b6460}@media (prefers-color-scheme:dark){:root{--accent:#7cc4ab;--bg:#121513;--muted:#a3aca7}}.learn-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.2rem;margin:2rem 0 1rem;padding:1rem 1.2rem;border:2px solid var(--accent);border-radius:12px;font-size:1rem}.learn-nav a{color:var(--accent);font-weight:600;min-height:24px}.learn-nav .learn-step{color:var(--muted)}.learn-nav .learn-next{margin-left:auto;background:var(--accent);color:var(--bg);padding:.55rem 1rem;border-radius:999px;text-decoration:none}.learn-nav .learn-prev{flex-basis:100%;order:3;font-weight:400}</style>
+</head>
+<body>
+<header class="sws-top" style="display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;align-items:center;max-width:72rem;margin:0 auto;padding:1rem 1rem 0;font-size:1rem"><a href="/" style="font-weight:700;color:inherit;text-decoration:none">CRM</a><nav aria-label="This site" style="display:flex;flex-wrap:wrap;gap:1rem;margin-left:auto"><a href="/app/" style="font-weight:600">Open the CRM</a><a href="/learn/" style="font-weight:600">Learn</a><a href="/how-to/" style="font-weight:600">How to</a></nav></header>
+<main>
+<div class="kick">CRM explainer · a.crm.studio</div>
+<h1>Importing a spreadsheet</h1>
+<div class="player" data-src="scenes.json"><p>This explainer plays in your browser with JavaScript. Its script is below.</p></div>
+<details><summary>Script (the captions, in order)</summary>
+<ol>
+<li>Bring in the companies and people you already have, from one CSV file.</li>
+<li>Open Import. Fill in a spreadsheet, one line per person, or per company, and save it as CSV.</li>
+<li>Start from the template: it has every column. Only the company is required, and empty cells stay empty: nothing is guessed.</li>
+<li>Paste it, or choose the file. Here, four lines: two people at a new company, one person at a company we already have, and a line with no company.</li>
+<li>Show what will be written says what it will add: 1 new company, 3 new people, 1 contact logged as an action.</li>
+<li>And any line it cannot use, with the reason: line 5 has no company, so it is skipped.</li>
+<li>Example Ventures was already here, matched by its domain: its person is added, and nothing already there is changed.</li>
+<li>Press Write it. The new company is on the lead board, with its stage, owner, last contact and next step from the sheet.</li>
+<li>One rule: enter only people you have a reason to keep in touch with, and only what they shared with you.</li>
+</ol>
+<p>Source: <a href="script.json">script.json</a> (what the capture does) · <a href="scenes.json">scenes.json</a> (what the player shows) · <a href="manifest.json">manifest.json</a> (hashes).</p>
+</details>
+<nav class="learn-nav" aria-label="Learn the CRM: step 6 of 7">
+<a class="learn-all" href="/learn/">Learn the CRM</a> <span class="learn-step">Step 6 of 7</span>
+<a class="learn-prev" rel="prev" href="/learn/videos/03-follow-ups/">← Video: Follow-ups</a>
+<a class="learn-next" rel="next" href="/app/">Next, the app: Open the CRM →</a>
+</nav>
+<footer><a href="../">All CRM explainers</a> · made by a.crm.studio@SovereignWebsite.dinis · <a href="/how-to/">How to use the CRM</a></footer>
+</main>
+<script src="../player.js"></script>
+</body>
+</html>

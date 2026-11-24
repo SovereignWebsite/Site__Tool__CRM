@@ -1,0 +1,141 @@
+{
+ "slug": "01-what-it-is",
+ "title": "The CRM, and its demo",
+ "site": "https://crm.tool.sovereignweb.site",
+ "site_version": "v0.1.11 · 60306db · 2026-11-24",
+ "clock": "2026-11-24T10:00:00Z",
+ "width": 1280,
+ "height": 720,
+ "seconds": 68,
+ "presenter": "Studio",
+ "scenes": [
+  {
+   "caption": "The CRM keeps a small team's companies, people and actions in one place.",
+   "seconds": 5,
+   "card": {
+    "title": "The CRM, and its demo",
+    "sub": "One place for every company, every person and every action the team takes with them, so nobody falls through the gaps.",
+    "foot": "Everything in this video is the demo: every company, person and email is made up."
+   }
+  },
+  {
+   "caption": "It runs in your browser, and opens in demo mode. This banner says every company, person and email here is made up.",
+   "seconds": 6,
+   "box": {
+    "x": 4,
+    "y": 125,
+    "w": 1272,
+    "h": 35
+   },
+   "screen": "s-0ed535add8e2ac50.webp"
+  },
+  {
+   "caption": "The top right always says which vault is open. Here: Vault: Demo. Nothing you do in the demo is saved anywhere.",
+   "seconds": 6,
+   "box": {
+    "x": 16,
+    "y": 70,
+    "w": 132,
+    "h": 44
+   },
+   "screen": "s-0ed535add8e2ac50.webp"
+  },
+  {
+   "caption": "Today opens on how many companies sit at each stage, from New to Won and Parked.",
+   "seconds": 5,
+   "box": {
+    "x": 106,
+    "y": 252,
+    "w": 1068,
+    "h": 55
+   },
+   "screen": "s-0ed535add8e2ac50.webp"
+  },
+  {
+   "caption": "Then what to do now. Overdue comes first: here, a next step that was due on 21 November.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 323,
+    "w": 1068,
+    "h": 119
+   },
+   "screen": "s-0ed535add8e2ac50.webp"
+  },
+  {
+   "caption": "Next, follow-ups: we wrote and have had no reply for 5 days or more.",
+   "seconds": 5,
+   "box": {
+    "x": 106,
+    "y": 560,
+    "w": 1068,
+    "h": 119
+   },
+   "screen": "s-0ed535add8e2ac50.webp"
+  },
+  {
+   "caption": "Each card has its action. Log the follow-up records what you did next.",
+   "seconds": 5,
+   "box": {
+    "x": 1002,
+    "y": 360,
+    "w": 172,
+    "h": 44
+   },
+   "screen": "s-0ed535add8e2ac50.webp"
+  },
+  {
+   "caption": "The lead board: one row per company, with its stage, owner, draft, last contact and next step.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 403,
+    "w": 1068,
+    "h": 313
+   },
+   "screen": "s-f7d57fef11da837b.webp"
+  },
+  {
+   "caption": "Follow-ups: everyone we reached out to who has not replied in 5 days or more. Check it every day.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 300,
+    "w": 1068,
+    "h": 211
+   },
+   "screen": "s-94a10eaf156848e5.webp"
+  },
+  {
+   "caption": "Contacts: everyone, with their company and when we were last in touch. Demo emails use reserved example domains.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 252,
+    "w": 1068,
+    "h": 464
+   },
+   "screen": "s-f77ad8d867609a72.webp"
+  },
+  {
+   "caption": "Open a company to see its stage, owner, next step, people and every action logged with them.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 224,
+    "w": 1068,
+    "h": 60
+   },
+   "screen": "s-75d6717f4b978878.webp"
+  },
+  {
+   "caption": "That is the demo. Next: logging in and opening a vault.",
+   "seconds": 6,
+   "card": {
+    "title": "Next",
+    "sub": "Log in, get a vault through the QR key hand-over, and log every action. Your real contacts live in an encrypted vault that only people with its key can open; the site never sees them.",
+    "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+   }
+  }
+ ]
+}

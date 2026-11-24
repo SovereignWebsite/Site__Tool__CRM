@@ -1,0 +1,18 @@
+{
+  "slug": "03-follow-ups",
+  "site_version": "v0.1.11 · 60306db · 2026-11-24",
+  "clock": "2026-11-24T10:00:00Z",
+  "scenes": 11,
+  "screens": {
+    "s-94a10eaf156848e5.webp": "59427f653b8a65c8c99faa1de454faee60fd612dfa908cc183ea729d3c83d6da",
+    "s-d2623efac0b58d61.webp": "9a12f89171090aa06a4691fdfbbfa9c05b75ce229d84259df66aef7b1b0b46ae",
+    "s-d621ba84f1e707f1.webp": "03901d460c644b4093fa7ba6b54b9bc51bb88ade21e446996464f1c59fbca423",
+    "s-442153e2861e6599.webp": "c6a9105de2f66fb132c435f8631129a24f2a4c54952e9cbbe519f9d019c62a0c",
+    "s-723b878138760da2.webp": "b4d62f1e47382c6b4eadd181b076b64c5941fcb6e2c99b5cacdf695908763af5",
+    "s-d2e613bedfe47431.webp": "c6ba374db3bbd06c2dcb9c77d8f9f807070c7cc7ad25bd183a3fc146d2ee760a",
+    "s-50c91129c335e03f.webp": "8ba6a2ab23d5ee357b0d3c2fe5af02056b4175bb2586afcca252856c842312ad"
+  },
+  "scenes_json_sha256": "a0d989d64c77aeac0ccabd6bb931ed03a5bf45fd7e24b78c9c30faffd5c04909",
+  "made_by": "a.crm.studio@SovereignWebsite.dinis",
+  "tool": "studio/capture.mjs"
+}

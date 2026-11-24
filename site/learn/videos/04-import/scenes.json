@@ -1,0 +1,108 @@
+{
+ "slug": "04-import",
+ "title": "Importing a spreadsheet",
+ "site": "https://crm.tool.sovereignweb.site",
+ "site_version": "v0.1.11 · 60306db · 2026-11-24",
+ "clock": "2026-11-24T10:00:00Z",
+ "width": 1280,
+ "height": 720,
+ "seconds": 59,
+ "presenter": "Studio",
+ "scenes": [
+  {
+   "caption": "Bring in the companies and people you already have, from one CSV file.",
+   "seconds": 5,
+   "card": {
+    "title": "Importing a spreadsheet",
+    "sub": "Bring in the companies and people you already have, from one CSV file.",
+    "foot": "Demo mode: every company, person and email here is made up, and nothing is saved."
+   }
+  },
+  {
+   "caption": "Open Import. Fill in a spreadsheet, one line per person, or per company, and save it as CSV.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 184,
+    "w": 1068,
+    "h": 60
+   },
+   "screen": "s-52dd7d3b8432052a.webp"
+  },
+  {
+   "caption": "Start from the template: it has every column. Only the company is required, and empty cells stay empty: nothing is guessed.",
+   "seconds": 7,
+   "box": {
+    "x": 953,
+    "y": 262,
+    "w": 174,
+    "h": 20
+   },
+   "screen": "s-52dd7d3b8432052a.webp"
+  },
+  {
+   "caption": "Paste it, or choose the file. Here, four lines: two people at a new company, one person at a company we already have, and a line with no company.",
+   "seconds": 8,
+   "box": {
+    "x": 106,
+    "y": 511,
+    "w": 560,
+    "h": 205
+   },
+   "screen": "s-08167196ca5daef0.webp"
+  },
+  {
+   "caption": "Show what will be written says what it will add: 1 new company, 3 new people, 1 contact logged as an action.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 184,
+    "w": 1068,
+    "h": 252
+   },
+   "screen": "s-b351b9f83327e3de.webp"
+  },
+  {
+   "caption": "And any line it cannot use, with the reason: line 5 has no company, so it is skipped.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 184,
+    "w": 1068,
+    "h": 252
+   },
+   "screen": "s-b351b9f83327e3de.webp"
+  },
+  {
+   "caption": "Example Ventures was already here, matched by its domain: its person is added, and nothing already there is changed.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 184,
+    "w": 1068,
+    "h": 252
+   },
+   "screen": "s-b351b9f83327e3de.webp"
+  },
+  {
+   "caption": "Press Write it. The new company is on the lead board, with its stage, owner, last contact and next step from the sheet.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 439,
+    "w": 1068,
+    "h": 61
+   },
+   "screen": "s-c9e0c84a08e7e495.webp"
+  },
+  {
+   "caption": "One rule: enter only people you have a reason to keep in touch with, and only what they shared with you.",
+   "seconds": 6,
+   "card": {
+    "title": "One rule",
+    "sub": "Enter only people you have a reason to keep in touch with, and only what they shared with you.",
+    "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+   }
+  }
+ ]
+}

@@ -1,0 +1,130 @@
+{
+ "slug": "03-follow-ups",
+ "title": "Follow-ups",
+ "site": "https://crm.tool.sovereignweb.site",
+ "site_version": "v0.1.11 · 60306db · 2026-11-24",
+ "clock": "2026-11-24T10:00:00Z",
+ "width": 1280,
+ "height": 720,
+ "seconds": 63,
+ "presenter": "Studio",
+ "scenes": [
+  {
+   "caption": "Follow-ups: who has not replied, and how logging the next action clears them.",
+   "seconds": 5,
+   "card": {
+    "title": "Follow-ups",
+    "sub": "Who has not replied in 5 days or more, and how logging the next action clears them.",
+    "foot": "Demo mode: every company, person and email here is made up, and nothing is saved."
+   }
+  },
+  {
+   "caption": "Follow-ups lists everyone we reached out to who has not replied in 5 days or more. Check it every day.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 300,
+    "w": 1068,
+    "h": 211
+   },
+   "screen": "s-94a10eaf156848e5.webp"
+  },
+  {
+   "caption": "Example Data Lab: we sent the draft agreement on 8 November, and there has been no reply for 15 days.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 336,
+    "w": 1068,
+    "h": 44
+   },
+   "screen": "s-94a10eaf156848e5.webp"
+  },
+  {
+   "caption": "Say Bruno has just called back. Log the follow-up opens the company on Log an action.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 60,
+    "w": 1068,
+    "h": 220
+   },
+   "screen": "s-d2623efac0b58d61.webp"
+  },
+  {
+   "caption": "A call, they replied, Bruno Teixeira, and one line on what happened.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 120,
+    "w": 1068,
+    "h": 220
+   },
+   "screen": "s-d621ba84f1e707f1.webp"
+  },
+  {
+   "caption": "Show what will be written shows the file. Then Write it.",
+   "seconds": 5,
+   "box": {
+    "x": 106,
+    "y": 100,
+    "w": 1068,
+    "h": 479
+   },
+   "screen": "s-442153e2861e6599.webp"
+  },
+  {
+   "caption": "Back on Follow-ups, Example Data Lab has gone: a logged reply clears it.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 300,
+    "w": 1068,
+    "h": 167
+   },
+   "screen": "s-723b878138760da2.webp"
+  },
+  {
+   "caption": "Example Security: our email on their question about pricing, 9 days without a reply. This time we chase them.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 380,
+    "w": 1068,
+    "h": 43
+   },
+   "screen": "s-723b878138760da2.webp"
+  },
+  {
+   "caption": "We chase by email: an email, we reached out, to Hugo Brandt.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 60,
+    "w": 1068,
+    "h": 220
+   },
+   "screen": "s-d2e613bedfe47431.webp"
+  },
+  {
+   "caption": "Example Security leaves Follow-ups too. Our new email restarts the clock: if they stay quiet, it comes back in 5 days.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 300,
+    "w": 1068,
+    "h": 124
+   },
+   "screen": "s-50c91129c335e03f.webp"
+  },
+  {
+   "caption": "Next: logging in, and the QR key hand-over.",
+   "seconds": 4,
+   "card": {
+    "title": "Next",
+    "sub": "Logging in, and the QR key hand-over that gives you a vault.",
+    "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+   }
+  }
+ ]
+}

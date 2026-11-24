@@ -61,6 +61,11 @@ h2{font-size:1.25rem;margin:2rem 0 .5rem}ol,ul.plain{color:var(--muted);padding-
 pre{background:rgba(127,127,127,.1);padding:.8rem 1rem;border-radius:6px;white-space:pre-wrap;font-size:.9rem;color:var(--fg)}
 code{font-size:.9em}main a,main code{overflow-wrap:anywhere}
 @media (max-width:599px){footer,.family-credit,.family,.site-links{font-size:15px}}
+.learn-nav{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.2rem;margin:2rem 0 1rem;padding:1rem 1.2rem;border:2px solid var(--accent);border-radius:12px;font-size:1rem}
+.learn-nav a{color:var(--accent);font-weight:600;min-height:24px}
+.learn-nav .learn-step{color:var(--muted)}
+.learn-nav .learn-next{margin-left:auto;background:var(--accent);color:var(--bg);padding:.55rem 1rem;border-radius:999px;text-decoration:none}
+.learn-nav .learn-prev{flex-basis:100%;order:3;font-weight:400}
 </style>
 </head>
 <body>
@@ -85,8 +90,10 @@ code{font-size:.9em}main a,main code{overflow-wrap:anywhere}
 <header class="top">
   <a class="name" href="/">CRM</a>
   <nav class="own" aria-label="This site">
+    <a href="/app/">Open the CRM</a>
+    <a href="/learn/">Learn</a>
+    <a href="/how-to/">How to</a>
     <a href="/start/">Start here</a>
-    <a href="/agents/">Use with your AI</a>
   </nav>
 </header>
 <main id="main">
@@ -151,6 +158,12 @@ code{font-size:.9em}main a,main code{overflow-wrap:anywhere}
 <li>On a shared or borrowed computer, use <strong>Log out of this browser</strong> on <strong>You</strong> when you finish.</li>
 <li>The site keeps no data and sets no cookies. What you see comes from your vault, opened in your browser.</li>
 </ul>
+
+<nav class="learn-nav" aria-label="Learn the CRM: step 3 of 7">
+<a class="learn-all" href="/learn/">Learn the CRM</a> <span class="learn-step">Step 3 of 7</span>
+<a class="learn-prev" rel="prev" href="/learn/videos/01-what-it-is/">← Video: The CRM, and its demo</a>
+<a class="learn-next" rel="next" href="/learn/videos/02-today-and-actions/">Next, video: Today, and logging an action →</a>
+</nav>
 
 <footer>
 <nav class="site-links" aria-label="About this site">

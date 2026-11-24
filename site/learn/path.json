@@ -1,0 +1,56 @@
+{
+  "schema": "crm.learn-path/1",
+  "title": "Learn the CRM",
+  "about": "The order to read and watch: each step links to the previous and the next.",
+  "steps": [
+    {
+      "n": 1,
+      "title": "The CRM in 13 slides",
+      "kind": "presentation",
+      "url": "/learn/overview/",
+      "about": "What the CRM is, what it does and how it keeps your contacts in your own vault."
+    },
+    {
+      "n": 2,
+      "title": "The CRM, and its demo",
+      "kind": "video",
+      "url": "/learn/videos/01-what-it-is/",
+      "about": "A walk through the demo: Today, the lead board, a company and its people."
+    },
+    {
+      "n": 3,
+      "title": "How to use the CRM",
+      "kind": "guide",
+      "url": "/how-to/",
+      "about": "Step by step: the demo, logging in, getting a vault, adding people, logging actions."
+    },
+    {
+      "n": 4,
+      "title": "Today, and logging an action",
+      "kind": "video",
+      "url": "/learn/videos/02-today-and-actions/",
+      "about": "An overdue company, a follow-up logged, and the next step set."
+    },
+    {
+      "n": 5,
+      "title": "Follow-ups",
+      "kind": "video",
+      "url": "/learn/videos/03-follow-ups/",
+      "about": "The 5-day rule: what puts a company on the list and what takes it off."
+    },
+    {
+      "n": 6,
+      "title": "Importing a spreadsheet",
+      "kind": "video",
+      "url": "/learn/videos/04-import/",
+      "about": "Bring your contacts in from a CSV file: what is matched, what is skipped."
+    },
+    {
+      "n": 7,
+      "title": "Open the CRM",
+      "kind": "app",
+      "url": "/app/",
+      "about": "Start in the demo, then log in on You."
+    }
+  ]
+}

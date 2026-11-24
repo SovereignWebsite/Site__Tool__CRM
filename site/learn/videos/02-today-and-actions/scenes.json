@@ -1,0 +1,152 @@
+{
+ "slug": "02-today-and-actions",
+ "title": "Today, and logging an action",
+ "site": "https://crm.tool.sovereignweb.site",
+ "site_version": "v0.1.11 · 60306db · 2026-11-24",
+ "clock": "2026-11-24T10:00:00Z",
+ "width": 1280,
+ "height": 720,
+ "seconds": 73,
+ "presenter": "Studio",
+ "scenes": [
+  {
+   "caption": "The daily loop: see what is due, do it, log it, set the next step.",
+   "seconds": 5,
+   "card": {
+    "title": "Today, and logging an action",
+    "sub": "The daily loop: see what is due, do it, log it, and set the next step.",
+    "foot": "Demo mode: every company, person and email here is made up, and nothing is saved."
+   }
+  },
+  {
+   "caption": "Start every day on Today. It lists what to do now, each with its action.",
+   "seconds": 5,
+   "box": {
+    "x": 106,
+    "y": 184,
+    "w": 1068,
+    "h": 60
+   },
+   "screen": "s-0ed535add8e2ac50.webp"
+  },
+  {
+   "caption": "First, overdue. Example Ventures asked questions on our proposal, and the answer was due on 21 November.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 323,
+    "w": 1068,
+    "h": 119
+   },
+   "screen": "s-0ed535add8e2ac50.webp"
+  },
+  {
+   "caption": "Say we have answered them by email. Press Log the follow-up on its card.",
+   "seconds": 5,
+   "box": {
+    "x": 1002,
+    "y": 360,
+    "w": 172,
+    "h": 44
+   },
+   "screen": "s-0ed535add8e2ac50.webp"
+  },
+  {
+   "caption": "The company's page opens on Log an action: what, which way, when, who, and one line on what happened.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 60,
+    "w": 1068,
+    "h": 220
+   },
+   "screen": "s-cac0ac30f9bf5aa8.webp"
+  },
+  {
+   "caption": "Here: an email, we reached out, on 23 November, to Diogo Quinn, answering their questions.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 120,
+    "w": 1068,
+    "h": 220
+   },
+   "screen": "s-5488ed6d4a2985f7.webp"
+  },
+  {
+   "caption": "Show what will be written shows the exact file first. In the demo it stays in this tab: nothing is written anywhere.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 100,
+    "w": 1068,
+    "h": 479
+   },
+   "screen": "s-8286115af0fae6ae.webp"
+  },
+  {
+   "caption": "Press Write it. The action is now first in the company's Activity. In a real vault, it is one change you can see in its history.",
+   "seconds": 7,
+   "box": {
+    "x": 124,
+    "y": 236,
+    "w": 1050,
+    "h": 24
+   },
+   "screen": "s-976efd30eb024ecd.webp"
+  },
+  {
+   "caption": "Now the next step. Edit stage, owner and next step keeps the lead row up to date.",
+   "seconds": 5,
+   "box": {
+    "x": 106,
+    "y": 236,
+    "w": 1068,
+    "h": 394
+   },
+   "screen": "s-4f33d4a06ef7fc78.webp"
+  },
+  {
+   "caption": "The next step becomes: wait for their decision, due 30 November.",
+   "seconds": 5,
+   "box": {
+    "x": 106,
+    "y": 146,
+    "w": 1068,
+    "h": 394
+   },
+   "screen": "s-e44ece4fe064cbd3.webp"
+  },
+  {
+   "caption": "Show what will be written, then Write it. The company now shows the new next step.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 224,
+    "w": 1068,
+    "h": 60
+   },
+   "screen": "s-e4dba7f73c64827a.webp"
+  },
+  {
+   "caption": "Back on Today, Example Ventures is no longer overdue. Do this for each card, every day.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 323,
+    "w": 1068,
+    "h": 393
+   },
+   "screen": "s-f66092c25b8a054f.webp"
+  },
+  {
+   "caption": "Next: follow-ups.",
+   "seconds": 4,
+   "card": {
+    "title": "Next",
+    "sub": "Follow-ups: who has not replied, and how to log the chase.",
+    "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+   }
+  }
+ ]
+}

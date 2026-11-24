@@ -1,0 +1,15 @@
+{
+  "slug": "04-import",
+  "site_version": "v0.1.11 · 60306db · 2026-11-24",
+  "clock": "2026-11-24T10:00:00Z",
+  "scenes": 9,
+  "screens": {
+    "s-52dd7d3b8432052a.webp": "bef2027482baefa8f417062d5d6b4c06b735e1798a7e9e62635572d2bbbb08c1",
+    "s-08167196ca5daef0.webp": "3250527f17b963a0501b70514cd139849ffa6aad112df61eb5ce93780f123880",
+    "s-b351b9f83327e3de.webp": "d49d7dea2d9a25182350c26b8e8b3fe4409fdf9f5b90450e6ba2bf6d66408706",
+    "s-c9e0c84a08e7e495.webp": "78dcf6ae2237dcd159ebc846b0b0b04dbf6c2edd87686c04f8abc605a40e8e22"
+  },
+  "scenes_json_sha256": "4beef908155a6429a353be2858b985899c13060bc958627f5491b4616c06d70a",
+  "made_by": "a.crm.studio@SovereignWebsite.dinis",
+  "tool": "studio/capture.mjs"
+}
