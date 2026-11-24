@@ -229,3 +229,37 @@ button, a.button { white-space: nowrap; }
   .grid .num { text-align: left; }
   .grid td a, .grid th a { display: inline-flex; align-items: center; min-height: 44px; }
 }
+
+/* Round 4: the Outbox (a.crm.design, 24 Nov 2026). Its state chip takes a shape like every other status: waiting for
+   sign-off is a folded page (as a draft); signed off is a solid shield; sent is a solid circle. Until the chip carries
+   d-<state> (markup ask), every unresolved chip shows as waiting; key-ok / key-bad from the signature check still win. */
+.badge[data-apcheck], .badge.d-approved, .badge.d-sent { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; padding: 1px 8px 1px 6px; border-radius: 6px; white-space: nowrap; }
+.badge[data-apcheck]::before, .badge.d-approved::before, .badge.d-sent::before { content: ""; width: 9px; height: 9px; flex: none; background: currentColor; }
+.badge[data-apcheck], .badge[data-apcheck].d-draft { color: var(--brass); background: var(--brass-soft); border: 1.5px solid var(--brass); }
+.badge[data-apcheck]::before, .badge[data-apcheck].d-draft::before { clip-path: polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%); }
+.badge[data-apcheck].d-approved { color: var(--accent); background: var(--accent-soft); border-color: var(--accent); }
+.badge[data-apcheck].d-approved::before { height: 11px; clip-path: polygon(50% 0, 100% 18%, 100% 58%, 50% 100%, 0 58%, 0 18%); }
+.badge[data-apcheck].d-sent { color: var(--sky); background: var(--sky-soft); border-color: var(--sky); }
+.badge[data-apcheck].d-sent::before { border-radius: 50%; clip-path: none; }
+tr.sub details > summary { min-height: 44px; padding: .6rem 0; cursor: pointer; }
+tr.sub pre { white-space: pre-wrap; }
+
+/* From design.b.rounds' round 2: the grey line on each card darker and larger. */
+.card > p.small.muted { font-size: 14px; color: color-mix(in srgb, var(--fg) 78%, var(--bg)); }
+
+/* The signature check wins over the state: a chip with d-approved and key-bad must read as "does not check". */
+.badge[data-apcheck].key-ok { color: var(--accent); background: var(--accent-soft); border-color: var(--accent); }
+.badge[data-apcheck].key-other { color: var(--brass); background: var(--brass-soft); border-color: var(--brass); }
+.badge[data-apcheck].key-other::before { height: 11px; border-radius: 0; clip-path: polygon(50% 0, 50% 100%, 0 58%, 0 18%); }
+.badge[data-apcheck].key-bad { color: var(--warn); background: var(--warn-soft); border-color: var(--warn); }
+.badge[data-apcheck].key-bad::before { height: 9px; border-radius: 0; clip-path: polygon(20% 0, 50% 30%, 80% 0, 100% 20%, 70% 50%, 100% 80%, 80% 100%, 50% 70%, 20% 100%, 0 80%, 30% 50%, 0 20%); }
+
+/* Round 5 (a.crm.design, 24 Nov 2026): the second button on a card is quiet; a waiting draft's button in brass;
+   Everyone / Mine as a switch; the count line as the page's headline. */
+.card .card-actions a.button.quiet { background: transparent; color: var(--accent); }
+.card-actions a.button:not(.quiet):has(~ a.button.quiet) { background: var(--brass); border-color: var(--brass); color: var(--bg); }
+.today-count { font-size: 18px; font-weight: 600; margin: 4px 0 10px; }
+p.filters[role=group] { display: inline-flex; border: 2px solid var(--accent); border-radius: 999px; overflow: hidden; padding: 0; margin: 0 0 12px; }
+p.filters[role=group] a { display: inline-flex; align-items: center; min-height: 40px; padding: 4px 16px; border-radius: 0; text-decoration: none; color: var(--accent); font-weight: 600; background: transparent; }
+p.filters[role=group] a.on, p.filters[role=group] a[aria-current] { background: var(--accent); color: var(--bg); }
+@media (max-width: 640px) { p.filters[role=group] a { min-height: 44px; } .today-count { font-size: 17px; } }
