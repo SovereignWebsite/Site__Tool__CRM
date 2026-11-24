@@ -85,3 +85,4 @@ button, .filters a, a.badge { min-height: 24px; }
 .drop { border: 2px dashed var(--accent); border-radius: 10px; min-height: 220px; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--accent); cursor: pointer; padding: 16px; }
 .drop.over { background: var(--chip); }
 @media (max-width: 760px) { .handover { grid-template-columns: 1fr; } .drop { min-height: 120px; } }
+.added { border: 2px solid var(--accent); border-radius: 10px; padding: 8px 16px 12px; margin: 12px 0; } button.big { font-size: 18px; padding: 10px 20px; min-height: 44px; }

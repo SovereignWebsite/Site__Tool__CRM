@@ -14,7 +14,7 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const day = (iso) => (iso ? iso.slice(0, 10) : '–');
 let V = null, NOW = 0, MODE = 'demo', OPENED = null, SYNTHETIC = true, VAULT_NAME = 'Demo';
 // The open CRM vault (never the twin), its manifest, and the access token for writing: memory only.
-let CRMV = null, CRM_MANIFEST = null, TOKEN = '', PENDING = null, FILES = {}, NEWKEY = null;
+let CRMV = null, CRM_MANIFEST = null, TOKEN = '', PENDING = null, FILES = {}, NEWKEY = null, JUST_ADDED = null;
 const nowIso = () => new Date().toISOString().replace(/\.\d+Z$/, 'Z');
 const canEdit = () => MODE === 'demo' || !whyNotWritable(CRMV, CRM_MANIFEST);
 // Who is using this browser, for "by" on what they log: kept in this browser only (a convenience, not a record).
@@ -316,10 +316,11 @@ async function mePage() {
   <p>Logging in makes this browser's own key. Its private half never leaves this browser and cannot be copied out. If this device has a passkey (Touch ID, Face ID, Windows Hello), the page also makes one for this site and asks for it before it uses any vault key.</p>
   <form id="login" class="open" autocomplete="off"><label>Your name <input id="li-name" value="${esc(myName())}" required></label><button type="submit">Log in</button> <span id="form-error" class="warn"></span></form>
   <p class="muted small">${(await ME.passkeyAvailable()) ? 'This device can use a passkey.' : 'This device has no passkey: the key is tied to this browser only.'}</p>`;
-  const k = await ME.myKey(), list = await ME.vaults();
-  return `<h1>You${myName() ? ': ' + esc(myName()) : ''}</h1>
-  <p class="muted small">This browser's key: <code>${esc(k.fp)}</code>. ${ME.hasPasskey() ? 'Locked with a passkey.' : 'No passkey on this device: the key is tied to this browser.'} Its private half never leaves this browser.</p>
-  <div class="handover">
+  const k = await ME.myKey(), list = await ME.vaults(), ja = JUST_ADDED; JUST_ADDED = null;
+  const added = ja ? `<section class="added" role="status"><h2>${ja.vaults.map((v) => esc(v.name)).join(', ')} added</h2>
+    <p>It was sealed to this browser and signed by ${esc(ja.from)}. It is kept here, locked to this browser's key.${ja.token ? ' An access token came with it and is kept too.' : ''}</p>
+    <p>${ja.vaults.map((v) => `<button type="button" class="big" data-openv="${esc(v.id)}">Open ${esc(v.name)} now</button>`).join(' ')}</p></section>` : '';
+  const handover = `<div class="handover">
     <section class="give">
       <h2>1. Send this</h2>
       <p>Copy your QR code and send it to Dinis on WhatsApp. It is public.</p>
@@ -336,9 +337,14 @@ async function mePage() {
       <form id="receive" class="open" autocomplete="off"><label class="small">or paste its text <textarea id="rc-text" rows="2" spellcheck="false"></textarea></label><button type="submit" class="small">Open it</button></form>
       <p id="rc-status" class="muted" role="status"></p>
     </section>
-  </div>
+  </div>`;
+  return `<h1>You${myName() ? ': ' + esc(myName()) : ''}</h1>
+  ${added}
+  <p class="muted small">This browser's key: <code>${esc(k.fp)}</code>. ${ME.hasPasskey() ? 'Locked with a passkey.' : 'No passkey on this device: the key is tied to this browser.'} Its private half never leaves this browser.</p>
+  ${list.length ? '' : handover}
   <h2>Your vaults</h2>
-  <ul class="list">${list.map((v) => `<li><strong>${esc(v.name)}</strong> <span class="muted small">${esc(v.id)} · added ${esc(v.added)}</span> <button type="button" class="small" data-openv="${esc(v.id)}">Open</button> <button type="button" class="small quiet" data-forgetv="${esc(v.id)}">Forget</button></li>`).join('') || '<li class="muted">None yet: send your QR code (1), then drop what you get back (2).</li>'}</ul>
+  <ul class="list vaults">${list.map((v) => `<li><strong>${esc(v.name)}</strong> <span class="muted small">${esc(v.id)} · added ${esc(v.added)}</span> <button type="button" class="small" data-openv="${esc(v.id)}">Open</button> <button type="button" class="small quiet" data-vaultapp="${esc(v.id)}" title="Open this vault in the SG/Send vault app, in a new tab">Open in the vault app ↗</button> <button type="button" class="small quiet" data-forgetv="${esc(v.id)}">Forget</button></li>`).join('') || '<li class="muted">None yet: send your QR code (1), then drop what you get back (2).</li>'}</ul>
+  ${list.length ? `<details class="add"><summary>Add another vault</summary>${handover}</details>` : ''}
   <p id="v-status" class="muted" role="status"></p>
   <p><button type="button" id="logout" class="quiet small">Log out of this browser</button> <span class="muted small">removes the vault keys kept here; your vaults themselves are not touched</span></p>`;
 }
@@ -395,7 +401,8 @@ function wireActions() {
     catch { copied('This browser could not copy the picture: right-click it and choose Copy image, or use Copy key text.'); } });
   const openCode = async (text) => { const st = $('#rc-status');
     try { st.className = 'muted'; st.textContent = 'Opening…'; const r = await ME.receive(text, async (key) => JSON.parse((await readAll(await openVault(key)))['manifest.json'] || '{}').name);
-      if ($('#rc-text')) $('#rc-text').value = ''; st.className = 'muted'; st.textContent = `From ${r.from}. ${r.added.length ? 'Added: ' + r.added.map((v) => v.name).join(', ') + '.' : 'No vault key in it.'}${r.token ? ' An access token was kept too.' : ''}${r.note ? ' Note: ' + r.note : ''}`; setTimeout(route, 2500);
+      if (!r.added.length) { st.className = 'warn'; st.textContent = `From ${r.from}, but there was no vault key in it.`; return; }
+      JUST_ADDED = { vaults: r.added, from: r.from, note: r.note, token: r.token }; route();
     } catch (e) { st.className = 'warn'; st.textContent = 'Not opened: ' + e.message; } };
   // A QR picture: read with the browser's BarcodeDetector where there is one, else jsQR (vendored, from the Email Cell).
   const fromPicture = async (file) => { const st = $('#rc-status');
@@ -419,6 +426,10 @@ function wireActions() {
     if (f) { e.preventDefault(); fromPicture(f); return; } const t = e.clipboardData?.getData('text'); if (t && /pki\.sgit\.ai|m1\./.test(t)) { e.preventDefault(); openCode(t); } }); }
   for (const b of document.querySelectorAll('[data-openv]')) b.addEventListener('click', async () => { const st = (t, bad) => { $('#v-status').textContent = t; $('#v-status').className = bad ? 'warn' : 'muted'; };
     try { const key = await ME.vaultKey(b.dataset.openv); await loadVault(key, null, false, st, await ME.savedToken()); location.hash = '#/today'; route(); } catch (e) { st('Could not open: ' + e.message, true); } });
+  for (const b of document.querySelectorAll('[data-vaultapp]')) b.addEventListener('click', async () => {
+    // The vault app takes the key after '#', which a browser never sends to a server. Opened in a new tab, without an opener.
+    try { const key = await ME.vaultKey(b.dataset.vaultapp); const bare = String(key).replace(/^sgit_private_vault_/, ''); window.open(`https://dev.vault.sgraph.ai/en-gb/#${bare}`, '_blank', 'noopener'); }
+    catch (e) { $('#v-status').textContent = 'Could not open: ' + e.message; } });
   for (const b of document.querySelectorAll('[data-forgetv]')) b.addEventListener('click', async () => { if (confirm('Forget this vault in this browser? The vault itself is not touched.')) { await ME.forgetVault(b.dataset.forgetv); route(); } });
   $('#logout')?.addEventListener('click', async () => { if (confirm('Log out of this browser? The vault keys kept here are removed.')) { await ME.logOut(); await loadDemo(); location.hash = '#/me'; route(); } });
   $('#i-file')?.addEventListener('change', async (ev) => { const f = ev.target.files[0]; if (f) $('#i-text').value = await f.text(); });
