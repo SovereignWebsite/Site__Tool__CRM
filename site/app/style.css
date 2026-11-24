@@ -94,6 +94,12 @@ button, .filters a, a.badge { min-height: 24px; }
 details.add.inline { display: inline-block; vertical-align: top; }
 details.add.inline[open] { display: block; margin: 6px 0 10px; }
 
+/* For you: decisions sealed to this browser */
+.decision { border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; margin: 16px 0; }
+.decision fieldset { border: 0; padding: 0; margin: 12px 0; }
+.decision legend { font-weight: 600; margin-bottom: 6px; }
+.decision .option { display: block; padding: 8px 0; min-height: 44px; }
+
 /* The Day and the SovereignWeb.site CRM brand, for the live app's own markup.
    For crm.dev.a: append to crm/site/style.css (after everything else), and copy brand/ (mark.svg, favicon.svg,
    favicon-32.png) next to index.html. It only restyles the classes the app already has; no markup must change for it

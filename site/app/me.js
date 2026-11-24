@@ -152,3 +152,53 @@ export async function checkApproval(draft, approved) {
   return { ...r, mine: approved.key_fingerprint === id.bundle.signing_fingerprint, hashOk: approved.draft_sha256 === await BATCH.draftHash(draft) };
 }
 export const newBatchId = () => BATCH.newBatchId();
+
+// "For you": decision requests sealed to this browser's key, published at for/<fp>/index.json, opened here only if
+// signed by a trusted sender (trusted.js). The answer is signed with this browser's key and sealed to the CRM's keeper
+// through the Requests lane (send/inbox.json), as a crm.request/v1 with kind "decision-answer".
+// Dinis Cruz, 24 Nov 2026 (via a.maestro): "you can actually put questions in there for me ... as simple as pick ABC".
+const ANSWERED = 'crm.answered';        // decision ids answered in this browser (a convenience; the record is the signed answer)
+export const answeredHere = () => { try { return JSON.parse(localStorage.getItem(ANSWERED) || '[]'); } catch { return []; } };
+export async function forYou() {
+  const id = await existingIdentity(); if (!id) return { loggedIn: false, items: [] };
+  let list = { items: [] };
+  try { const r = await fetch(`for/${id.bundle.signing_fingerprint.replace(':', '-')}/index.json`, { cache: 'no-store' }); if (r.ok) list = await r.json(); } catch {}
+  const done = answeredHere(), items = [];
+  for (const it of list.items || []) {
+    try {
+      const r = await openSealed(id, it.sealed, TRUSTED);
+      if (r.needsConfirm) { items.push({ id: it.id, error: `signed by a key this page does not know (${r.signer || 'unsigned'}): not shown` }); continue; }
+      const o = JSON.parse(r.msg?.text || '{}');
+      if (o.kind !== 'crm.decision/1' || !o.decision || o.decision.id !== it.id) throw new Error('not a decision request');
+      items.push({ id: it.id, from: r.from, decision: o.decision, answered: done.includes(it.id) });
+    } catch (e) { items.push({ id: it.id, error: e.message }); }
+  }
+  return { loggedIn: true, items };
+}
+const b64s = (bytes) => { let s = ''; for (const b of new Uint8Array(bytes)) s += String.fromCharCode(b); return btoa(s); };
+const unpemB = (pem) => Uint8Array.from(atob(pem.replace(/-----[^-]+-----/g, '').replace(/\s/g, '')), (c) => c.charCodeAt(0));
+async function sealTo(pem, text) {
+  const subtle = crypto.subtle;
+  const pub = await subtle.importKey('spki', unpemB(pem), { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt']);
+  const aes = await subtle.generateKey({ name: 'AES-GCM', length: 256 }, true, ['encrypt']);
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const c = await subtle.encrypt({ name: 'AES-GCM', iv, tagLength: 128 }, aes, new TextEncoder().encode(text));
+  const w = await subtle.encrypt({ name: 'RSA-OAEP' }, pub, await subtle.exportKey('raw', aes));
+  return btoa(JSON.stringify({ v: 2, w: b64s(w), i: b64s(iv), c: b64s(c) }));
+}
+// Answer one decision: { choice: { home: 'a', mark: 'a' } or {}, text: 'free text' }. Returns the signed request.
+export async function answerDecision(decision, { choice = {}, text = '' }, name = '') {
+  await unlock();
+  const id = await existingIdentity(); if (!id) throw new Error('log in first, on the You page');
+  const cfg = await (await fetch('send/inbox.json', { cache: 'no-store' })).json();
+  if (!cfg?.vault_id || !cfg.append_token || !cfg.recipient?.encrypt) throw new Error('the answer lane is not set up');
+  const items_json = JSON.stringify({ kind: 'decision-answer', decision_id: decision.id, asked_by: decision.agent || '', choice, text: String(text).trim(), answered_at: new Date().toISOString().replace(/\.\d+Z$/, 'Z') });
+  const sig = b64s(await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, id.sign, new TextEncoder().encode(items_json)));
+  const request = { type: 'crm.request/v1', to: cfg.agent, site: location.origin, sent_at: new Date().toISOString(), from: name || '(no name set)',
+    signed: { key: id.bundle.signing_fingerprint, alg: 'ECDSA-P256-SHA256-P1363', sig, bundle: { encrypt: id.bundle.encrypt, sign: id.bundle.sign, label: id.bundle.label, fingerprint: id.bundle.fingerprint, signing_fingerprint: id.bundle.signing_fingerprint } }, items_json };
+  const enc = await sealTo(cfg.recipient.encrypt, JSON.stringify(request));
+  const r = await fetch(`${cfg.endpoint}/api/vault/append/write/${cfg.vault_id}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ append_token: cfg.append_token, payload: btoa(enc) }) });
+  if (!r.ok) throw new Error(`the answer lane answered ${r.status}`);
+  try { localStorage.setItem(ANSWERED, JSON.stringify([...new Set([...answeredHere(), decision.id])])); } catch {}
+  return JSON.parse(items_json);
+}

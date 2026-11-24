@@ -259,6 +259,33 @@ function writeEmailForm(c) {
     <p class="muted small">It goes to the Outbox, to be signed off and sent later from the Email Cell. Nothing is sent from here.</p></form></details>`;
 }
 
+// "For you": decisions sealed to this browser's key (crm/tools/seal-decision.mjs), answered here, signed with it.
+async function forYouPage() {
+  const r = await ME.forYou();
+  if (!r.loggedIn) return `<h1>For you</h1><p>Log in on <a href="#/me">You</a> first: questions for you are sealed to your browser's key, and only it can open them.</p>`;
+  const groupsOf = (opts) => { const g = new Map(); opts.forEach((o, i) => { const m = /^(\w+)\s+([a-z])\)\s*(.*)$/s.exec(o); const k = m ? m[1] : 'choice', letter = m ? m[2] : String.fromCharCode(97 + i), text = m ? m[3] : o; if (!g.has(k)) g.set(k, []); g.get(k).push({ letter, text }); }); return g; };
+  const one = (it) => {
+    if (it.error) return `<section class="decision"><h2>${esc(it.id)}</h2><p class="warn">Could not open: ${esc(it.error)}</p></section>`;
+    const d = it.decision, groups = groupsOf(d.options || []);
+    return `<section class="decision" id="dec-${esc(d.id)}"><h2>${esc(d.title)}</h2>
+    <p class="muted small">Asked by ${esc(d.agent || 'an agent')} on ${shortDay(d.asked_at || '')}${d.needed_by ? ` · needed by ${shortDay(d.needed_by)}` : ''} · ${esc(it.from)}</p>
+    ${it.answered ? '<p class="added-note">You answered this from this browser. Answer again to change it.</p>' : ''}
+    <p>${esc(d.why || '')}</p>
+    <form class="open decide" data-dec="${esc(d.id)}" autocomplete="off">
+    ${[...groups].map(([k, opts]) => `<fieldset><legend>${esc(k === 'choice' ? 'Choose one' : k[0].toUpperCase() + k.slice(1))}</legend>${opts.map((o) => `<label class="option"><input type="radio" name="g-${esc(k)}" value="${esc(o.letter)}" required> <strong>${esc(o.letter)})</strong> ${esc(o.text)}</label>`).join('')}</fieldset>`).join('')}
+    ${d.recommendation ? `<details><summary>The recommendation</summary><p>${esc(typeof d.recommendation === 'string' ? d.recommendation : JSON.stringify(d.recommendation))}</p></details>` : ''}
+    ${(d.links || []).length ? `<details><summary>Evidence (${d.links.length} ${d.links.length === 1 ? "link" : "links"})</summary><ul>${d.links.map((l) => `<li><a href="${esc(l)}" rel="noopener" target="_blank">${esc(l.replace(/^https:\/\//, ''))}</a></li>`).join('')}</ul></details>` : ''}
+    <label>Anything to add <span class="muted">(optional)</span> <textarea rows="2" data-note="${esc(d.id)}"></textarea></label>
+    <button type="submit">Sign and send my answer</button> <span class="muted small" data-decst="${esc(d.id)}" role="status"></span></form></section>`;
+  };
+  const open = r.items.filter((x) => !x.answered && !x.error).length;
+  return `<h1>For you</h1><p>${r.items.length ? `${open} waiting for your answer.` : 'Nothing waiting for you.'} Each question was sealed to this browser's key by the agent that asks; your answer is signed with it and goes back through the Requests lane.</p>${r.items.map(one).join('')}`;
+}
+async function forYouNote() {
+  try { const r = await ME.forYou(); const n = r.items.filter((x) => !x.answered && !x.error).length; const el = $('#for-you-note');
+    if (el && n) { el.innerHTML = `<a class="button" href="#/for">${n} ${n === 1 ? 'decision' : 'decisions'} for you →</a>`; el.hidden = false; } } catch {}
+}
+
 function contactsPage() {
   return `<h1>Contacts</h1><div class="scroll"><table class="grid"><thead><tr><th>Name</th><th>Company</th><th>Role</th><th>Email</th><th>Key</th><th>Threads</th><th>Last contact</th></tr></thead>
   <tbody>${contacts(V).map((p) => `<tr><td>${esc(p.name)}</td><td><a href="#/company/${esc(p.org)}">${esc(p.org_name)}</a></td><td>${esc(p.role || '')}</td><td>${esc(p.email)}</td><td>${p.key_fp ? `<span class="badge key" data-keycheck="${esc(p.id)}" title="${esc(p.key_fp)}">Key ${esc(short(p.key_fp))}: checking…</span>` : '<span class="muted small">none</span>'}</td><td class="num">${p.threads}</td><td>${day(p.last_contact)}</td></tr>`).join('')}</tbody></table></div>`;
@@ -281,6 +308,7 @@ function todayPage(query = '') {
   const parts = [[d.counts.overdue, 'overdue'], [d.counts['follow-up'], d.counts['follow-up'] === 1 ? 'follow-up' : 'follow-ups'], [d.counts.draft, d.counts.draft === 1 ? 'draft to review' : 'drafts to review'], [d.counts.soon, 'coming up']].filter(([n]) => n).map(([n, w]) => `${n} ${w}`);
   const switcher = me() ? `<p class="filters" role="group" aria-label="Whose companies"><a href="#/today"${mineOnly ? '' : ' class="on" aria-current="true"'}>Everyone</a> <a href="#/today?who=mine"${mineOnly ? ' class="on" aria-current="true"' : ''}>Mine (${esc(me())})</a></p>` : '';
   return `<h1>Today</h1>
+  <p id="for-you-note" hidden></p>
   <p class="today-count">${d.cards.length ? `${d.cards.length} ${d.cards.length === 1 ? 'company' : 'companies'} need you: ${parts.join(', ')}.` : 'Nothing needs doing today.'}</p>
   ${switcher}
   <p class="stages">${d.stages.map((s) => `<a class="stage s-${esc(s.id)}" href="#/board">${esc(s.name)} <strong>${s.count}</strong></a>`).join(' ')}</p>
@@ -519,6 +547,13 @@ function wireActions() {
   $('#edit-lead')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Change this lead?', () => leadEditFile(V, ev.target.dataset.org, { stage: $('#l-stage').value, owner: $('#l-owner').value.trim(), next_step: $('#l-next').value.trim(), next_step_due: $('#l-due').value, at: nowIso() })); });
   $('#add-org')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Add this company?', () => companyFiles(V, { id: newId('o'), name: $('#o-name').value, domain: $('#o-domain').value, kind: $('#o-kind').value, next_step: $('#o-next').value.trim(), owner: me(), at: nowIso() })); });
   checkKeys();
+  if ($('#for-you-note')) forYouNote();
+  for (const f of document.querySelectorAll('form.decide')) f.addEventListener('submit', async (ev) => { ev.preventDefault(); const id = f.dataset.dec, st = f.querySelector('[data-decst]');
+    const choice = {}; for (const inp of f.querySelectorAll('input[type=radio]:checked')) choice[inp.name.slice(2)] = inp.value;
+    try { st.className = 'muted small'; st.textContent = 'Signing and sending…'; const r = await ME.forYou(); const it = r.items.find((x) => x.id === id && x.decision);
+      if (!it) throw new Error('the question is gone'); const a = await ME.answerDecision(it.decision, { choice, text: f.querySelector('[data-note]').value }, me());
+      st.className = 'small'; st.textContent = `Sent: ${Object.entries(a.choice).map(([k, v]) => `${k} ${v}`).join(', ') || 'your note'}, signed with your key. The agent that asked will act on it.`; f.querySelector('button').textContent = 'Answer again'; }
+    catch (e) { st.className = 'warn'; st.textContent = 'Not sent: ' + e.message; } });
   $('#write-email')?.addEventListener('submit', (ev) => { ev.preventDefault(); if (!me()) return askName(); const org = ev.target.dataset.org, person = $('#e-person').value, warn = nudgeWarning(V, { org, person, direction: 'out' });
     ask(warn ? 'Reached before: write this email anyway?' : 'Write this email to the Outbox?', () => { const files = outboxDraftFile(V, { id: newId('d'), org, person, subject: $('#e-subject').value, text: $('#e-text').value, created_at: nowIso(), created_by: me() }); return warn ? { files, note: warn } : files; }); });
   for (const b of document.querySelectorAll('[data-approve]')) b.addEventListener('click', async () => { const st = $('#ob-status'); const d = V.outbox.find((x) => x.id === b.dataset.approve);
@@ -553,7 +588,7 @@ function wireActions() {
 async function route() {
   const [path, query] = (location.hash.slice(1) || '/today').split('?');
   const [, page, id] = path.split('/');
-  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'today' ? todayPage(query) : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'me' ? await mePage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : page === 'outbox' ? outboxPage() : board();
+  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'today' ? todayPage(query) : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'me' ? await mePage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : page === 'outbox' ? outboxPage() : page === 'for' ? await forYouPage() : board();
   $('#main').innerHTML = newKeyPanel() + pendingPanel() + body;
   if (page === 'open') wireOpen();
   wireActions();
