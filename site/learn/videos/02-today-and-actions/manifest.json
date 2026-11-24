@@ -1,20 +1,20 @@
 {
   "slug": "02-today-and-actions",
-  "site_version": "v0.1.11 · 60306db · 2026-11-24",
+  "site_version": "v0.1.13 · 7abd5e9 · 2026-11-24",
   "clock": "2026-11-24T10:00:00Z",
   "scenes": 13,
   "screens": {
-    "s-0ed535add8e2ac50.webp": "c70446475ff83f45201ad04b87447e8cdf97346269b42f8efbae285dddfe1539",
-    "s-cac0ac30f9bf5aa8.webp": "d783e7087f6e810d2e34bb76332af99eb8334246fd9b0570e7da4dc652ff9f4e",
-    "s-5488ed6d4a2985f7.webp": "2a163ccc2393b08bf943e77422474e2f9f96a1863d5a4c923441afbeae68b707",
-    "s-8286115af0fae6ae.webp": "04542adf513f817adc734b041e1f664f62f85851df180bdf3aa8a0bad72dcc78",
-    "s-976efd30eb024ecd.webp": "04eb590a50d09bd16afd192f47c2d5bd9c038449a85f7852d21a65d68a6d35d0",
-    "s-4f33d4a06ef7fc78.webp": "e92b3e4be9a44b5319edfb92e5c24b59aa0cabba90738b40f40d897cb0f2f46c",
-    "s-e44ece4fe064cbd3.webp": "90ba721eb3ba2170a806c274da45e2a4bbb36409497cbad566a055a624a6726a",
-    "s-e4dba7f73c64827a.webp": "f110b3d14ed06f966398ee37935f5a4df422d92b1cac7d30e8c6202e2e6a7570",
-    "s-f66092c25b8a054f.webp": "be3e8dc330ef92f2e0cb2b96d1b29e08d7aad0ead7e555d10a9137328d48f88a"
+    "s-0e13a92a043ea56f.webp": "5b31fa91e3a8b39dae13c874df4b36c61f39d4f36f5a9ba1e0bb2ded578e173a",
+    "s-75d90b056ec1914b.webp": "79bb99647aeb1c3d38f7c9c5e536e5ab0e3178abd4a4bf9444c8bbb48a09e51b",
+    "s-4d70a2fb850250bf.webp": "7aa82558869b70d9b63baa32b642293d3e598d806112f7d845831811cde34dbf",
+    "s-490830d52d8fb24e.webp": "aa7c0774eee99ce2343f46563bf3d02a430dc88ab03047e29ed3cd19feae95ca",
+    "s-f7d1132a397dc728.webp": "c6bc96651cd2b2c8d55017b1859716343cd234d951a6169341a4a7b0e9fcd3e7",
+    "s-f214e6e5aa0891e6.webp": "66bfffd51780b65c5af0374528bc31d5927a2e06fd7e3ef9142aa6e5c54899b8",
+    "s-3e3a77378fe01be7.webp": "266735767b93bae546f2bd392c1f737b36d12e1ff8953d67cac79cc302eb7003",
+    "s-c9be272e4f52b1a1.webp": "c1e732e7a91c96908aa539fb593f51a75886aef00c6c1a55fcd344c4d840f05d",
+    "s-16473e8664caabe7.webp": "e63a5c3fe2240901bcd9087c69f9c467518fb7c9fd5744d624f2b05c1c1ef64e"
   },
-  "scenes_json_sha256": "3c9edbe7ad9b20cdb29d920db9e390872872180a04ffc2e8a5f43d21ada63991",
+  "scenes_json_sha256": "a9ad379f9269783b7a03884e476f38d62985868c9c38d1020d401e2d6f5001d2",
   "made_by": "a.crm.studio@SovereignWebsite.dinis",
   "tool": "studio/capture.mjs"
 }

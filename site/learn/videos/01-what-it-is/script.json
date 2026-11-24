@@ -109,10 +109,10 @@
     {
       "card": {
         "title": "Next",
-        "sub": "Log in, get a vault through the QR key hand-over, and log every action. Your real contacts live in an encrypted vault that only people with its key can open; the site never sees them.",
-        "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+        "sub": "How to use the CRM: logging in, getting a vault, and logging every action. Your real contacts live in an encrypted vault that only people with its key can open; the site never sees them.",
+        "foot": "crm.tool.sovereignweb.site/how-to/"
       },
-      "caption": "That is the demo. Next: logging in and opening a vault.",
+      "caption": "That is the demo. Next: how to use the CRM.",
       "seconds": 6
     }
   ],

@@ -2,7 +2,7 @@
  "slug": "01-what-it-is",
  "title": "The CRM, and its demo",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.11 · 60306db · 2026-11-24",
+ "site_version": "v0.1.13 · 7abd5e9 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -23,118 +23,118 @@
    "seconds": 6,
    "box": {
     "x": 4,
-    "y": 125,
+    "y": 65,
     "w": 1272,
     "h": 35
    },
-   "screen": "s-0ed535add8e2ac50.webp"
+   "screen": "s-0e13a92a043ea56f.webp"
   },
   {
    "caption": "The top right always says which vault is open. Here: Vault: Demo. Nothing you do in the demo is saved anywhere.",
    "seconds": 6,
    "box": {
-    "x": 16,
-    "y": 70,
+    "x": 1132,
+    "y": 10,
     "w": 132,
     "h": 44
    },
-   "screen": "s-0ed535add8e2ac50.webp"
+   "screen": "s-0e13a92a043ea56f.webp"
   },
   {
    "caption": "Today opens on how many companies sit at each stage, from New to Won and Parked.",
    "seconds": 5,
    "box": {
     "x": 106,
-    "y": 252,
+    "y": 192,
     "w": 1068,
     "h": 55
    },
-   "screen": "s-0ed535add8e2ac50.webp"
+   "screen": "s-0e13a92a043ea56f.webp"
   },
   {
    "caption": "Then what to do now. Overdue comes first: here, a next step that was due on 21 November.",
    "seconds": 6,
    "box": {
     "x": 106,
-    "y": 323,
+    "y": 263,
     "w": 1068,
     "h": 119
    },
-   "screen": "s-0ed535add8e2ac50.webp"
+   "screen": "s-0e13a92a043ea56f.webp"
   },
   {
    "caption": "Next, follow-ups: we wrote and have had no reply for 5 days or more.",
    "seconds": 5,
    "box": {
     "x": 106,
-    "y": 560,
+    "y": 500,
     "w": 1068,
     "h": 119
    },
-   "screen": "s-0ed535add8e2ac50.webp"
+   "screen": "s-0e13a92a043ea56f.webp"
   },
   {
    "caption": "Each card has its action. Log the follow-up records what you did next.",
    "seconds": 5,
    "box": {
     "x": 1002,
-    "y": 360,
+    "y": 300,
     "w": 172,
     "h": 44
    },
-   "screen": "s-0ed535add8e2ac50.webp"
+   "screen": "s-0e13a92a043ea56f.webp"
   },
   {
    "caption": "The lead board: one row per company, with its stage, owner, draft, last contact and next step.",
    "seconds": 6,
    "box": {
     "x": 106,
-    "y": 403,
+    "y": 343,
     "w": 1068,
-    "h": 313
+    "h": 373
    },
-   "screen": "s-f7d57fef11da837b.webp"
+   "screen": "s-a8428d859dcf00cd.webp"
   },
   {
    "caption": "Follow-ups: everyone we reached out to who has not replied in 5 days or more. Check it every day.",
    "seconds": 6,
    "box": {
     "x": 106,
-    "y": 300,
+    "y": 240,
     "w": 1068,
     "h": 211
    },
-   "screen": "s-94a10eaf156848e5.webp"
+   "screen": "s-d00ec1c9b5d876c3.webp"
   },
   {
    "caption": "Contacts: everyone, with their company and when we were last in touch. Demo emails use reserved example domains.",
    "seconds": 6,
    "box": {
     "x": 106,
-    "y": 252,
+    "y": 192,
     "w": 1068,
-    "h": 464
+    "h": 524
    },
-   "screen": "s-f77ad8d867609a72.webp"
+   "screen": "s-ffb02f12cc3e781c.webp"
   },
   {
    "caption": "Open a company to see its stage, owner, next step, people and every action logged with them.",
    "seconds": 6,
    "box": {
     "x": 106,
-    "y": 224,
+    "y": 164,
     "w": 1068,
     "h": 60
    },
-   "screen": "s-75d6717f4b978878.webp"
+   "screen": "s-3e285fca705404bd.webp"
   },
   {
-   "caption": "That is the demo. Next: logging in and opening a vault.",
+   "caption": "That is the demo. Next: how to use the CRM.",
    "seconds": 6,
    "card": {
     "title": "Next",
-    "sub": "Log in, get a vault through the QR key hand-over, and log every action. Your real contacts live in an encrypted vault that only people with its key can open; the site never sees them.",
-    "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+    "sub": "How to use the CRM: logging in, getting a vault, and logging every action. Your real contacts live in an encrypted vault that only people with its key can open; the site never sees them.",
+    "foot": "crm.tool.sovereignweb.site/how-to/"
    }
   }
  ]

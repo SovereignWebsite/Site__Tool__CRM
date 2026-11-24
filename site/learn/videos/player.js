@@ -83,9 +83,14 @@
         await Promise.all([say(s.caption, my), wait(vBox.checked && speech ? Math.min(ms, 2500) : ms)]);
         if (my !== token || !playing) return;
         await wait(700); if (my !== token || !playing) return;
-        if (at === n - 1) { stop(); return; } at++;
+        if (at === n - 1) { stop(); offerNext(); return; } at++;
       }
     };
+    // At the end: offer the next step of the learning path, if the page names one.
+    const offerNext = () => { const href = root.dataset.nextHref; if (!href) return;
+      card.classList.add('on'); box.classList.remove('on');
+      card.innerHTML = `<div class="kicker">Up next</div><h2>${esc(root.dataset.nextTitle)}</h2><p><a class="p-next" href="${esc(href)}">Go to it →</a></p>`;
+      card.querySelector('a').focus({ preventScroll: true }); };
     const stop = () => { playing = false; token++; clearTimeout(timer); if (speech) speechSynthesis.cancel(); root.classList.remove('speaking'); play.textContent = at === n - 1 ? 'Play again' : 'Play'; };
     play.onclick = () => { if (playing) return stop(); if (play.textContent === 'Play again') at = 0; playing = true; play.textContent = 'Pause'; run(); };
     prev.onclick = () => { const was = playing; stop(); show(Math.max(0, at - 1)); if (was) play.onclick(); };

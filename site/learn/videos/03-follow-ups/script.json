@@ -6,27 +6,179 @@
   "seed": 42,
   "share": 1,
   "scenes": [
-    { "card": { "title": "Follow-ups", "sub": "Who has not replied in 5 days or more, and how logging the next action clears them.", "foot": "Demo mode: every company, person and email here is made up, and nothing is saved." },
-      "caption": "Follow-ups: who has not replied, and how logging the next action clears them.", "seconds": 5 },
-    { "do": [{ "goto": "/app/#/follow-ups" }, { "top": true }], "mark": "main table", "stay": true,
-      "caption": "Follow-ups lists everyone we reached out to who has not replied in 5 days or more. Check it every day.", "seconds": 6 },
-    { "mark": "main tr:has-text(\"Example Data Lab\")", "stay": true,
-      "caption": "Example Data Lab: we sent the draft agreement on 8 November, and there has been no reply for 15 days.", "seconds": 6 },
-    { "do": [{ "click": "main tr:has-text(\"Example Data Lab\") a:has-text(\"Log the follow-up\")" }], "mark": "#log-action", "scroll_by": -60,
-      "caption": "Say Bruno has just called back. Log the follow-up opens the company on Log an action.", "seconds": 6 },
-    { "do": [{ "select": ["#a-kind", "call"] }, { "select": ["#a-dir", "in"] }, { "select": ["#a-person", { "label": "Bruno Teixeira" }] }, { "fill": ["#a-sum", "Bruno called back: wants the demo next week"] }], "mark": "#log-action", "scroll_by": -60,
-      "caption": "A call, they replied, Bruno Teixeira, and one line on what happened.", "seconds": 6 },
-    { "do": [{ "click": "#log-action button[type=submit]" }], "mark": "#pending", "scroll_by": -100,
-      "caption": "Show what will be written shows the file. Then Write it.", "seconds": 5 },
-    { "do": [{ "click": "#w-go" }, { "hash": "#/follow-ups" }, { "top": true }], "mark": "main table", "stay": true,
-      "caption": "Back on Follow-ups, Example Data Lab has gone: a logged reply clears it.", "seconds": 6 },
-    { "mark": "main tr:has-text(\"Example Security\")", "stay": true,
-      "caption": "Example Security: our email on their question about pricing, 9 days without a reply. This time we chase them.", "seconds": 6 },
-    { "do": [{ "click": "main tr:has-text(\"Example Security\") a:has-text(\"Log the follow-up\")" }, { "select": ["#a-kind", "email"] }, { "select": ["#a-dir", "out"] }, { "select": ["#a-person", { "label": "Hugo Brandt" }] }, { "fill": ["#a-sum", "Chased them on pricing"] }], "mark": "#log-action", "scroll_by": -60,
-      "caption": "We chase by email: an email, we reached out, to Hugo Brandt.", "seconds": 6 },
-    { "do": [{ "click": "#log-action button[type=submit]" }, { "click": "#w-go" }, { "hash": "#/follow-ups" }, { "top": true }], "mark": "main table", "stay": true,
-      "caption": "Example Security leaves Follow-ups too. Our new email restarts the clock: if they stay quiet, it comes back in 5 days.", "seconds": 7 },
-    { "card": { "title": "Next", "sub": "Logging in, and the QR key hand-over that gives you a vault.", "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/" },
-      "caption": "Next: logging in, and the QR key hand-over.", "seconds": 4 }
+    {
+      "card": {
+        "title": "Follow-ups",
+        "sub": "Who has not replied in 5 days or more, and how logging the next action clears them.",
+        "foot": "Demo mode: every company, person and email here is made up, and nothing is saved."
+      },
+      "caption": "Follow-ups: who has not replied, and how logging the next action clears them.",
+      "seconds": 5
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/follow-ups"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main table",
+      "stay": true,
+      "caption": "Follow-ups lists everyone we reached out to who has not replied in 5 days or more. Check it every day.",
+      "seconds": 6
+    },
+    {
+      "mark": "main tr:has-text(\"Example Data Lab\")",
+      "stay": true,
+      "caption": "Example Data Lab: we sent the draft agreement on 8 November, and there has been no reply for 15 days.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "click": "main tr:has-text(\"Example Data Lab\") a:has-text(\"Log the follow-up\")"
+        }
+      ],
+      "mark": "#log-action",
+      "scroll_by": -60,
+      "caption": "Say Bruno has just called back. Log the follow-up opens the company on Log an action.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "select": [
+            "#a-kind",
+            "call"
+          ]
+        },
+        {
+          "select": [
+            "#a-dir",
+            "in"
+          ]
+        },
+        {
+          "select": [
+            "#a-person",
+            {
+              "label": "Bruno Teixeira"
+            }
+          ]
+        },
+        {
+          "fill": [
+            "#a-sum",
+            "Bruno called back: wants the demo next week"
+          ]
+        }
+      ],
+      "mark": "#log-action",
+      "scroll_by": -60,
+      "caption": "A call, they replied, Bruno Teixeira, and one line on what happened.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "click": "#log-action button[type=submit]"
+        }
+      ],
+      "mark": "#pending",
+      "scroll_by": -100,
+      "caption": "Show what will be written shows the file. Then Write it.",
+      "seconds": 5
+    },
+    {
+      "do": [
+        {
+          "click": "#w-go"
+        },
+        {
+          "hash": "#/follow-ups"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main table",
+      "stay": true,
+      "caption": "Back on Follow-ups, Example Data Lab has gone: a logged reply clears it.",
+      "seconds": 6
+    },
+    {
+      "mark": "main tr:has-text(\"Example Security\")",
+      "stay": true,
+      "caption": "Example Security: our email on their question about pricing, 9 days without a reply. This time we chase them.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "click": "main tr:has-text(\"Example Security\") a:has-text(\"Log the follow-up\")"
+        },
+        {
+          "select": [
+            "#a-kind",
+            "email"
+          ]
+        },
+        {
+          "select": [
+            "#a-dir",
+            "out"
+          ]
+        },
+        {
+          "select": [
+            "#a-person",
+            {
+              "label": "Hugo Brandt"
+            }
+          ]
+        },
+        {
+          "fill": [
+            "#a-sum",
+            "Chased them on pricing"
+          ]
+        }
+      ],
+      "mark": "#log-action",
+      "scroll_by": -60,
+      "caption": "We chase by email: an email, we reached out, to Hugo Brandt.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "click": "#log-action button[type=submit]"
+        },
+        {
+          "click": "#w-go"
+        },
+        {
+          "hash": "#/follow-ups"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main table",
+      "stay": true,
+      "caption": "Example Security leaves Follow-ups too. Our new email restarts the clock: if they stay quiet, it comes back in 5 days.",
+      "seconds": 7
+    },
+    {
+      "card": {
+        "title": "Next",
+        "sub": "Importing a spreadsheet: bring in the companies and people you already have.",
+        "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+      },
+      "caption": "Next: importing a spreadsheet.",
+      "seconds": 4
+    }
   ]
 }

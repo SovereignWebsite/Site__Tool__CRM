@@ -52,3 +52,5 @@
 @keyframes pulse{50%{opacity:.45}}
 @media (max-width:560px){.p-stage{grid-template-columns:minmax(0,1fr) 22%}.p-presenter .who{display:none}}
 @media (prefers-reduced-motion:reduce){.player *{animation:none!important;transition:none!important}}
+.p-card a.p-next{display:inline-block;margin-top:1.5cqw;font:700 2.6cqw/1 system-ui,sans-serif;color:#fff;background:var(--accent);padding:1.4cqw 2.4cqw;border-radius:1cqw;text-decoration:none}
+.p-card a.p-next:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
