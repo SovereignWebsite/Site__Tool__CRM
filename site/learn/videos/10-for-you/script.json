@@ -96,11 +96,11 @@
     },
     {
       "card": {
-        "title": "Decisions, kept",
-        "sub": "The question is sealed to you, and the answer is signed by you, so both ends know who asked and who answered.",
-        "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+        "title": "That is the CRM",
+        "sub": "Today, actions, follow-ups, emails, import, your key and vaults, verified keys, requests, and decisions for you. In the demo, nothing is sent.",
+        "foot": "Open it: crm.tool.sovereignweb.site/app/"
       },
-      "caption": "The question is sealed to you, and the answer is signed by you: both ends know who asked and who answered.",
+      "caption": "The question is sealed to you and the answer signed by you. That is the CRM: open it, and start on Today.",
       "seconds": 7
     }
   ]

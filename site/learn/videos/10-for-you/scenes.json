@@ -2,7 +2,7 @@
  "slug": "10-for-you",
  "title": "For you: questions from the agents",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.35 · 4f041df · 2026-11-24",
+ "site_version": "v0.1.36 · 07ac0dd · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -82,15 +82,15 @@
     "w": 238,
     "h": 44
    },
-   "screen": "s-f1eed3cee4336df0.webp"
+   "screen": "s-fe73b5bdd9a0611c.webp"
   },
   {
-   "caption": "The question is sealed to you, and the answer is signed by you: both ends know who asked and who answered.",
+   "caption": "The question is sealed to you and the answer signed by you. That is the CRM: open it, and start on Today.",
    "seconds": 7,
    "card": {
-    "title": "Decisions, kept",
-    "sub": "The question is sealed to you, and the answer is signed by you, so both ends know who asked and who answered.",
-    "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+    "title": "That is the CRM",
+    "sub": "Today, actions, follow-ups, emails, import, your key and vaults, verified keys, requests, and decisions for you. In the demo, nothing is sent.",
+    "foot": "Open it: crm.tool.sovereignweb.site/app/"
    }
   }
  ]

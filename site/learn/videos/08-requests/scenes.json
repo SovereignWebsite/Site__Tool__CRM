@@ -2,7 +2,7 @@
  "slug": "08-requests",
  "title": "Asking the CRM's agent for something",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.35 · 4f041df · 2026-11-24",
+ "site_version": "v0.1.36 · 07ac0dd · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -82,15 +82,15 @@
     "w": 1068,
     "h": 24
    },
-   "screen": "s-b31d9112b67ae9b6.webp"
+   "screen": "s-458a1da368985ec7.webp"
   },
   {
-   "caption": "That is the CRM. Open it, and start on Today.",
+   "caption": "Next: For you, the questions the agents ask you.",
    "seconds": 5,
    "card": {
-    "title": "That is the CRM",
-    "sub": "Today, actions, follow-ups, import, your key and your vaults, verified keys, and requests.",
-    "foot": "Open it: crm.tool.sovereignweb.site/app/"
+    "title": "Next",
+    "sub": "For you: questions the agents ask you, sealed to your browser's key, and your signed answers.",
+    "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
    }
   }
  ]

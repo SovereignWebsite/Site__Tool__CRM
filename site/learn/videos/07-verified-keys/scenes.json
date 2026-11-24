@@ -2,7 +2,7 @@
  "slug": "07-verified-keys",
  "title": "Verified keys on people",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.35 · 4f041df · 2026-11-24",
+ "site_version": "v0.1.37 · b7d8d62 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -60,7 +60,7 @@
     "w": 1050,
     "h": 458
    },
-   "screen": "s-de64bbf5f2f35b09.webp"
+   "screen": "s-303035e0b0af7b2b.webp"
   },
   {
    "caption": "The page checks it and shows what will be written: Rui's key and its fingerprint, signed for by you. The file's contents are hidden here.",
@@ -93,7 +93,7 @@
     "w": 1068,
     "h": 65
    },
-   "screen": "s-45019bbfbad204c9.webp"
+   "screen": "s-f9862aec4074aa43.webp"
   },
   {
    "caption": "A key you verified yourself is how you know who you are sending to, without trusting anyone in between.",

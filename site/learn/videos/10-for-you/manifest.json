@@ -1,6 +1,6 @@
 {
   "slug": "10-for-you",
-  "site_version": "v0.1.35 · 4f041df · 2026-11-24",
+  "site_version": "v0.1.36 · 07ac0dd · 2026-11-24",
   "clock": "2026-11-24T10:00:00Z",
   "scenes": 8,
   "screens": {
@@ -8,9 +8,9 @@
     "s-697ca50d8b5cff60.webp": "95de72c5245df1867bca600a0729199e0cd04308b52fe5cd55dbf30b165b7543",
     "s-e3e601dcceb8e624.webp": "0d29a9cdef8334bd2884176046b2fa17f6f5973ff0ce1f906cf634f35d0701ee",
     "s-6c4c1b2efb74acd6.webp": "0c36d931c8d2067a03de623ca568874be6d018a859177a6ee1c80c40edc890d6",
-    "s-f1eed3cee4336df0.webp": "d0227c38bf395190a48a11c9f8fc0d8b6ff8522a377302f83ce6a9467dc76d45"
+    "s-fe73b5bdd9a0611c.webp": "442e8f7297986030b6c89facdfa45624439cae148611869bd211e74e7673db46"
   },
-  "scenes_json_sha256": "77c600fdbcdecbe4b04d85b4c3cbe40c2a53b137be37813e7aa6f3397ac5f43f",
+  "scenes_json_sha256": "258968661bc883ee4668168cc68414711729286f6ab6c8a9ae670c3e12e66283",
   "made_by": "a.crm.studio@SovereignWebsite.dinis",
   "tool": "studio/capture.mjs"
 }

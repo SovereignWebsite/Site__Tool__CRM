@@ -2,7 +2,7 @@
  "slug": "05-agents-in-parallel",
  "title": "How the agents build the CRM in parallel",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.35 · 4f041df · 2026-11-24",
+ "site_version": "v0.1.36 · 07ac0dd · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -347,7 +347,7 @@
     "w": 672,
     "h": 53
    },
-   "screen": "s-621dda31115fcf10.webp"
+   "screen": "s-af4182197ac0b44f.webp"
   },
   {
    "caption": "Each agent commits only to its own repository, signed with its own key. Dinis decides what they work on.",

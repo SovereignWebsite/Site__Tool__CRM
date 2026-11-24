@@ -2,7 +2,7 @@
  "slug": "03-follow-ups",
  "title": "Follow-ups",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.35 · 4f041df · 2026-11-24",
+ "site_version": "v0.1.36 · 07ac0dd · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -27,7 +27,7 @@
     "w": 1068,
     "h": 211
    },
-   "screen": "s-78c769fbd45eff09.webp"
+   "screen": "s-f7746ce6dcf475bb.webp"
   },
   {
    "caption": "Example Data Lab: we sent the draft agreement on 8 November, and there has been no reply for 15 days.",
@@ -38,7 +38,7 @@
     "w": 1068,
     "h": 44
    },
-   "screen": "s-78c769fbd45eff09.webp"
+   "screen": "s-f7746ce6dcf475bb.webp"
   },
   {
    "caption": "Say Bruno has just called back. Log the follow-up opens the company on Log an action.",
@@ -60,7 +60,7 @@
     "w": 1068,
     "h": 196
    },
-   "screen": "s-130d3de57a50977f.webp"
+   "screen": "s-e6edc19651499198.webp"
   },
   {
    "caption": "Show what will be written shows the file. Then Write it.",
@@ -82,7 +82,7 @@
     "w": 1068,
     "h": 167
    },
-   "screen": "s-a6d8550c23b5783a.webp"
+   "screen": "s-445dafd285826f59.webp"
   },
   {
    "caption": "Example Security: our email on their question about pricing, 9 days without a reply. This time we chase them.",
@@ -93,7 +93,7 @@
     "w": 1068,
     "h": 43
    },
-   "screen": "s-a6d8550c23b5783a.webp"
+   "screen": "s-445dafd285826f59.webp"
   },
   {
    "caption": "We chase by email: an email, we reached out, to Hugo Brandt.",
@@ -115,7 +115,7 @@
     "w": 1068,
     "h": 124
    },
-   "screen": "s-7d1ee6c52fe5a0be.webp"
+   "screen": "s-b3143bad98cd1885.webp"
   },
   {
    "caption": "Next: writing an email, and signing it off.",

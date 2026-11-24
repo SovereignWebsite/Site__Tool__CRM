@@ -1,14 +1,14 @@
 {
   "slug": "08-requests",
-  "site_version": "v0.1.35 · 4f041df · 2026-11-24",
+  "site_version": "v0.1.36 · 07ac0dd · 2026-11-24",
   "clock": "2026-11-24T10:00:00Z",
   "scenes": 8,
   "screens": {
     "s-f36a302dcae0de68.webp": "eae7fb509fd8495e767c291875eacc4f540dfd84a65ef5d76884ac407eac47b7",
     "s-f0c6e8600029521c.webp": "be92ccb2ba590ed34a2aaed1e2450618c79d743e5a19445dcd65487b820bd03c",
-    "s-b31d9112b67ae9b6.webp": "2734b53403d4ba786b93c923c7f20235f5cbb23ded589f9980ac9caf08441c0e"
+    "s-458a1da368985ec7.webp": "0a0b97bcd422777f481f792922b51076158618c45167b845624782effd8c28be"
   },
-  "scenes_json_sha256": "d31e94519efa889f98945f5c737c5cb22c892e5dc9aff3982e3f26af9d61024c",
+  "scenes_json_sha256": "68bacf12ae78557d325cf19a6039c5fa0b8ace5e7b8f2f1fee033d5cdf67c92f",
   "made_by": "a.crm.studio@SovereignWebsite.dinis",
   "tool": "studio/capture.mjs"
 }

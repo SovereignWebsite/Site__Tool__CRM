@@ -87,11 +87,11 @@
     },
     {
       "card": {
-        "title": "That is the CRM",
-        "sub": "Today, actions, follow-ups, import, your key and your vaults, verified keys, and requests.",
-        "foot": "Open it: crm.tool.sovereignweb.site/app/"
+        "title": "Next",
+        "sub": "For you: questions the agents ask you, sealed to your browser's key, and your signed answers.",
+        "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
       },
-      "caption": "That is the CRM. Open it, and start on Today.",
+      "caption": "Next: For you, the questions the agents ask you.",
       "seconds": 5
     }
   ]
