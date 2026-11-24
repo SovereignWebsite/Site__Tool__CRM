@@ -30,10 +30,10 @@
 .player.speaking .p-caption .w{color:#8a8f95}
 .player.speaking .p-caption .w.said{color:var(--ink)}
 .p-controls{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .7rem;padding:.8rem 3% 1rem}
-.p-controls button{font:600 .9rem/1 system-ui,sans-serif;min-height:40px;min-width:44px;padding:.55rem .9rem;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.p-controls button{font:600 .9rem/1 system-ui,sans-serif;min-height:44px;min-width:44px;padding:.55rem .9rem;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
 .p-controls button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 .p-controls button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
-.p-controls label{display:inline-flex;align-items:center;gap:.4rem;font:500 .9rem/1 system-ui,sans-serif;color:var(--muted);min-height:40px}
+.p-controls label{display:inline-flex;align-items:center;gap:.4rem;font:500 .9rem/1 system-ui,sans-serif;color:var(--muted);min-height:44px}
 .p-bar{flex:1 1 12rem;display:flex;gap:3px;height:6px}
 .p-bar i{flex:1;background:var(--line);border-radius:3px;overflow:hidden;position:relative}
 .p-bar i b{position:absolute;inset:0;width:0;background:var(--amber)}
