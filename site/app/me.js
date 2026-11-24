@@ -133,13 +133,14 @@ export async function checkKeyRecord(rec) {
   } catch (e) { return { ok: false, why: e.message }; }
 }
 
-// Outbox sign-off: this browser's key signs a draft for one batch, with mail.dev.a's own approve() (vendored unedited),
+// Outbox sign-off: this browser's key signs a draft for one batch, with mail.dev.a's own approve() (signoff.mjs, vendored unedited),
 // so the cell's verifyApproval() checks exactly these bytes. The person is asked for their passkey first.
-import * as BATCH from './batch.js';
+import * as BATCH from './signoff.mjs';
 export async function approveDraft(draft, batchId) {
+  const bad = BATCH.draftProblems(draft); if (bad.length) throw new Error(bad.join('; '));
   await unlock();
   const id = await existingIdentity(); if (!id) throw new Error('log in first, on the You page');
-  const spki = BATCH.pemToSpki ? BATCH.pemToSpki(id.bundle.sign) : Uint8Array.from(atob(String(id.bundle.sign).replace(/-----[^-]+-----|\s/g, '')), (c) => c.charCodeAt(0));
+  const spki = Uint8Array.from(atob(String(id.bundle.sign).replace(/-----[^-]+-----|\s/g, '')), (c) => c.charCodeAt(0));
   return BATCH.approve(id.sign, spki, draft, batchId);
 }
 // Is this sign-off good for this draft, by this browser's key? (The cell checks again, against the keys pinned there.)
