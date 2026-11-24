@@ -118,12 +118,18 @@ export function lastMessage(v, t) {
 // Threads whose last message is ours and has had no reply for `days` or more, oldest wait first.
 export function followUps(v, now, days = FOLLOW_UP_DAYS) {
   const idx = index(v), out = [];
+  // The latest logged contact per company (a note does not count). A mail thread that waits on a reply stops counting
+  // once anything was logged for that company at or after its last email: a reply clears it, and our own new
+  // reaching out restarts the clock below (found by a.crm.studio, 24 Nov 2026).
+  const latestAction = new Map();
+  for (const a of v.actions || []) { if (a.direction === 'none') continue; const t = actionTime(a); if (!latestAction.has(a.org) || t > latestAction.get(a.org)) latestAction.set(a.org, t); }
   for (const t of v.threads) {
     const m = lastMessage(v, t);
     if (!m || m.direction !== 'outbound') continue;
     const waited = Math.floor((now - Date.parse(m.date)) / DAY);
     if (waited < days) continue;
     const who = threadOrg(v, t, idx);
+    if (who?.org && latestAction.has(who.org) && latestAction.get(who.org) >= Date.parse(m.date)) continue;
     out.push({ thread: t.id, subject: t.subject, sent: m.date, days: waited, org: who?.org ?? null, person: who?.person ?? null });
   }
   // Logged actions: a company whose latest contact (logged or mail) is us reaching out, 'days' or more ago.
