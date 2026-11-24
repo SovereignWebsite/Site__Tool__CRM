@@ -366,6 +366,22 @@ export function timeline(v, org) {
   return [...acts, ...mail].sort((a, b) => b.time - a.time);
 }
 
+// Reached before? (Dinis, 24 Nov 2026, via a.maestro: "people I sent a nudge ... because I don't want to send a nudge to
+// people that [I nudged] before".) Every time we reached out to this person (or, with no person, to the company): logged
+// actions with direction 'out' and our last emails, newest first. Notes and their replies do not count.
+export function reachedBefore(v, { org, person = null }) {
+  return timeline(v, org).filter((e) => e.direction === 'out' && e.kind !== 'note' && (person ? e.person === person : true));
+}
+// The warning to show before logging another outreach, or null: "Already reached out 2 times, last on 2026-11-20 (email: ...)".
+export function nudgeWarning(v, { org, person = null, direction }) {
+  if (direction !== 'out') return null;
+  const before = reachedBefore(v, { org, person });
+  if (!before.length) return null;
+  const who = person ? v.people.find((p) => p.id === person)?.name || person : v.orgs.find((o) => o.id === org)?.name || org;
+  const last = before[0], day = String(last.at).slice(0, 10);
+  return `Already reached out to ${who} ${before.length === 1 ? 'once' : before.length + ' times'}, last on ${day} (${last.kind}: ${last.summary}).`;
+}
+
 // Import: a spreadsheet the team fills in (CSV, one row per person or per company), turned into the CRM's own
 // files, shown first, written in one go. A person supplies and enters the data; nothing is guessed: a cell left
 // empty stays empty. Columns (header row, any order, case-insensitive; only "company" is required):

@@ -4,7 +4,7 @@
 // person's own keys, in this browser only (vault.js); remembered keys are sealed to this browser's
 // own key with the Email Cell's pki.js keep/recall, unedited.
 // By crm.dev.a@AgentiCCells.dinis, 2026-11-23. Apache-2.0.
-import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedThreads, linkFile, companyFiles, personFile, newVaultFiles, newId, KINDS, actionFile, leadEditFile, timeline, ACTION_KINDS, importFiles, IMPORT_COLUMNS, theDay, FOLLOW_UP_DAYS, keyRecord, keyFile, personKey } from './crm.mjs';
+import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedThreads, linkFile, companyFiles, personFile, newVaultFiles, newId, KINDS, actionFile, leadEditFile, timeline, ACTION_KINDS, importFiles, IMPORT_COLUMNS, theDay, FOLLOW_UP_DAYS, keyRecord, keyFile, personKey, nudgeWarning } from './crm.mjs';
 import { keyKind, openVault, readAll, merge, whyNotWritable, writeFiles, createCrmVault } from './vault.js';
 import { identity, existingIdentity, keep, recall, forget, kept } from './pki.js';
 import * as ME from './me.js';
@@ -479,7 +479,7 @@ function wireActions() {
     const note = `${plural(report.orgs, 'new company (with its lead row)', 'new companies (each with its lead row)')}, ${plural(report.people, 'new person', 'new people')}, ${plural(report.actions, 'contact logged as an action', 'contacts logged as actions')}.` + (report.skipped.length ? ` Skipped ${report.skipped.length}: ${report.skipped.join('; ')}.` : '') + (report.unknown_columns.length ? ` Columns ignored: ${report.unknown_columns.join(', ')}.` : '');
     return { files, note };
   }); });
-  $('#log-action')?.addEventListener('submit', (ev) => { ev.preventDefault(); if (!me()) return askName(); ask('Log this action?', () => actionFile(V, { id: newId('a'), org: ev.target.dataset.org, person: $('#a-person').value || null, kind: $('#a-kind').value, direction: $('#a-dir').value, at: $('#a-at').value, by: me(), summary: $('#a-sum').value, logged_at: nowIso() })); });
+  $('#log-action')?.addEventListener('submit', (ev) => { ev.preventDefault(); if (!me()) return askName(); { const org = ev.target.dataset.org, person = $('#a-person').value || null, direction = $('#a-dir').value, warn = nudgeWarning(V, { org, person, direction }); ask(warn ? 'Reached before: log this anyway?' : 'Log this action?', () => { const files = actionFile(V, { id: newId('a'), org, person, kind: $('#a-kind').value, direction, at: $('#a-at').value, by: me(), summary: $('#a-sum').value, logged_at: nowIso() }); return warn ? { files, note: warn + ' Check this is not a second nudge before writing it.' } : files; }); } });
   $('#edit-lead')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Change this lead?', () => leadEditFile(V, ev.target.dataset.org, { stage: $('#l-stage').value, owner: $('#l-owner').value.trim(), next_step: $('#l-next').value.trim(), next_step_due: $('#l-due').value, at: nowIso() })); });
   $('#add-org')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Add this company?', () => companyFiles(V, { id: newId('o'), name: $('#o-name').value, domain: $('#o-domain').value, kind: $('#o-kind').value, next_step: $('#o-next').value.trim(), owner: me(), at: nowIso() })); });
   checkKeys();
