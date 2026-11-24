@@ -1,14 +1,14 @@
 {
   "slug": "05-agents-in-parallel",
-  "site_version": "v0.1.39 · f0b0f69 · 2026-11-24",
+  "site_version": "v0.1.42 · 212ba88 · 2026-11-24",
   "clock": "2026-11-24T10:00:00Z",
   "scenes": 14,
   "screens": {
     "s-22fbf2e5b7330a93.webp": "977fb7c85b02696b486608e8d945c63f14db48f9b5ec23c11c839e3450e6f47b",
-    "s-a999dc0c5e364352.webp": "20022792f52065f0f87e7b8e90d89f16db16a2cf326ed30a31e28a074f2a5380",
+    "s-4817d5fb8930c69c.webp": "d8562874fa9e8496705446ad3c237baa4ac06c0877157eaf244fdf1de3608f60",
     "s-af4182197ac0b44f.webp": "a56d93fee50e65e9f80b758da5318af52643ee3f07b2616fe05028731584e0dd"
   },
-  "scenes_json_sha256": "e9a646bbe586ef0ccdd143f16d246eb86eb48bcb8163ab0c19e9924039001d0b",
+  "scenes_json_sha256": "ef547e04a070594422694eedb35354ecebac5a62e45e9716ea5ee8e7e19d6b83",
   "made_by": "a.crm.studio@SovereignWebsite.dinis",
   "tool": "studio/capture.mjs"
 }

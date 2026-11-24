@@ -30,7 +30,7 @@
     },
     {
       "mark": "main a[href$=\"template.csv\"]",
-      "caption": "Start from the template: it has every column. Only the company is required, and empty cells stay empty: nothing is guessed.",
+      "caption": "Start from the template: it has every column, including where we met. Only the company is required, and empty cells stay empty: nothing is guessed.",
       "seconds": 7
     },
     {
@@ -38,7 +38,7 @@
         {
           "fill": [
             "#i-text",
-            "company,domain,kind,person,email,role,stage,owner,next_step,next_step_due,last_contact_date,last_contact_kind,last_contact_direction,last_contact_summary\nExample Foundry (demo),foundry.example.com,prospect,Ana Sample,ana.sample@foundry.example.com,CTO,new,Owner A,Send the intro deck,2026-11-30,2026-11-20,email,out,Intro after the meetup\nExample Foundry (demo),foundry.example.com,prospect,Ben Sample,ben.sample@foundry.example.com,CISO,,,,,,,,\nExample Ventures (demo),ventures.example.net,,Carla Sample,carla.sample@ventures.example.net,Analyst,,,,,,,,\n,,,Dan Sample,dan.sample@nowhere.example.org,,,,,,,,,\n"
+            "company,domain,kind,person,email,role,met,stage,owner,next_step,next_step_due,last_contact_date,last_contact_kind,last_contact_direction,last_contact_summary\nExample Foundry (demo),foundry.example.com,prospect,Ana Sample,ana.sample@foundry.example.com,CTO,Web Summit 2026 (made up),new,Owner A,Send the intro deck,2026-11-30,2026-11-20,email,out,Intro after the meetup\nExample Foundry (demo),foundry.example.com,prospect,Ben Sample,ben.sample@foundry.example.com,CISO,,,,,,,,,\nExample Ventures (demo),ventures.example.net,,Carla Sample,carla.sample@ventures.example.net,Analyst,,,,,,,,,\n,,,Dan Sample,dan.sample@nowhere.example.org,,,,,,,,,,\n"
           ]
         }
       ],

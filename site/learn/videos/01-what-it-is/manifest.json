@@ -1,16 +1,16 @@
 {
   "slug": "01-what-it-is",
-  "site_version": "v0.1.39 · f0b0f69 · 2026-11-24",
+  "site_version": "v0.1.41 · ed34781 · 2026-11-24",
   "clock": "2026-11-24T10:00:00Z",
   "scenes": 12,
   "screens": {
     "s-a999dc0c5e364352.webp": "20022792f52065f0f87e7b8e90d89f16db16a2cf326ed30a31e28a074f2a5380",
     "s-0f104cb13aca4117.webp": "175b8937852482861e3c9c770decd67b7186e969190a1db1e69975b6965abfaa",
-    "s-b48163c9cd25af49.webp": "a50604138ac3737de00a1dc6c93e5b06bfc42c7187c621cde8005cdd20b4bdc0",
+    "s-857a470d6eb76c2a.webp": "607bf3ac6d008cbe36acce720345185b2513b06be547cf7d649ad1247ebec1a0",
     "s-630e08951a19ee25.webp": "9eee696450b5f0efd36d89dae5a135b596b44d9ac6df1d5d3d66dad59e274e38",
     "s-712361b3582b7607.webp": "d822b28092117536d2f63272374260681432dd5b9ff8b3c4d1f6a14f0f2ffda9"
   },
-  "scenes_json_sha256": "15007c82704f81315fe1e73b1bbb40e771caef0d425966cd44bb2f2b21e7177a",
+  "scenes_json_sha256": "75c704a81b2c0a4ad5399b92252363c8e4a85a352350b2d47768ee3468edc88a",
   "made_by": "a.crm.studio@SovereignWebsite.dinis",
   "tool": "studio/capture.mjs"
 }

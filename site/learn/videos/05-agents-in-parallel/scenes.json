@@ -2,7 +2,7 @@
  "slug": "05-agents-in-parallel",
  "title": "How the agents build the CRM in parallel",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.39 · f0b0f69 · 2026-11-24",
+ "site_version": "v0.1.42 · 212ba88 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -308,7 +308,7 @@
     "w": 1068,
     "h": 60
    },
-   "screen": "s-a999dc0c5e364352.webp"
+   "screen": "s-4817d5fb8930c69c.webp"
   },
   {
    "caption": "It works the other way too. Scripting an explainer, a.crm.studio found Follow-ups ignoring logged replies. The fix shipped at 14:23, as 548ae6e.",

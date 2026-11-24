@@ -1,0 +1,119 @@
+{
+ "slug": "11-add-people",
+ "title": "Adding a company and a person",
+ "site": "https://crm.tool.sovereignweb.site",
+ "site_version": "v0.1.41 · ed34781 · 2026-11-24",
+ "clock": "2026-11-24T10:00:00Z",
+ "width": 1280,
+ "height": 720,
+ "seconds": 66,
+ "presenter": "Studio",
+ "scenes": [
+  {
+   "caption": "Add a company to the lead board, then the people you deal with there, and where you met them.",
+   "seconds": 6,
+   "card": {
+    "title": "Adding a company and a person",
+    "sub": "A company on the lead board, then the people you deal with there, and where you met them.",
+    "foot": "Demo mode: every company, person and email here is made up, at reserved example domains."
+   }
+  },
+  {
+   "caption": "On the lead board, open Add a company: its name, its domain, its kind and the next step. Only the name is required.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 295,
+    "w": 560,
+    "h": 416
+   },
+   "screen": "s-cafae73fcd9f27dd.webp"
+  },
+  {
+   "caption": "Here, a made-up investor: Example Harbour, at harbour.example.com, next step: send the deck.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 295,
+    "w": 560,
+    "h": 416
+   },
+   "screen": "s-734b224470c4a5ee.webp"
+  },
+  {
+   "caption": "Show what will be written shows the two files it adds: the company, and its row on the lead board, at stage New.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 124,
+    "w": 1068,
+    "h": 592
+   },
+   "screen": "s-75bc99bbcfcac7ce.webp"
+  },
+  {
+   "caption": "Write it, and the company is on the lead board.",
+   "seconds": 5,
+   "box": {
+    "x": 106,
+    "y": 379,
+    "w": 1068,
+    "h": 61
+   },
+   "screen": "s-7747332121e3e2e8.webp"
+  },
+  {
+   "caption": "On the company's page, open Add a person: name, email, role, and where we met.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 302,
+    "w": 560,
+    "h": 414
+   },
+   "screen": "s-f40d820cbae0c59c.webp"
+  },
+  {
+   "caption": "Where we met is optional, and worth filling in: here, Web Summit 2026.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 302,
+    "w": 560,
+    "h": 414
+   },
+   "screen": "s-c4875c9caf7fdc92.webp"
+  },
+  {
+   "caption": "Show what will be written, then Write it: one file for the person, linked to the company.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 124,
+    "w": 1068,
+    "h": 518
+   },
+   "screen": "s-1ad0c36ad966f379.webp"
+  },
+  {
+   "caption": "The person is on the company's page, with met at Web Summit 2026, and No key yet until you add theirs.",
+   "seconds": 7,
+   "box": {
+    "x": 124,
+    "y": 344,
+    "w": 1050,
+    "h": 32
+   },
+   "screen": "s-3721cdc75b9c8569.webp"
+  },
+  {
+   "caption": "Enter only people you have a reason to keep in touch with, and only what they shared with you.",
+   "seconds": 6,
+   "card": {
+    "title": "Only what they shared",
+    "sub": "Enter only people you have a reason to keep in touch with, and only what they shared with you.",
+    "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+   }
+  }
+ ]
+}

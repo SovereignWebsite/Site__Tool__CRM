@@ -2,7 +2,7 @@
  "slug": "07-verified-keys",
  "title": "Verified keys on people",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.39 · f0b0f69 · 2026-11-24",
+ "site_version": "v0.1.42 · 212ba88 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -38,7 +38,7 @@
     "w": 1050,
     "h": 32
    },
-   "screen": "s-cfd324cb47df72c2.webp"
+   "screen": "s-771818a1fd49a132.webp"
   },
   {
    "caption": "Add their key: drop the QR code Rui sent you from their You page, or paste its text. Only add a key you got from them directly.",
@@ -49,7 +49,7 @@
     "w": 1050,
     "h": 458
    },
-   "screen": "s-a9ad952355095c86.webp"
+   "screen": "s-c972941dc8ee12a3.webp"
   },
   {
    "caption": "Here, Rui's key text, pasted and hidden, and how it reached you: their key text.",
@@ -60,7 +60,7 @@
     "w": 1050,
     "h": 458
    },
-   "screen": "s-de64bbf5f2f35b09.webp"
+   "screen": "s-23de71094f81c697.webp"
   },
   {
    "caption": "The page checks it and shows what will be written: Rui's key and its fingerprint, signed for by you. The file's contents are hidden here.",
@@ -77,12 +77,12 @@
    "caption": "Write it, and Rui shows Verified key, with the start of its fingerprint.",
    "seconds": 6,
    "box": {
-    "x": 547,
+    "x": 686,
     "y": 349,
-    "w": 161,
+    "w": 170,
     "h": 22
    },
-   "screen": "s-0bed9ef0018dc02a.webp"
+   "screen": "s-1a6a45d0efdf9064.webp"
   },
   {
    "caption": "Contacts has a Key column: who has a verified key, and who has none yet.",
@@ -93,7 +93,7 @@
     "w": 1068,
     "h": 65
    },
-   "screen": "s-18dc6379df817efd.webp"
+   "screen": "s-dab4594869acec3d.webp"
   },
   {
    "caption": "A key you verified yourself is how you know who you are sending to, without trusting anyone in between.",

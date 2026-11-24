@@ -2,7 +2,7 @@
  "slug": "06-log-in",
  "title": "Logging in, and the QR key hand-over",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.39 · f0b0f69 · 2026-11-24",
+ "site_version": "v0.1.42 · 212ba88 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -27,7 +27,7 @@
     "w": 560,
     "h": 128
    },
-   "screen": "s-111f6d885116d835.webp"
+   "screen": "s-58ac854953efc097.webp"
   },
   {
    "caption": "Here, a made-up name: Sam Sample.",
@@ -38,7 +38,7 @@
     "w": 560,
     "h": 128
    },
-   "screen": "s-daad5f95c6f1dc36.webp"
+   "screen": "s-cbe60287442d4374.webp"
   },
   {
    "caption": "Your browser makes its own key. Its private half never leaves this browser and cannot be copied out. Its fingerprint is hidden here.",
@@ -82,7 +82,7 @@
     "w": 1068,
     "h": 24
    },
-   "screen": "s-c299cb7cc142c54a.webp"
+   "screen": "s-43752ef810ddd445.webp"
   },
   {
    "caption": "The top right always says which vault is open. Press it to switch, or to go back to the demo.",
@@ -93,7 +93,7 @@
     "w": 117,
     "h": 44
    },
-   "screen": "s-c299cb7cc142c54a.webp"
+   "screen": "s-43752ef810ddd445.webp"
   },
   {
    "caption": "On a shared or borrowed computer, use Log out of this browser when you finish.",
@@ -104,7 +104,7 @@
     "w": 154,
     "h": 36
    },
-   "screen": "s-c299cb7cc142c54a.webp"
+   "screen": "s-43752ef810ddd445.webp"
   },
   {
    "caption": "A vault's key opens everything in it. Share it only through the sealed codes, never in a chat or an email.",
