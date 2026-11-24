@@ -64,36 +64,85 @@ code{font-size:.9em}main a,main code{overflow-wrap:anywhere}
 </style>
 <link rel="stylesheet" href="/app/brand/site-frame.css">
 <style id="home-css">
-main.home{max-width:72rem}
+/* a.crm.design's home.css (home round 1), as published at design.agents.sovereignweb.site/designs/crm-tool/adopt/home.css */
+/* The CRM tool's home page (https://crm.tool.sovereignweb.site/), a.crm.design, 24 Nov 2026.
+   For crm.dev.a: replace the contents of <style id="home-css"> with this file (it keeps every class name).
+   What it changes: the hero screenshot is cropped to the Today list so it can be read; the first three features lead
+   and the rest step back; "Your contacts stay yours" carries the brand's shapes; on a phone the learning path is a
+   swipeable strip instead of 14 stacked cards (the page was 9,180 px tall at 390 px). */
+main.home { max-width: 72rem; }
+.top { max-width: 72rem; }
+.home section { margin: 3.5rem 0; }
+.home h2 { font-size: clamp(1.5rem, 3.5vw, 2rem); margin: 0 0 1rem; }
+.home h3 { font-size: 1.05rem; margin: 0 0 .35rem; color: var(--fg); }
+.home .small { font-size: .9rem; }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 2.5rem; align-items: center; margin-top: 1rem !important; }
+.hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.08; margin: .4rem 0 1rem; }
+.lede { font-size: 1.15rem; color: var(--fg); }
+.cta { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.4rem 0 .6rem; }
+.btn { display: inline-flex; align-items: center; min-height: 48px; padding: .55rem 1.3rem; border-radius: 10px; background: var(--accent); color: var(--bg) !important; font-weight: 700; text-decoration: none; border: 2px solid var(--accent); }
+.btn.quiet { background: transparent; color: var(--accent) !important; }
+/* The screenshot, cropped to the top-left of Today so its lines read at this size; the whole image is one tap away. */
+.hero-shot { margin: 0; position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 18px 50px rgba(0, 0, 0, .14); background: #fbfaf7; }
+.hero-shot img { display: block; width: 175%; max-width: none; height: auto; margin: -1% 0 0 -12%; border: 0; border-radius: 0; box-shadow: none; }
+.hero-shot::after { content: ""; position: absolute; inset: auto 0 0 0; height: 18%; background: linear-gradient(to bottom, rgba(251, 250, 247, 0), #fbfaf7); pointer-events: none; }
+
+/* What it does: the first three lead, the rest are a compact second row. */
+.feats, .three, .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
+.feats { grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); }
+.feat, .three li { border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem 1.2rem; display: flex; flex-direction: column; background: var(--bg); }
+.feat p, .three p { margin: 0 0 .8rem; flex: 1; }
+.feat a { font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
+@media (min-width: 52.01rem) {
+  .feats { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .feat { grid-column: span 2; }
+  .feat:nth-child(-n+3) { border-top: 4px solid var(--accent); }
+  .feat:nth-child(-n+3) h3 { font-size: 1.25rem; font-family: var(--serif); }
+  .feat:nth-child(n+4) { grid-column: span 2; padding: .9rem 1rem; }
+  .feat:nth-child(n+4) p { font-size: .95rem; }
+}
+
+/* Your contacts stay yours: each promise with a shape from the brand. */
+.yours { background: color-mix(in srgb, var(--accent) 7%, var(--bg)); border-radius: 16px; padding: 1.6rem; border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); }
+.three { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+.three li h3 { display: flex; align-items: center; gap: .5rem; }
+.three li h3::before { content: ""; width: 14px; height: 16px; flex: none; background: var(--accent); }
+.three li:nth-child(1) h3::before { clip-path: polygon(50% 0, 100% 18%, 100% 58%, 50% 100%, 0 58%, 0 18%); }  /* shield */
+.three li:nth-child(2) h3::before { border-radius: 50% 50% 2px 2px; width: 12px; }                                /* key bow */
+.three li:nth-child(3) h3::before { clip-path: polygon(0 0, 70% 0, 100% 30%, 100% 100%, 0 100%); }              /* page */
+
+/* The learning path */
+.steps { grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); }
+.steps img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); aspect-ratio: 1200 / 630; object-fit: cover; }
+.step a { display: flex; flex-direction: column; gap: .3rem; text-decoration: none; color: var(--fg); height: 100%; padding-bottom: .4rem; }
+.step a:hover strong { text-decoration: underline; }
+.step .n { font-size: .8rem; color: var(--accent); font-weight: 700; margin-top: .3rem; }
+.step .k { font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.step strong { line-height: 1.3; }
+.step.noimg a { justify-content: center; border: 2px solid var(--accent); border-radius: 12px; padding: 1rem; min-height: 8rem; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 52rem) {
+  .hero { grid-template-columns: 1fr; gap: 1.5rem; }
+  .hero-shot { aspect-ratio: 5 / 4; }
+  .hero-shot img { width: 230%; margin-left: -17%; }
+}
+/* Phone: a tighter first screen; the learning path as a swipeable strip (each card is a link, so the keyboard reaches
+   every one and the strip scrolls to it). */
+@media (max-width: 40rem) {
+  .top { padding-top: 1.2rem; }
+  main.home { padding-top: 1.5rem; }
+  .home section { margin: 2.5rem 0; }
+  .cta .btn { flex: 1 1 100%; justify-content: center; }
+  .steps { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 72%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: .6rem; overscroll-behavior-x: contain; }
+  .step { scroll-snap-align: start; }
+  .step.noimg a { min-height: 100%; }
+}
+@media (prefers-reduced-motion: no-preference) { .steps { scroll-behavior: smooth; } }
+
 .top{max-width:72rem}
-.home section{margin:3.5rem 0}
-.home h2{font-size:clamp(1.5rem,3.5vw,2rem);margin:0 0 1rem}
-.home h3{font-size:1.05rem;margin:0 0 .35rem;color:var(--fg)}
-.home .small{font-size:.9rem}
-.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:2.5rem;align-items:center;margin-top:1rem!important}
-.hero h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.08;margin:.4rem 0 1rem}
-.lede{font-size:1.15rem}
-.hero-shot{margin:0}
-.hero-shot img,.steps img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);box-shadow:0 18px 50px rgba(0,0,0,.14)}
-.cta{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.4rem 0 .6rem}
-.btn{display:inline-flex;align-items:center;min-height:44px;padding:.5rem 1.2rem;border-radius:999px;background:var(--accent);color:var(--bg)!important;font-weight:600;text-decoration:none;border:2px solid var(--accent)}
-.btn.quiet{background:transparent;color:var(--accent)!important}
-.feats,.three,.steps{list-style:none;padding:0;margin:0;display:grid;gap:1rem}
-.feats{grid-template-columns:repeat(auto-fill,minmax(16rem,1fr))}
-.feat,.three li{border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.2rem;display:flex;flex-direction:column}
-.feat p,.three p{margin:0 0 .8rem;flex:1}
-.feat a{font-weight:600;min-height:44px;display:inline-flex;align-items:center}
-.three{grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
-.yours{background:rgba(127,127,127,.06);border-radius:16px;padding:1.6rem}
-.steps{grid-template-columns:repeat(auto-fill,minmax(13rem,1fr))}
-.step a{display:flex;flex-direction:column;gap:.3rem;text-decoration:none;color:var(--fg);height:100%;padding-bottom:.4rem}
-.step img{box-shadow:none;aspect-ratio:1200/630;object-fit:cover}
-.step .n{font-size:.8rem;color:var(--accent);font-weight:700;margin-top:.3rem}
-.step .k{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.step strong{line-height:1.3}
-.step.noimg a{justify-content:center;border:2px solid var(--accent);border-radius:12px;padding:1rem;min-height:8rem}
-.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media (max-width:52rem){.hero{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -130,10 +179,19 @@ main.home{max-width:72rem}
 <div class="mark">SovereignWeb.site CRM</div>
 <h1>Many small CRMs, each in its own encrypted vault</h1>
 <p class="lede">Companies, people, every action taken with them, and what needs you today. It runs in your browser and opens your vault with your own keys: this site never sees your contacts.</p>
-<p class="cta"><a class="btn" href="/app/">Try the demo</a> <a class="btn quiet" href="/learn/">Learn it in fourteen steps</a></p>
+<p class="cta"><a class="btn" href="/app/">Try the demo</a> <a class="btn quiet" href="/learn/videos/01-what-it-is/">Watch the 1-minute tour</a></p>
 <p class="small">No sign-up. The demo is made up, at reserved example domains; nothing you do there is written anywhere.</p>
 </div>
 <figure class="hero-shot"><img src="/assets/home-today.jpg" alt="The CRM's Today page: one line per company, overdue first, each with its next step and one button" width="1800" height="1125"></figure>
+</section>
+
+<section class="yours">
+<h2>Your contacts stay yours</h2>
+<ul class="three">
+<li><h3>An encrypted vault per CRM</h3><p>Every company, person, action and key is a file in a small sgit vault. The vault service holds only encrypted bytes.</p></li>
+<li><h3>Your keys, in your browser</h3><p>Your browser makes its own key pair, behind your passkey. Its private half cannot leave the browser, not even to this page.</p></li>
+<li><h3>A static site, nothing else</h3><p>No server code, no cookies, no tracking, no database. Every change is shown to you before it is written.</p></li>
+</ul>
 </section>
 
 <section>
@@ -150,14 +208,7 @@ main.home{max-width:72rem}
 </ul>
 </section>
 
-<section class="yours">
-<h2>Your contacts stay yours</h2>
-<ul class="three">
-<li><h3>An encrypted vault per CRM</h3><p>Every company, person, action and key is a file in a small sgit vault. The vault service holds only encrypted bytes.</p></li>
-<li><h3>Your keys, in your browser</h3><p>Your browser makes its own key pair, behind your passkey. Its private half cannot leave the browser, not even to this page.</p></li>
-<li><h3>A static site, nothing else</h3><p>No server code, no cookies, no tracking, no database. Every change is shown to you before it is written.</p></li>
-</ul>
-</section>
+
 
 <section>
 <h2>Learn it, one step after another</h2>
@@ -167,17 +218,8 @@ main.home{max-width:72rem}
 <li class="step"><a href="/learn/videos/01-what-it-is/"><img src="/learn/videos/01-what-it-is/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">2</span><span class="k">Explainer</span><strong>The CRM, and its demo</strong></a></li>
 <li class="step noimg"><a href="/how-to/"><span class="n">3</span><span class="k">Guide</span><strong>How to use the CRM</strong></a></li>
 <li class="step"><a href="/learn/videos/11-add-people/"><img src="/learn/videos/11-add-people/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">4</span><span class="k">Explainer</span><strong>Adding a company and a person</strong></a></li>
-<li class="step"><a href="/learn/videos/06-log-in/"><img src="/learn/videos/06-log-in/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">5</span><span class="k">Explainer</span><strong>Logging in, and the QR key hand-over</strong></a></li>
-<li class="step"><a href="/learn/videos/02-today-and-actions/"><img src="/learn/videos/02-today-and-actions/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">6</span><span class="k">Explainer</span><strong>Today, and logging an action</strong></a></li>
-<li class="step"><a href="/learn/videos/03-follow-ups/"><img src="/learn/videos/03-follow-ups/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">7</span><span class="k">Explainer</span><strong>Follow-ups</strong></a></li>
-<li class="step"><a href="/learn/videos/09-outbox/"><img src="/learn/videos/09-outbox/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">8</span><span class="k">Explainer</span><strong>Writing an email, and signing it off</strong></a></li>
-<li class="step"><a href="/learn/videos/04-import/"><img src="/learn/videos/04-import/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">9</span><span class="k">Explainer</span><strong>Importing a spreadsheet</strong></a></li>
-<li class="step"><a href="/learn/videos/07-verified-keys/"><img src="/learn/videos/07-verified-keys/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">10</span><span class="k">Explainer</span><strong>Verified keys on people</strong></a></li>
-<li class="step"><a href="/learn/videos/05-agents-in-parallel/"><img src="/learn/videos/05-agents-in-parallel/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">11</span><span class="k">Explainer</span><strong>How the agents build the CRM in parallel</strong></a></li>
-<li class="step"><a href="/learn/videos/08-requests/"><img src="/learn/videos/08-requests/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">12</span><span class="k">Explainer</span><strong>Asking the CRM&#x27;s agent for something</strong></a></li>
-<li class="step"><a href="/learn/videos/10-for-you/"><img src="/learn/videos/10-for-you/share.jpg" alt="" width="1200" height="630" loading="lazy"><span class="n">13</span><span class="k">Explainer</span><strong>For you: questions from the agents</strong></a></li>
-<li class="step noimg"><a href="/app/"><span class="n">14</span><span class="k">The app</span><strong>Open the CRM</strong></a></li>
 </ol>
+<p><a href="/learn/">All 14 steps →</a></p>
 <p class="cta"><a class="btn" href="/learn/overview/">Start with the presentation</a> <a class="btn quiet" href="/how-to/">Or read the guide</a></p>
 </section>
 
