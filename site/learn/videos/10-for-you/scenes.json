@@ -2,7 +2,7 @@
  "slug": "10-for-you",
  "title": "For you: questions from the agents",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.42 · 212ba88 · 2026-11-24",
+ "site_version": "v0.1.44 · ed7f471 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -82,7 +82,7 @@
     "w": 238,
     "h": 44
    },
-   "screen": "s-409edc864db4beb1.webp"
+   "screen": "s-239ab6d8134323d5.webp"
   },
   {
    "caption": "The question is sealed to you and the answer signed by you. That is the CRM: open it, and start on Today.",

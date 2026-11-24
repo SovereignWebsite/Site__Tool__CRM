@@ -1,17 +1,17 @@
 {
   "slug": "09-outbox",
-  "site_version": "v0.1.42 · 212ba88 · 2026-11-24",
+  "site_version": "v0.1.44 · ed7f471 · 2026-11-24",
   "clock": "2026-11-24T10:00:00Z",
   "scenes": 8,
   "screens": {
     "s-c871639c23d774c6.webp": "1142cb77ea64dbb4a42fbeb9dbae4ff495a6bb3d362902a31260d7117788288f",
-    "s-4e9a0cfe4c07b6d5.webp": "5087a059c38dbf574034acfc10aede031f6494cb68dbc69bc6a26e4ff3833b6c",
+    "s-135ae9cb3fe3f068.webp": "5087a059c38dbf574034acfc10aede031f6494cb68dbc69bc6a26e4ff3833b6c",
     "s-0ce66897509f46f4.webp": "2c893bc25aa2727a261398eb19d9ab37a26fb97c3a16c0f21adeae1205ad0054",
-    "s-b8f52b8cedfb9c27.webp": "86566963cd6d03b9af50ed01f49b89b7301fdb11fa04c4eb487fc71750b63004",
+    "s-365d65f11456be84.webp": "812fc96eb1a4ff44122e9649a0a235a3c761ba6c73ddfe0cca01c0f006ce0085",
     "s-af943f3266fb7502.webp": "8d131a58b0cce026720e692fe79324cc23e6e3b1db8a8103371a0d8e8b0150eb",
-    "s-9389aa3fc5d97b91.webp": "db3e11790a108344c99744240020922c2624ceb1b56bae0d4475ac5ac2878cf7"
+    "s-03ac5b3b46398452.webp": "c579494f6c091520d858ec7abc480049ed09b18d78388afec2133709755f32b1"
   },
-  "scenes_json_sha256": "585f6a253c08c6580ea2250eda92e3951fe6a24139354e61ccc9b9d920a0cb54",
+  "scenes_json_sha256": "a258612999ea0e61a73cbc97462e415d4e9c5f32898e9938aa31c83fd10aaae0",
   "made_by": "a.crm.studio@SovereignWebsite.dinis",
   "tool": "studio/capture.mjs"
 }

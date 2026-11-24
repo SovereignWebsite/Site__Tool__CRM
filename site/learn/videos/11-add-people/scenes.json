@@ -2,7 +2,7 @@
  "slug": "11-add-people",
  "title": "Adding a company and a person",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.43 · b268bfc · 2026-11-24",
+ "site_version": "v0.1.44 · ed7f471 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -104,7 +104,7 @@
     "w": 1050,
     "h": 32
    },
-   "screen": "s-af6f8d2124cdfb5f.webp"
+   "screen": "s-5abf6912a06ba722.webp"
   },
   {
    "caption": "Enter only people you have a reason to keep in touch with, and only what they shared with you.",

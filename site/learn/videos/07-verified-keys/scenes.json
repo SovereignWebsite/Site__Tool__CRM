@@ -2,7 +2,7 @@
  "slug": "07-verified-keys",
  "title": "Verified keys on people",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.42 · 212ba88 · 2026-11-24",
+ "site_version": "v0.1.44 · ed7f471 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -79,10 +79,10 @@
    "box": {
     "x": 686,
     "y": 349,
-    "w": 170,
+    "w": 162,
     "h": 22
    },
-   "screen": "s-1a6a45d0efdf9064.webp"
+   "screen": "s-e8c468467eb25aac.webp"
   },
   {
    "caption": "Contacts has a Key column: who has a verified key, and who has none yet.",
@@ -93,7 +93,7 @@
     "w": 1068,
     "h": 65
    },
-   "screen": "s-dab4594869acec3d.webp"
+   "screen": "s-6fa9a707786e435f.webp"
   },
   {
    "caption": "A key you verified yourself is how you know who you are sending to, without trusting anyone in between.",

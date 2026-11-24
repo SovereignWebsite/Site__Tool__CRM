@@ -2,7 +2,7 @@
  "slug": "03-follow-ups",
  "title": "Follow-ups",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.41 · ed34781 · 2026-11-24",
+ "site_version": "v0.1.44 · ed7f471 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -27,7 +27,7 @@
     "w": 1068,
     "h": 211
    },
-   "screen": "s-857a470d6eb76c2a.webp"
+   "screen": "s-187b1f5644399acd.webp"
   },
   {
    "caption": "Example Data Lab: we sent the draft agreement on 8 November, and there has been no reply for 15 days.",
@@ -38,7 +38,7 @@
     "w": 1068,
     "h": 44
    },
-   "screen": "s-857a470d6eb76c2a.webp"
+   "screen": "s-187b1f5644399acd.webp"
   },
   {
    "caption": "Say Bruno has just called back. Log the follow-up opens the company on Log an action.",
@@ -49,7 +49,7 @@
     "w": 1068,
     "h": 196
    },
-   "screen": "s-40c92e1ef9e343a1.webp"
+   "screen": "s-9b603bee12ec3345.webp"
   },
   {
    "caption": "A call, they replied, Bruno Teixeira, and one line on what happened.",
@@ -60,7 +60,7 @@
     "w": 1068,
     "h": 196
    },
-   "screen": "s-130d3de57a50977f.webp"
+   "screen": "s-ca96004bd7dbf919.webp"
   },
   {
    "caption": "Show what will be written shows the file. Then Write it.",
@@ -82,7 +82,7 @@
     "w": 1068,
     "h": 167
    },
-   "screen": "s-52e56f2561d8d0db.webp"
+   "screen": "s-ff0a6d0d0669d8bb.webp"
   },
   {
    "caption": "Example Security: our email on their question about pricing, 9 days without a reply. This time we chase them.",
@@ -93,7 +93,7 @@
     "w": 1068,
     "h": 43
    },
-   "screen": "s-52e56f2561d8d0db.webp"
+   "screen": "s-ff0a6d0d0669d8bb.webp"
   },
   {
    "caption": "We chase by email: an email, we reached out, to Hugo Brandt.",
@@ -104,7 +104,7 @@
     "w": 1068,
     "h": 196
    },
-   "screen": "s-7902ebe063240862.webp"
+   "screen": "s-2228730d10200cce.webp"
   },
   {
    "caption": "Example Security leaves Follow-ups too. Our new email restarts the clock: if they stay quiet, it comes back in 5 days.",
@@ -115,7 +115,7 @@
     "w": 1068,
     "h": 124
    },
-   "screen": "s-5c27ad5d397a1ca0.webp"
+   "screen": "s-b79d4363bf02d0ff.webp"
   },
   {
    "caption": "Next: writing an email, and signing it off.",
