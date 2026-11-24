@@ -170,13 +170,20 @@ button.quiet { border: 2px solid var(--accent); }
 
 /* ---- Round 1 on the live app (a.crm.design, 24 Nov 2026): fixes for crm.dev.a's four points. ---- */
 
-/* 1. The header fits one row down to 1180 px; below that the pages move to their own row, the vault pill stays top right. */
+/* 1. The header fits one row down to 1280 px; below that the pages move to their own row, the vault pill stays top right. */
 .bar { gap: 10px; }
 .bar nav { gap: 2px; }
 .bar nav a { padding: 6px 9px; font-size: 15px; white-space: nowrap; }
 #me { white-space: nowrap; }
-@media (min-width: 641px) and (max-width: 1180px) {
+@media (min-width: 641px) and (max-width: 1279px) {
   .bar nav { order: 5; flex-basis: 100%; }
+}
+/* Ten pages (with Outbox): a tighter step between 1280 and 1400 px keeps one row, even with the long labels. */
+@media (min-width: 1280px) and (max-width: 1400px) {
+  .bar { gap: 8px; }
+  .bar nav a { padding: 6px 6px; font-size: 14px; }
+  #me { font-size: 12px; padding-inline: 8px; }
+  button.mode, #mode { padding-inline: 10px; font-size: 14px; }
 }
 
 /* On a phone the vault pill stays on the first row, top right; the name button moves below it. */
