@@ -43,6 +43,7 @@ export function readVault(files) {
     leads: under(files, 'crm/leads/'),
     links: under(files, 'crm/links/'),
     actions: under(files, 'crm/actions/'),
+    keys: under(files, 'crm/keys/'),
   };
 }
 
@@ -68,6 +69,14 @@ export function checkCrm(v) {
     if (a.schema !== 'crm.action/1') errors.push(`action ${a.id}: schema is not crm.action/1`);
     if (!orgs.has(a.org)) errors.push(`action ${a.id}: no such org ${a.org}`);
     if (a.person != null && !people.has(a.person)) errors.push(`action ${a.id}: no such person ${a.person}`);
+  }
+  const keyFps = new Map();
+  for (const k of v.keys || []) {
+    if (k.schema !== 'crm.key/1') errors.push(`key ${k.person}: schema is not crm.key/1`);
+    if (!people.has(k.person)) errors.push(`key ${k.person}: no such person`);
+    if (!FPK.test(k.fp || '') || !K1.test(k.code || '')) errors.push(`key ${k.person}: not a key in its shape`);
+    if (keyFps.has(k.fp)) errors.push(`key ${k.person}: the same key as ${keyFps.get(k.fp)}'s`);
+    keyFps.set(k.fp, k.person);
   }
   for (const k of v.links) {
     if (k.schema !== 'crm.link/1') errors.push(`link ${k.thread}: schema is not crm.link/1`);
@@ -214,7 +223,7 @@ export function contacts(v) {
   return v.people.map((p) => {
     const mine = v.threads.filter((t) => t.person === p.id || (t.participants || []).some((a) => (p.emails || []).includes(a)));
     const dates = mine.map((t) => lastMessage(v, t)?.date || t.last_date).sort();
-    return { id: p.id, name: p.name, email: (p.emails || [])[0] || null, role: p.role || null, org: p.org, org_name: orgName.get(p.org) || null, threads: mine.length, last_contact: dates.at(-1) || null };
+    return { id: p.id, name: p.name, email: (p.emails || [])[0] || null, role: p.role || null, org: p.org, org_name: orgName.get(p.org) || null, key_fp: (v.keys || []).find((k) => k.person === p.id)?.fp || null, threads: mine.length, last_contact: dates.at(-1) || null };
   }).sort((a, b) => a.name.localeCompare(b.name));
 }
 
@@ -288,6 +297,30 @@ export function newVaultFiles({ owner, at, name = '' }) {
     { path: 'crm/stages.json', text: JSON.stringify({ schema: 'crm.stages/1', stages: STAGES }, null, 2) + '\n' },
   ];
 }
+
+// Verified keys (Dinis Cruz, 24 Nov 2026: "When I give you a QR code, you should be actually connecting that QR code
+// with the person ... each contact ... should then have a QR code that we have verified"). crm/keys/<person-id>.json,
+// crm.key/1: { person, code (their pki.sgit.ai k1 key code), fp (its signing fingerprint), enc_fp, label, how ('qr' or
+// 'text', how it reached us), verified_by (a name), verified_at, verifier (the verifier's own k1 code), verifier_fp, sig }.
+// sig is the verifier's ECDSA P-256 signature (base64, P1363) over the record without sig, in pki.sgit.ai's canonical
+// statement form (keys.js canonicalBytes). The model checks the shape; the page checks the keys and the signature.
+// One record per person: a new key replaces the old one, and the vault's history keeps the old.
+const FPK = /^sha256:[0-9a-f]{16}$/, K1 = /^k1\.[A-Za-z0-9_-]{100,1200}\.[A-Za-z0-9_-]{60,200}\.[A-Za-z0-9_-]{0,200}$/;
+export function keyRecord(v, { person, code, fp, enc_fp, label = '', how, verified_by, verified_at, verifier, verifier_fp }) {
+  if (!v.people.some((p) => p.id === person)) throw new Error(`no such person ${person}`);
+  if (!K1.test(code || '')) throw new Error('not a pki.sgit.ai key code');
+  if (!FPK.test(fp || '') || !FPK.test(enc_fp || '')) throw new Error('a key needs both its fingerprints');
+  if (!['qr', 'text'].includes(how)) throw new Error('how the key came must be qr or text');
+  if (!verified_by) throw new Error('a verified key needs the name of who verified it');
+  if (!ISO.test(verified_at || '')) throw new Error('needs the time, as an ISO time');
+  if (!K1.test(verifier || '') || !FPK.test(verifier_fp || '')) throw new Error('needs the verifier\'s own key: log in on the You page');
+  if (verifier_fp === fp) throw new Error('that is your own key');
+  const other = (v.keys || []).find((k) => k.fp === fp && k.person !== person);
+  if (other) throw new Error(`that key is already ${v.people.find((p) => p.id === other.person)?.name || other.person}'s`);
+  return { schema: 'crm.key/1', person, code, fp, enc_fp, label: String(label).slice(0, 80), how, verified_by, verified_at, verifier, verifier_fp };
+}
+export const keyFile = (record) => ({ path: `crm/keys/${record.person}.json`, record, text: JSON.stringify(record, null, 2) + '\n' });
+export const personKey = (v, person) => (v.keys || []).find((k) => k.person === person) || null;
 
 // Actions: each thing the team does with a contact, logged by hand (Dinis, 24 Nov 2026: the team needs "a centralised
 // place to put each contact and each action taken with them"). crm/actions/<id>.json, crm.action/1:

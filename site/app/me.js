@@ -11,6 +11,8 @@
 import { identity, existingIdentity, publicQrText, publicCode, openSealed, keep, recall, forget } from './pki.js';
 import { TRUSTED } from './trusted.js';
 import qrcode from './vendor/qrcode-generator/2.0.4/qrcode.mjs';
+import { checkBundle, canonicalBytes, verifyStatement, b64 } from './vendor/pki/v0.2.28/keys.js';
+import { parseKeyCode, parseQrText, keyCode } from './vendor/pki/v0.2.28/message.js';
 
 const LABEL = () => 'CRM tool, ' + location.host;
 const PASSKEY = 'crm.passkey';          // the credential id (not a secret), in this browser only
@@ -52,7 +54,8 @@ export async function logIn(name) {
 }
 export async function myKey() {
   const id = await existingIdentity(); if (!id) return null;
-  const text = publicQrText(id), qr = qrcode(0, 'L'); qr.addData(text); qr.make();
+  // Level M, not L: jsQR (the fallback reader) misses this key's version-23 level-L code but reads level M (24 Nov 2026).
+  const text = publicQrText(id), qr = qrcode(0, 'M'); qr.addData(text); qr.make();
   return { fp: id.bundle.signing_fingerprint, text, code: publicCode(id), qr: qr.createDataURL(4, 8) };
 }
 
@@ -95,3 +98,37 @@ export async function receive(text, nameOf) {
 }
 export async function savedToken() { const id = await existingIdentity(); if (!id) return ''; await unlock(); return (await recall(id, 'token:sg-send').catch(() => null)) || ''; }
 export async function logOut() { for (const v of await vaults()) await forget('vault:' + v.id); await forget('vaults'); await forget('token:sg-send'); ls.del(PASSKEY); unlocked = false; }
+
+// Verified keys: a contact's public key, read from the QR code or key text they sent, checked, and signed for by this
+// browser's own key (the record is crm.key/1, made by crm.mjs keyRecord). The page checks every key it shows.
+export async function readTheirKey(text) {
+  let q; try { q = parseQrText(text); } catch (e) { q = null; }
+  if (q && q.kind !== 'key') throw new Error('that is a sealed message, not a key: open it on the You page');
+  const how = q ? (String(text).trim().startsWith('{') ? 'qr' : 'text') : 'text';
+  const bundle = await parseKeyCode(q ? q.code : text);
+  if (!bundle) throw new Error('no pki.sgit.ai key in it (a key code starts k1.)');
+  const bad = await checkBundle(bundle);
+  if (bad.length) throw new Error(bad.join('; '));
+  if (q?.fp && q.fp !== bundle.signing_fingerprint) throw new Error('the fingerprint on the QR code is not its key\'s: refused');
+  return { code: keyCode(bundle).code, fp: bundle.signing_fingerprint, enc_fp: bundle.fingerprint, label: bundle.label || q?.label || '', how };
+}
+// Sign a crm.key/1 record (without sig) with this browser's key: the person is asked for their passkey first.
+export async function signKeyRecord(record) {
+  await unlock();
+  const id = await existingIdentity(); if (!id) throw new Error('log in first, on the You page');
+  if (record.verifier_fp !== id.bundle.signing_fingerprint) throw new Error('the record names another verifier');
+  const sig = new Uint8Array(await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, id.sign, canonicalBytes(record)));
+  return { ...record, sig: b64(sig) };
+}
+export async function myVerifier() { const id = await existingIdentity(); return id ? { verifier: publicCode(id), verifier_fp: id.bundle.signing_fingerprint } : null; }
+// Is this record's signature good, and by whom? { ok, mine, trusted, why }. The verifier's key comes from the record
+// itself, so a good signature says the record is whole and who signed it; 'mine' and 'trusted' say whether we know them.
+export async function checkKeyRecord(rec) {
+  try {
+    const vb = await parseKeyCode(rec.verifier); if (!vb || vb.signing_fingerprint !== rec.verifier_fp) return { ok: false, why: 'the verifier\'s key does not match its fingerprint' };
+    const kb = await parseKeyCode(rec.code); if (!kb || kb.signing_fingerprint !== rec.fp || kb.fingerprint !== rec.enc_fp) return { ok: false, why: 'the key does not match its fingerprints' };
+    if (!(await verifyStatement(rec, vb.sign))) return { ok: false, why: 'the signature does not check' };
+    const id = await existingIdentity().catch(() => null);
+    return { ok: true, mine: id?.bundle.signing_fingerprint === rec.verifier_fp, trusted: TRUSTED.some((t) => t.bundle?.signing_fingerprint === rec.verifier_fp) };
+  } catch (e) { return { ok: false, why: e.message }; }
+}

@@ -4,7 +4,7 @@
 // person's own keys, in this browser only (vault.js); remembered keys are sealed to this browser's
 // own key with the Email Cell's pki.js keep/recall, unedited.
 // By crm.dev.a@AgentiCCells.dinis, 2026-11-23. Apache-2.0.
-import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedThreads, linkFile, companyFiles, personFile, newVaultFiles, newId, KINDS, actionFile, leadEditFile, timeline, ACTION_KINDS, importFiles, IMPORT_COLUMNS, theDay, FOLLOW_UP_DAYS } from './crm.mjs';
+import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedThreads, linkFile, companyFiles, personFile, newVaultFiles, newId, KINDS, actionFile, leadEditFile, timeline, ACTION_KINDS, importFiles, IMPORT_COLUMNS, theDay, FOLLOW_UP_DAYS, keyRecord, keyFile, personKey } from './crm.mjs';
 import { keyKind, openVault, readAll, merge, whyNotWritable, writeFiles, createCrmVault } from './vault.js';
 import { identity, existingIdentity, keep, recall, forget, kept } from './pki.js';
 import * as ME from './me.js';
@@ -217,7 +217,7 @@ function companyPage(id) {
   <h2>Activity</h2>${logActionForm(c)}
   <ul class="list timeline">${timeline(V, c.org).map((e) => `<li><span class="when">${day(e.at)}</span> <span class="badge">${esc(e.kind)}</span> ${e.direction === 'out' ? 'we reached out' : e.direction === 'in' ? '<strong>they replied</strong>' : 'note'}${e.person ? ' · ' + esc(who(e.person)) : ''} · ${esc(e.summary)}${e.by ? ` <span class="muted small">(${esc(e.by)})</span>` : ''}</li>`).join('') || '<li class="muted">Nothing logged yet.</li>'}</ul>
   <h2>People</h2>${addPersonForm(c.org)}
-  <ul class="list">${c.contacts.map((p) => `<li>${esc(p.name)} <span class="muted">${esc(p.role || '')} · ${esc((p.emails || [])[0] || '')}</span></li>`).join('') || '<li class="muted">None yet</li>'}</ul>
+  <ul class="list">${c.contacts.map((p) => `<li>${esc(p.name)} <span class="muted">${esc(p.role || '')} · ${esc((p.emails || [])[0] || '')}</span> ${keyMark(p)}</li>`).join('') || '<li class="muted">None yet</li>'}</ul>
   <h2>Mail threads</h2>
   <ul class="list">${c.threads.map((t) => `<li id="t-${esc(t.id)}"><strong>${esc(t.subject)}</strong> <span class="muted">${day(t.last_date)} · ${t.direction === 'outbound' ? 'we wrote last' : 'they wrote last'} · ${esc(who(t.person))} · ${t.linked ? 'linked' : 'matched by address'}</span> ${linkButton(t.id, t.linked ? null : c.org, t.person)}</li>`).join('') || '<li class="muted">None</li>'}</ul>
   <h2>Drafts</h2>
@@ -232,8 +232,8 @@ function followUpsPage() {
 }
 
 function contactsPage() {
-  return `<h1>Contacts</h1><div class="scroll"><table class="grid"><thead><tr><th>Name</th><th>Company</th><th>Role</th><th>Email</th><th>Threads</th><th>Last contact</th></tr></thead>
-  <tbody>${contacts(V).map((p) => `<tr><td>${esc(p.name)}</td><td><a href="#/company/${esc(p.org)}">${esc(p.org_name)}</a></td><td>${esc(p.role || '')}</td><td>${esc(p.email)}</td><td class="num">${p.threads}</td><td>${day(p.last_contact)}</td></tr>`).join('')}</tbody></table></div>`;
+  return `<h1>Contacts</h1><div class="scroll"><table class="grid"><thead><tr><th>Name</th><th>Company</th><th>Role</th><th>Email</th><th>Key</th><th>Threads</th><th>Last contact</th></tr></thead>
+  <tbody>${contacts(V).map((p) => `<tr><td>${esc(p.name)}</td><td><a href="#/company/${esc(p.org)}">${esc(p.org_name)}</a></td><td>${esc(p.role || '')}</td><td>${esc(p.email)}</td><td>${p.key_fp ? `<span class="badge key" data-keycheck="${esc(p.id)}" title="${esc(p.key_fp)}">Key ${esc(short(p.key_fp))}: checking…</span>` : '<span class="muted small">none</span>'}</td><td class="num">${p.threads}</td><td>${day(p.last_contact)}</td></tr>`).join('')}</tbody></table></div>`;
 }
 
 // Hand-made links. A press shows exactly what will be written; only a second press writes it, one
@@ -386,6 +386,30 @@ function logActionForm(c) {
     <button type="submit">Show what will be written</button> <span id="form-error" class="warn"></span></form></details>`;
 }
 
+// A person's key: the mark (checked after the page is drawn, see checkKeys) and, for a vault that can be written to,
+// a place to drop or paste the QR code or key text they sent. The record is signed with this browser's key.
+const short = (fp) => String(fp || '').replace('sha256:', '').slice(0, 8);
+function keyMark(p) {
+  const k = personKey(V, p.id);
+  const mark = k ? `<span class="badge key" data-keycheck="${esc(p.id)}" title="${esc(k.fp)}">Key ${esc(short(k.fp))}: checking…</span>` : '<span class="badge key-none">No key yet</span>';
+  if (!canEdit()) return mark;
+  return `${mark} <details class="add inline"><summary>${k ? 'Change their key' : 'Add their key'}</summary><form class="open add-key" data-person="${esc(p.id)}" autocomplete="off">
+    <p class="small">Drop or paste the QR code ${esc(p.first || p.name)} sent you from the You page, or paste its key text. Only add a key you got from them directly.</p>
+    <label class="small">Their QR code picture <input type="file" accept="image/*" data-keyfile="${esc(p.id)}"></label>
+    <label class="small">or its text <textarea rows="2" spellcheck="false" data-keytext="${esc(p.id)}"></textarea></label>
+    <label class="small">How it reached you <select data-keyhow="${esc(p.id)}"><option value="qr">their QR code</option><option value="text">their key text</option></select></label>
+    <button type="submit" class="small">Check it and show what will be written</button> <span class="warn" data-keyerr="${esc(p.id)}"></span></form></details>`;
+}
+async function checkKeys() {
+  for (const el of document.querySelectorAll('[data-keycheck]')) {
+    const k = personKey(V, el.dataset.keycheck); if (!k) continue;
+    const r = await ME.checkKeyRecord(k);
+    if (r.ok && (r.mine || r.trusted)) { el.textContent = `Verified key ✓ ${short(k.fp)}`; el.className = 'badge key-ok'; el.title = `${k.fp}, verified by ${r.mine ? 'you' : k.verified_by} on ${k.verified_at.slice(0, 10)}, from their ${k.how === 'qr' ? 'QR code' : 'key text'}`; }
+    else if (r.ok) { el.textContent = `Key ${short(k.fp)}, signed by ${k.verified_by}`; el.className = 'badge key-other'; el.title = `${k.fp}. Signed by ${k.verifier_fp}, a key this browser does not know: check with ${k.verified_by}.`; }
+    else { el.textContent = `Key ${short(k.fp)} does not check`; el.className = 'badge key-bad'; el.title = r.why; }
+  }
+}
+
 function addPersonForm(org) {
   if (!canEdit()) return '';
   return `<details class="add"><summary>Add a person</summary><form id="add-person" data-org="${esc(org)}" class="open" autocomplete="off">
@@ -393,6 +417,21 @@ function addPersonForm(org) {
     <label>Email <input id="p-email" type="email" required></label>
     <label>Role <span class="muted">(optional)</span> <input id="p-role"></label>
     <button type="submit">Show what will be written</button> <span id="form-error" class="warn"></span></form></details>`;
+}
+
+// A QR picture's text: the browser's BarcodeDetector where there is one, else jsQR (vendored, from the Email Cell).
+async function qrFromPicture(file) {
+  const bmp = await createImageBitmap(file); let t = null;
+  if ('BarcodeDetector' in window) { try { const c = await new BarcodeDetector({ formats: ['qr_code'] }).detect(bmp); if (c.length) t = c[0].rawValue; } catch {} }
+  // jsQR on a white margin, at the picture's size (at most 2000 px), then, for a small picture, at twice its size
+  // with sharp edges: a QR code straight from this page is small and jsQR misses its fine modules.
+  const big = Math.max(bmp.width, bmp.height), scales = [Math.min(1, 2000 / big), ...(big < 1000 ? [2] : [])];
+  for (const k of scales) { if (t || !window.jsQR) break;
+    const pad = 48, cv = document.createElement('canvas'); cv.width = Math.round(bmp.width * k) + 2 * pad; cv.height = Math.round(bmp.height * k) + 2 * pad;
+    const cx = cv.getContext('2d', { willReadFrequently: true }); cx.imageSmoothingEnabled = k < 1; cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(bmp, pad, pad, cv.width - 2 * pad, cv.height - 2 * pad);
+    const r = window.jsQR(cx.getImageData(0, 0, cv.width, cv.height).data, cv.width, cv.height); if (r) t = r.data; }
+  if (!t) throw new Error('no QR code found in that picture: try a sharper picture, or paste its text');
+  return t;
 }
 
 function wireActions() {
@@ -408,13 +447,8 @@ function wireActions() {
       if (!r.added.length) { st.className = 'warn'; st.textContent = `From ${r.from}, but there was no vault key in it.`; return; }
       JUST_ADDED = { vaults: r.added, from: r.from, note: r.note, token: r.token }; route();
     } catch (e) { st.className = 'warn'; st.textContent = 'Not opened: ' + e.message; } };
-  // A QR picture: read with the browser's BarcodeDetector where there is one, else jsQR (vendored, from the Email Cell).
   const fromPicture = async (file) => { const st = $('#rc-status');
-    try { st.className = 'muted'; st.textContent = 'Reading the QR code…'; const bmp = await createImageBitmap(file); let t = null;
-      if ('BarcodeDetector' in window) { try { const c = await new BarcodeDetector({ formats: ['qr_code'] }).detect(bmp); if (c.length) t = c[0].rawValue; } catch {} }
-      if (!t && window.jsQR) { const k = Math.min(1, 2000 / Math.max(bmp.width, bmp.height)), cv = document.createElement('canvas'); cv.width = Math.round(bmp.width * k); cv.height = Math.round(bmp.height * k); const pad = 48; cv.width += 2 * pad; cv.height += 2 * pad; const cx = cv.getContext('2d', { willReadFrequently: true }); cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(bmp, pad, pad, cv.width - 2 * pad, cv.height - 2 * pad); const r = window.jsQR(cx.getImageData(0, 0, cv.width, cv.height).data, cv.width, cv.height); if (r) t = r.data; }
-      if (!t) throw new Error('no QR code found in that picture: try a sharper picture, or paste its text');
-      await openCode(t);
+    try { st.className = 'muted'; st.textContent = 'Reading the QR code…'; await openCode(await qrFromPicture(file));
     } catch (e) { st.className = 'warn'; st.textContent = 'Not opened: ' + e.message; } };
   $('#receive')?.addEventListener('submit', (ev) => { ev.preventDefault(); openCode($('#rc-text').value); });
   $('#qrfile')?.addEventListener('change', (ev) => { const f = ev.target.files[0]; if (f) fromPicture(f); ev.target.value = ''; });
@@ -445,6 +479,16 @@ function wireActions() {
   $('#log-action')?.addEventListener('submit', (ev) => { ev.preventDefault(); if (!me()) return askName(); ask('Log this action?', () => actionFile(V, { id: newId('a'), org: ev.target.dataset.org, person: $('#a-person').value || null, kind: $('#a-kind').value, direction: $('#a-dir').value, at: $('#a-at').value, by: me(), summary: $('#a-sum').value, logged_at: nowIso() })); });
   $('#edit-lead')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Change this lead?', () => leadEditFile(V, ev.target.dataset.org, { stage: $('#l-stage').value, owner: $('#l-owner').value.trim(), next_step: $('#l-next').value.trim(), next_step_due: $('#l-due').value, at: nowIso() })); });
   $('#add-org')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Add this company?', () => companyFiles(V, { id: newId('o'), name: $('#o-name').value, domain: $('#o-domain').value, kind: $('#o-kind').value, next_step: $('#o-next').value.trim(), owner: me(), at: nowIso() })); });
+  checkKeys();
+  for (const f of document.querySelectorAll('[data-keyfile]')) f.addEventListener('change', async (ev) => { const file = ev.target.files[0], pid = f.dataset.keyfile; if (!file) return;
+    try { $(`[data-keytext="${pid}"]`).value = await qrFromPicture(file); $(`[data-keyhow="${pid}"]`).value = 'qr'; } catch (e) { $(`[data-keyerr="${pid}"]`).textContent = e.message; } });
+  for (const form of document.querySelectorAll('form.add-key')) form.addEventListener('submit', async (ev) => { ev.preventDefault(); const pid = form.dataset.person, err = $(`[data-keyerr="${pid}"]`);
+    if (!me()) return askName();
+    try { err.className = 'muted'; err.textContent = 'Checking…'; const got = await ME.readTheirKey($(`[data-keytext="${pid}"]`).value), mine = await ME.myVerifier();
+      if (!mine) throw new Error('log in first, on the You page: the key is signed for with your own');
+      const rec = await ME.signKeyRecord(keyRecord(V, { person: pid, ...got, how: $(`[data-keyhow="${pid}"]`).value, verified_by: me(), verified_at: nowIso(), ...mine }));
+      ask(`Record ${V.people.find((p) => p.id === pid)?.name}'s key?`, () => ({ files: [keyFile(rec)], note: `Key ${rec.fp}${rec.label ? ` (${rec.label})` : ''}, signed for by you (${rec.verifier_fp}).` }));
+    } catch (e) { err.className = 'warn'; err.textContent = 'Not added: ' + e.message; } });
   $('#add-person')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Add this person?', () => personFile(V, { id: newId('p'), name: $('#p-name').value, email: $('#p-email').value, role: $('#p-role').value, org: ev.target.dataset.org, by: me(), at: nowIso() })); });
   $('#nk-copy')?.addEventListener('click', () => { $('#nk').select(); navigator.clipboard?.writeText($('#nk').value).catch(() => {}); });
   $('#nk-done')?.addEventListener('click', () => { NEWKEY = null; route(); });

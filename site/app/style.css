@@ -86,3 +86,10 @@ button, .filters a, a.badge { min-height: 24px; }
 .drop.over { background: var(--chip); }
 @media (max-width: 760px) { .handover { grid-template-columns: 1fr; } .drop { min-height: 120px; } }
 .added { border: 2px solid var(--accent); border-radius: 10px; padding: 8px 16px 12px; margin: 12px 0; } button.big { font-size: 18px; padding: 10px 20px; min-height: 44px; }
+/* Verified keys on people */
+.badge.key-ok { background: var(--accent); color: var(--bg); }
+.badge.key-bad { background: var(--warn); color: var(--bg); }
+.badge.key-other { outline: 1px solid var(--warn); }
+.badge.key-none { background: transparent; color: var(--muted); outline: 1px dashed var(--line); }
+details.add.inline { display: inline-block; vertical-align: top; }
+details.add.inline[open] { display: block; margin: 6px 0 10px; }
