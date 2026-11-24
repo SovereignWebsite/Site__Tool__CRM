@@ -1,0 +1,112 @@
+{
+  "slug": "06-log-in",
+  "title": "Logging in, and the QR key hand-over",
+  "base": "https://crm.tool.sovereignweb.site",
+  "clock": "2026-11-24T10:00:00Z",
+  "seed": 42,
+  "share": 4,
+  "permissions": [
+    "clipboard-read",
+    "clipboard-write"
+  ],
+  "mask": [
+    "img.qr",
+    "main h1 + p code",
+    "#mykey"
+  ],
+  "scenes": [
+    {
+      "card": {
+        "title": "Logging in, and the QR key hand-over",
+        "sub": "Your browser makes its own key. You send its public half as a QR code, and get a vault back the same way.",
+        "foot": "A made-up person, Sam Sample. Their key and QR code are hidden: it is not a real key, and yours will differ."
+      },
+      "caption": "Your browser makes its own key. You send its public half as a QR code, and get a vault back the same way.",
+      "seconds": 7
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/me"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main form",
+      "caption": "Press You, type your name as the team knows you, and press Log in. Log in on the device you will use.",
+      "seconds": 7
+    },
+    {
+      "do": [
+        {
+          "fill": [
+            "#li-name",
+            "Sam Sample"
+          ]
+        }
+      ],
+      "mark": "main form",
+      "caption": "Here, a made-up name: Sam Sample.",
+      "seconds": 4
+    },
+    {
+      "do": [
+        {
+          "click": "main button:has-text(\"Log in\")"
+        },
+        {
+          "wait": "main h1:has-text(\"You:\")"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main h1 + p",
+      "caption": "Your browser makes its own key. Its private half never leaves this browser and cannot be copied out. Its fingerprint is hidden here.",
+      "seconds": 8
+    },
+    {
+      "mark": "section.give",
+      "caption": "On the left, 1. Send this: your key as a QR code, already copied for you (hidden here). Send it to Dinis on WhatsApp. It is public: it only lets someone seal things that this browser alone can open.",
+      "seconds": 10
+    },
+    {
+      "mark": "section.take",
+      "caption": "On the right, 2. Drop what you get back: when Dinis sends a QR code back, drop the picture there, or paste it anywhere on the page.",
+      "seconds": 8
+    },
+    {
+      "do": [
+        {
+          "scroll": "ul.vaults"
+        }
+      ],
+      "mark": "ul.vaults",
+      "scroll_by": 120,
+      "caption": "The page checks the code was signed by the CRM's agent and opens it. The vault then appears here, under Your vaults. Press Open.",
+      "seconds": 8
+    },
+    {
+      "mark": "#mode",
+      "stay": true,
+      "caption": "The top right always says which vault is open. Press it to switch, or to go back to the demo.",
+      "seconds": 6
+    },
+    {
+      "mark": "#logout",
+      "scroll_by": 0,
+      "caption": "On a shared or borrowed computer, use Log out of this browser when you finish.",
+      "seconds": 6
+    },
+    {
+      "card": {
+        "title": "Keep the key safe",
+        "sub": "A vault's key opens everything in it. Share it only through the sealed codes, never in a chat or an email.",
+        "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+      },
+      "caption": "A vault's key opens everything in it. Share it only through the sealed codes, never in a chat or an email.",
+      "seconds": 7
+    }
+  ]
+}

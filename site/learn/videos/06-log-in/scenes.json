@@ -1,0 +1,119 @@
+{
+ "slug": "06-log-in",
+ "title": "Logging in, and the QR key hand-over",
+ "site": "https://crm.tool.sovereignweb.site",
+ "site_version": "v0.1.27 · 998f815 · 2026-11-24",
+ "clock": "2026-11-24T10:00:00Z",
+ "width": 1280,
+ "height": 720,
+ "seconds": 71,
+ "presenter": "Studio",
+ "scenes": [
+  {
+   "caption": "Your browser makes its own key. You send its public half as a QR code, and get a vault back the same way.",
+   "seconds": 7,
+   "card": {
+    "title": "Logging in, and the QR key hand-over",
+    "sub": "Your browser makes its own key. You send its public half as a QR code, and get a vault back the same way.",
+    "foot": "A made-up person, Sam Sample. Their key and QR code are hidden: it is not a real key, and yours will differ."
+   }
+  },
+  {
+   "caption": "Press You, type your name as the team knows you, and press Log in. Log in on the device you will use.",
+   "seconds": 7,
+   "box": {
+    "x": 106,
+    "y": 264,
+    "w": 560,
+    "h": 128
+   },
+   "screen": "s-c86af4c077440a50.webp"
+  },
+  {
+   "caption": "Here, a made-up name: Sam Sample.",
+   "seconds": 4,
+   "box": {
+    "x": 106,
+    "y": 264,
+    "w": 560,
+    "h": 128
+   },
+   "screen": "s-ccecf223442771fc.webp"
+  },
+  {
+   "caption": "Your browser makes its own key. Its private half never leaves this browser and cannot be copied out. Its fingerprint is hidden here.",
+   "seconds": 8,
+   "box": {
+    "x": 106,
+    "y": 197,
+    "w": 1068,
+    "h": 20
+   },
+   "screen": "s-36187b0a48f5698d.webp"
+  },
+  {
+   "caption": "On the left, 1. Send this: your key as a QR code, already copied for you (hidden here). Send it to Dinis on WhatsApp. It is public: it only lets someone seal things that this browser alone can open.",
+   "seconds": 10,
+   "box": {
+    "x": 106,
+    "y": 110,
+    "w": 522,
+    "h": 606
+   },
+   "screen": "s-e5e781a63e788e7f.webp"
+  },
+  {
+   "caption": "On the right, 2. Drop what you get back: when Dinis sends a QR code back, drop the picture there, or paste it anywhere on the page.",
+   "seconds": 8,
+   "box": {
+    "x": 652,
+    "y": 110,
+    "w": 522,
+    "h": 571
+   },
+   "screen": "s-e5e781a63e788e7f.webp"
+  },
+  {
+   "caption": "The page checks the code was signed by the CRM's agent and opens it. The vault then appears here, under Your vaults. Press Open.",
+   "seconds": 8,
+   "box": {
+    "x": 106,
+    "y": 425,
+    "w": 1068,
+    "h": 24
+   },
+   "screen": "s-c97b74065c79840c.webp"
+  },
+  {
+   "caption": "The top right always says which vault is open. Press it to switch, or to go back to the demo.",
+   "seconds": 6,
+   "box": {
+    "x": 1147,
+    "y": 10,
+    "w": 117,
+    "h": 44
+   },
+   "screen": "s-c97b74065c79840c.webp"
+  },
+  {
+   "caption": "On a shared or borrowed computer, use Log out of this browser when you finish.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 519,
+    "w": 154,
+    "h": 36
+   },
+   "screen": "s-c97b74065c79840c.webp"
+  },
+  {
+   "caption": "A vault's key opens everything in it. Share it only through the sealed codes, never in a chat or an email.",
+   "seconds": 7,
+   "card": {
+    "title": "Keep the key safe",
+    "sub": "A vault's key opens everything in it. Share it only through the sealed codes, never in a chat or an email.",
+    "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+   }
+  }
+ ]
+}

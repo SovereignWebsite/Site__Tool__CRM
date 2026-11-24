@@ -2,7 +2,7 @@
  "slug": "04-import",
  "title": "Importing a spreadsheet",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.16 · 44ba0b4 · 2026-11-24",
+ "site_version": "v0.1.27 · 998f815 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -27,7 +27,7 @@
     "w": 1068,
     "h": 60
    },
-   "screen": "s-c0c30dcde4a2201a.webp"
+   "screen": "s-a22497bd1458468c.webp"
   },
   {
    "caption": "Start from the template: it has every column. Only the company is required, and empty cells stay empty: nothing is guessed.",
@@ -38,7 +38,7 @@
     "w": 174,
     "h": 20
    },
-   "screen": "s-c0c30dcde4a2201a.webp"
+   "screen": "s-a22497bd1458468c.webp"
   },
   {
    "caption": "Paste it, or choose the file. Here, four lines: two people at a new company, one person at a company we already have, and a line with no company.",
@@ -49,7 +49,7 @@
     "w": 560,
     "h": 210
    },
-   "screen": "s-13ce1fedc5790285.webp"
+   "screen": "s-9daba1ec56859fc9.webp"
   },
   {
    "caption": "Show what will be written says what it will add: 1 new company, 3 new people, 1 contact logged as an action.",
@@ -60,7 +60,7 @@
     "w": 1068,
     "h": 252
    },
-   "screen": "s-51ccae03c9cde6cd.webp"
+   "screen": "s-0442be3d960fa6fb.webp"
   },
   {
    "caption": "And any line it cannot use, with the reason: line 5 has no company, so it is skipped.",
@@ -71,7 +71,7 @@
     "w": 1068,
     "h": 252
    },
-   "screen": "s-51ccae03c9cde6cd.webp"
+   "screen": "s-0442be3d960fa6fb.webp"
   },
   {
    "caption": "Example Ventures was already here, matched by its domain: its person is added, and nothing already there is changed.",
@@ -82,7 +82,7 @@
     "w": 1068,
     "h": 252
    },
-   "screen": "s-51ccae03c9cde6cd.webp"
+   "screen": "s-0442be3d960fa6fb.webp"
   },
   {
    "caption": "Press Write it. The new company is on the lead board, with its stage, owner, last contact and next step from the sheet.",
@@ -93,7 +93,7 @@
     "w": 1068,
     "h": 61
    },
-   "screen": "s-3f620ddc12e611d0.webp"
+   "screen": "s-5b0a4a8235987436.webp"
   },
   {
    "caption": "One rule: enter only people you have a reason to keep in touch with, and only what they shared with you.",

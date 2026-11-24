@@ -26,34 +26,41 @@
     },
     {
       "n": 4,
+      "title": "Logging in, and the QR key hand-over",
+      "kind": "video",
+      "url": "/learn/videos/06-log-in/",
+      "about": "Log in on You, send your QR code, and drop the one you get back."
+    },
+    {
+      "n": 5,
       "title": "Today, and logging an action",
       "kind": "video",
       "url": "/learn/videos/02-today-and-actions/",
       "about": "An overdue company, a follow-up logged, and the next step set."
     },
     {
-      "n": 5,
+      "n": 6,
       "title": "Follow-ups",
       "kind": "video",
       "url": "/learn/videos/03-follow-ups/",
       "about": "The 5-day rule: what puts a company on the list and what takes it off."
     },
     {
-      "n": 6,
+      "n": 7,
       "title": "Importing a spreadsheet",
       "kind": "video",
       "url": "/learn/videos/04-import/",
       "about": "Bring your contacts in from a CSV file: what is matched, what is skipped."
     },
     {
-      "n": 7,
+      "n": 8,
       "title": "How the agents build the CRM in parallel",
       "kind": "video",
       "url": "/learn/videos/05-agents-in-parallel/",
       "about": "Who builds what, in which repository, and how work moves between the agents."
     },
     {
-      "n": 8,
+      "n": 9,
       "title": "Open the CRM",
       "kind": "app",
       "url": "/app/",

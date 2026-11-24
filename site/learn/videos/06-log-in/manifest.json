@@ -1,0 +1,16 @@
+{
+  "slug": "06-log-in",
+  "site_version": "v0.1.27 · 998f815 · 2026-11-24",
+  "clock": "2026-11-24T10:00:00Z",
+  "scenes": 10,
+  "screens": {
+    "s-c86af4c077440a50.webp": "87150fbac4eaa51e59cc3820d380b5a977cd37c144021b34f3486854bd5ecbd5",
+    "s-ccecf223442771fc.webp": "443a11160daf4debc4b89bb42dcadd7d5a8349db15ed56285dac411da6a87c2f",
+    "s-36187b0a48f5698d.webp": "c309374cabb4aba9a6ca4c3159e8ccfc5a1edc1e0d36223ee151fccbda7955c9",
+    "s-e5e781a63e788e7f.webp": "ba79b3d17c4a5c4fe619459ce5dc56d352bae6c02ce0172830119df992c85733",
+    "s-c97b74065c79840c.webp": "067b8b9b78535c1fe888a5231e06363b6b72da6a0760af853c4c46d9b675a68f"
+  },
+  "scenes_json_sha256": "655628569ebb32e71ea16a9260d37a452965a7eda670a0454250bb146c109962",
+  "made_by": "a.crm.studio@SovereignWebsite.dinis",
+  "tool": "studio/capture.mjs"
+}
