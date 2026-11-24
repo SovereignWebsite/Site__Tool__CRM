@@ -1,0 +1,149 @@
+{
+  "slug": "07-verified-keys",
+  "title": "Verified keys on people",
+  "base": "https://crm.tool.sovereignweb.site",
+  "clock": "2026-11-24T10:00:00Z",
+  "seed": 42,
+  "share": 5,
+  "permissions": [
+    "clipboard-read",
+    "clipboard-write"
+  ],
+  "mask": [
+    "img.qr:visible",
+    "#pending pre:visible",
+    "[data-keytext]:visible"
+  ],
+  "redact": [
+    "main h1 + p",
+    "#pending",
+    "span.badge.key-ok",
+    "main table"
+  ],
+  "scenes": [
+    {
+      "card": {
+        "title": "Verified keys on people",
+        "sub": "Record a person's key once you have it from them directly. Then the CRM shows who has a verified key.",
+        "foot": "Two made-up people: you are Sam Sample, and Rui Kowalski is a demo contact. Keys and fingerprints are hidden."
+      },
+      "caption": "Record a person's key once you have it from them directly. The CRM then shows who has a verified key.",
+      "seconds": 7
+    },
+    {
+      "do": [
+        {
+          "goto": "/app/#/me"
+        },
+        {
+          "fill": [
+            "#li-name",
+            "Sam Sample"
+          ]
+        },
+        {
+          "click": "main button:has-text(\"Log in\")"
+        },
+        {
+          "wait": "#mykey"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main h1",
+      "caption": "First, log in: the key is signed for with your own browser key. Here you are Sam Sample.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "hash": "#/company/o06"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main li:has-text(\"rui.kowalski@ventures.example.net\")",
+      "caption": "On a company's page, each person shows No key yet, or their verified key. Rui Kowalski has none.",
+      "seconds": 7
+    },
+    {
+      "do": [
+        {
+          "click": "main li:has-text(\"rui.kowalski@ventures.example.net\") >> text=Add their key"
+        }
+      ],
+      "mark": "main li:has-text(\"rui.kowalski@ventures.example.net\")",
+      "caption": "Add their key: drop the QR code Rui sent you from their You page, or paste its text. Only add a key you got from them directly.",
+      "seconds": 8,
+      "scroll_by": 60
+    },
+    {
+      "do": [
+        {
+          "keyfrom": {
+            "name": "Rui Kowalski",
+            "into": "[data-keytext=\"p06\"]"
+          }
+        },
+        {
+          "select": [
+            "[data-keyhow=\"p06\"]",
+            "text"
+          ]
+        }
+      ],
+      "mark": "main li:has-text(\"rui.kowalski@ventures.example.net\")",
+      "caption": "Here, Rui's key text, pasted and hidden, and how it reached you: their key text.",
+      "seconds": 7,
+      "scroll_by": 60
+    },
+    {
+      "do": [
+        {
+          "click": "form.add-key[data-person=\"p06\"] button[type=submit]"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "#pending",
+      "stay": true,
+      "caption": "The page checks it and shows what will be written: Rui's key and its fingerprint, signed for by you. The file's contents are hidden here.",
+      "seconds": 8
+    },
+    {
+      "do": [
+        {
+          "click": "#w-go"
+        }
+      ],
+      "mark": "span.badge.key-ok",
+      "caption": "Write it, and Rui shows Verified key, with the start of its fingerprint.",
+      "seconds": 6
+    },
+    {
+      "do": [
+        {
+          "hash": "#/contacts"
+        },
+        {
+          "top": true
+        }
+      ],
+      "mark": "main tr:has-text(\"Rui Kowalski\")",
+      "caption": "Contacts has a Key column: who has a verified key, and who has none yet.",
+      "seconds": 6
+    },
+    {
+      "card": {
+        "title": "Why it matters",
+        "sub": "A key you verified yourself is how you know who you are sending to, without trusting anyone in between.",
+        "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+      },
+      "caption": "A key you verified yourself is how you know who you are sending to, without trusting anyone in between.",
+      "seconds": 7
+    }
+  ]
+}

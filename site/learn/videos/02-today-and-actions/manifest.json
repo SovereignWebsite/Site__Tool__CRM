@@ -1,6 +1,6 @@
 {
   "slug": "02-today-and-actions",
-  "site_version": "v0.1.27 · 998f815 · 2026-11-24",
+  "site_version": "v0.1.28 · ecdcdae · 2026-11-24",
   "clock": "2026-11-24T10:00:00Z",
   "scenes": 13,
   "screens": {
@@ -10,11 +10,11 @@
     "s-9a65113ad87b61c3.webp": "2f58eb71b4ed5068fa7f4c512b2cb2a6d9dc75935cedf793426c381eaa452912",
     "s-f7f510ea4515aa85.webp": "37763f1eb9e8b9271ddc8ceeae63e6d1fad55e5edb0ce9ea81df91be514285bf",
     "s-78de2923dcd541aa.webp": "fe289e87c6e6d7533fdc053dadf82b4644ef3ea3d20d53a0ecf36c3a71e24140",
-    "s-0fa811cf37b3d04f.webp": "212273f57f240dc3f1c73fcd4c9fa162129a384e0122628dd20eb8f9ddc8a91b",
+    "s-86e847e3286eae2d.webp": "33b218df8ae92c3191b25982fb24dc74fb838ba275c382cdced251f7b5084899",
     "s-ac411776bd12c511.webp": "a2de6b292fedb9b11add8d6b11dbfabad43d7f99334352404bfa145d2f9e54bc",
     "s-5be28eb1bcf73daf.webp": "af88c4be51a27dadad79e72573740b82b3c11c92053a74aae43e2141dfc23997"
   },
-  "scenes_json_sha256": "2c9e0eef6808ad67e6db098932ebdfd34761c9ddfd571c7c34619d80d426f8bc",
+  "scenes_json_sha256": "e4b18cef691314d4cb1daab5b8d23302d3396b089e7689b84a23e2d7031098ce",
   "made_by": "a.crm.studio@SovereignWebsite.dinis",
   "tool": "studio/capture.mjs"
 }

@@ -1,0 +1,108 @@
+{
+ "slug": "07-verified-keys",
+ "title": "Verified keys on people",
+ "site": "https://crm.tool.sovereignweb.site",
+ "site_version": "v0.1.28 · ecdcdae · 2026-11-24",
+ "clock": "2026-11-24T10:00:00Z",
+ "width": 1280,
+ "height": 720,
+ "seconds": 62,
+ "presenter": "Studio",
+ "scenes": [
+  {
+   "caption": "Record a person's key once you have it from them directly. The CRM then shows who has a verified key.",
+   "seconds": 7,
+   "card": {
+    "title": "Verified keys on people",
+    "sub": "Record a person's key once you have it from them directly. Then the CRM shows who has a verified key.",
+    "foot": "Two made-up people: you are Sam Sample, and Rui Kowalski is a demo contact. Keys and fingerprints are hidden."
+   }
+  },
+  {
+   "caption": "First, log in: the key is signed for with your own browser key. Here you are Sam Sample.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 124,
+    "w": 1068,
+    "h": 60
+   },
+   "screen": "s-ce003a9b2c7744dd.webp"
+  },
+  {
+   "caption": "On a company's page, each person shows No key yet, or their verified key. Rui Kowalski has none.",
+   "seconds": 7,
+   "box": {
+    "x": 124,
+    "y": 344,
+    "w": 1050,
+    "h": 32
+   },
+   "screen": "s-cfd324cb47df72c2.webp"
+  },
+  {
+   "caption": "Add their key: drop the QR code Rui sent you from their You page, or paste its text. Only add a key you got from them directly.",
+   "seconds": 8,
+   "box": {
+    "x": 124,
+    "y": 202,
+    "w": 1050,
+    "h": 458
+   },
+   "screen": "s-a9ad952355095c86.webp"
+  },
+  {
+   "caption": "Here, Rui's key text, pasted and hidden, and how it reached you: their key text.",
+   "seconds": 7,
+   "box": {
+    "x": 124,
+    "y": 142,
+    "w": 1050,
+    "h": 458
+   },
+   "screen": "s-de64bbf5f2f35b09.webp"
+  },
+  {
+   "caption": "The page checks it and shows what will be written: Rui's key and its fingerprint, signed for by you. The file's contents are hidden here.",
+   "seconds": 8,
+   "box": {
+    "x": 106,
+    "y": 124,
+    "w": 1068,
+    "h": 558
+   },
+   "screen": "s-7a161c9da22b0397.webp"
+  },
+  {
+   "caption": "Write it, and Rui shows Verified key, with the start of its fingerprint.",
+   "seconds": 6,
+   "box": {
+    "x": 547,
+    "y": 349,
+    "w": 161,
+    "h": 22
+   },
+   "screen": "s-0bed9ef0018dc02a.webp"
+  },
+  {
+   "caption": "Contacts has a Key column: who has a verified key, and who has none yet.",
+   "seconds": 6,
+   "box": {
+    "x": 106,
+    "y": 441,
+    "w": 1068,
+    "h": 65
+   },
+   "screen": "s-f71ba3ce78f74a2f.webp"
+  },
+  {
+   "caption": "A key you verified yourself is how you know who you are sending to, without trusting anyone in between.",
+   "seconds": 7,
+   "card": {
+    "title": "Why it matters",
+    "sub": "A key you verified yourself is how you know who you are sending to, without trusting anyone in between.",
+    "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
+   }
+  }
+ ]
+}

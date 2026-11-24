@@ -2,7 +2,7 @@
  "slug": "02-today-and-actions",
  "title": "Today, and logging an action",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.27 · 998f815 · 2026-11-24",
+ "site_version": "v0.1.28 · ecdcdae · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -115,7 +115,7 @@
     "w": 1068,
     "h": 394
    },
-   "screen": "s-0fa811cf37b3d04f.webp"
+   "screen": "s-86e847e3286eae2d.webp"
   },
   {
    "caption": "Show what will be written, then Write it. The company now shows the new next step.",

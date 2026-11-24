@@ -54,13 +54,20 @@
     },
     {
       "n": 8,
+      "title": "Verified keys on people",
+      "kind": "video",
+      "url": "/learn/videos/07-verified-keys/",
+      "about": "Add a contact's key from the QR code they sent, checked and signed for with yours."
+    },
+    {
+      "n": 9,
       "title": "How the agents build the CRM in parallel",
       "kind": "video",
       "url": "/learn/videos/05-agents-in-parallel/",
       "about": "Who builds what, in which repository, and how work moves between the agents."
     },
     {
-      "n": 9,
+      "n": 10,
       "title": "Open the CRM",
       "kind": "app",
       "url": "/app/",
