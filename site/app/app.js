@@ -4,7 +4,7 @@
 // person's own keys, in this browser only (vault.js); remembered keys are sealed to this browser's
 // own key with the Email Cell's pki.js keep/recall, unedited.
 // By crm.dev.a@AgentiCCells.dinis, 2026-11-23. Apache-2.0.
-import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedThreads, linkFile, companyFiles, personFile, newVaultFiles, newId, KINDS, actionFile, leadEditFile, timeline, ACTION_KINDS, importFiles, IMPORT_COLUMNS, theDay, FOLLOW_UP_DAYS, keyRecord, keyFile, personKey, nudgeWarning } from './crm.mjs';
+import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedThreads, linkFile, companyFiles, personFile, newVaultFiles, newId, KINDS, actionFile, leadEditFile, timeline, ACTION_KINDS, importFiles, IMPORT_COLUMNS, theDay, FOLLOW_UP_DAYS, keyRecord, keyFile, personKey, nudgeWarning, outbox, outboxDraftFile, approvalFile } from './crm.mjs';
 import { keyKind, openVault, readAll, merge, whyNotWritable, writeFiles, createCrmVault } from './vault.js';
 import { identity, existingIdentity, keep, recall, forget, kept } from './pki.js';
 import * as ME from './me.js';
@@ -222,7 +222,7 @@ function companyPage(id) {
   <ul class="list">${c.contacts.map((p) => `<li>${esc(p.name)} <span class="muted">${esc(p.role || '')} · ${esc((p.emails || [])[0] || '')}</span> ${keyMark(p)}</li>`).join('') || '<li class="muted">None yet</li>'}</ul>
   <h2>Mail threads</h2>
   <ul class="list">${c.threads.map((t) => `<li id="t-${esc(t.id)}"><strong>${esc(t.subject)}</strong> <span class="muted">${day(t.last_date)} · ${t.direction === 'outbound' ? 'we wrote last' : 'they wrote last'} · ${esc(who(t.person))} · ${t.linked ? 'linked' : 'matched by address'}</span> ${linkButton(t.id, t.linked ? null : c.org, t.person)}</li>`).join('') || '<li class="muted">None</li>'}</ul>
-  <h2>Drafts</h2>
+  <h2>Drafts</h2>${writeEmailForm(c)}${outbox(V, c.org).length ? `<p><a href="#/outbox">${outbox(V, c.org).length} in the Outbox →</a></p>` : ''}
   <ul class="list">${c.drafts.map((d) => `<li><strong>${esc(d.subject)}</strong> <span class="muted">to ${esc((d.to || []).join(', '))} · ${esc(d.status)}</span>${d.status === 'draft' ? ` <a href="${esc(sendLink(d.person))}">Review and send (demo) →</a>` : ''}</li>`).join('') || '<li class="muted">None</li>'}</ul>`;
 }
 
@@ -231,6 +231,32 @@ function followUpsPage() {
   return `<h1>Follow-ups</h1><p class="muted">Where we reached out last (by email, or a logged email, LinkedIn message, call or meeting) and there has been no reply in ${FOLLOW_UP_DAYS} days or more.</p>
   <div class="scroll"><table class="grid"><thead><tr><th>Days</th><th>Company</th><th>Person</th><th>What we sent</th><th>Sent</th><th><span class="sr-only">Action</span></th></tr></thead>
   <tbody>${list.map((f) => `<tr><td class="num">${f.days}</td><td>${f.org ? `<a href="#/company/${esc(f.org)}">${esc(orgName(f.org))}</a>` : '–'}</td><td>${esc(V.people.find((p) => p.id === f.person)?.name || '–')}</td><td>${esc(f.subject)}</td><td>${day(f.sent)}</td><td>${f.org ? `<a class="button small" href="#/company/${esc(f.org)}?log=1">Log the follow-up</a>` : ''}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+// The outbox (demo until Dinis approves C9): drafts written here in the signed-batch format, signed off with this
+// browser's key for one batch, and sent later by the Email Cell's page, which checks each sign-off again.
+let BATCH_ID = null;
+function outboxPage() {
+  const rows = outbox(V), who = (pid) => V.people.find((p) => p.id === pid)?.name || pid, org = (id) => V.orgs.find((o) => o.id === id)?.name || id;
+  const label = { draft: 'Not signed off', approved: 'Signed off', sent: 'Sent' };
+  return `<h1>Outbox</h1>
+  <p>Emails written here wait for your sign-off. You sign each one with this browser's key, for one batch; the Email Cell's page checks every signature again and sends the batch on one press. Write a new email from a company's page.</p>
+  <p class="muted small">${MODE === 'demo' ? 'Demo: nothing is written anywhere and nothing is sent.' : 'Sending from the Email Cell waits for Dinis\'s decision (C9); until then the outbox only holds drafts and sign-offs.'}${BATCH_ID ? ` This batch: <code>${esc(BATCH_ID)}</code>.` : ''}</p>
+  <div class="scroll"><table class="grid"><thead><tr><th>To</th><th>Company</th><th>Subject</th><th>State</th><th></th></tr></thead>
+  <tbody>${rows.map((r) => `<tr><td>${esc(who(r.draft.crm?.person))}</td><td><a href="#/company/${esc(r.draft.crm?.org)}">${esc(org(r.draft.crm?.org))}</a></td><td>${esc(r.draft.subject)}</td>
+    <td><span class="badge" data-apcheck="${esc(r.draft.id)}">${label[r.state]}${r.sent?.simulation ? ' (simulated)' : ''}</span></td>
+    <td>${r.state === 'sent' ? '' : `<button type="button" class="small" data-approve="${esc(r.draft.id)}">${r.state === 'approved' ? 'Sign off again' : 'Sign off'}</button>`}</td></tr>
+    <tr class="sub"><td colspan="5"><details><summary>Show the email</summary><pre>${esc('To: ' + r.draft.to.join(', ') + '\nSubject: ' + r.draft.subject + '\n\n' + r.draft.text)}</pre></details></td></tr>`).join('') || '<tr><td colspan="5" class="muted">No emails yet.</td></tr>'}</tbody></table></div>
+  <p id="ob-status" class="muted" role="status"></p>`;
+}
+function writeEmailForm(c) {
+  if (!canEdit() || !c.contacts.length) return '';
+  return `<details class="add"><summary>Write an email</summary><form id="write-email" data-org="${esc(c.org)}" class="open" autocomplete="off">
+    <label>To <select id="e-person">${c.contacts.map((p) => `<option value="${esc(p.id)}">${esc(p.name)} (${esc((p.emails || [])[0] || 'no email')})</option>`).join('')}</select></label>
+    <label>Subject <input id="e-subject" required></label>
+    <label>Text <textarea id="e-text" rows="6" required></textarea></label>
+    <button type="submit">Show what will be written</button> <span id="form-error" class="warn"></span>
+    <p class="muted small">It goes to the Outbox, to be signed off and sent later from the Email Cell. Nothing is sent from here.</p></form></details>`;
 }
 
 function contactsPage() {
@@ -483,6 +509,12 @@ function wireActions() {
   $('#edit-lead')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Change this lead?', () => leadEditFile(V, ev.target.dataset.org, { stage: $('#l-stage').value, owner: $('#l-owner').value.trim(), next_step: $('#l-next').value.trim(), next_step_due: $('#l-due').value, at: nowIso() })); });
   $('#add-org')?.addEventListener('submit', (ev) => { ev.preventDefault(); ask('Add this company?', () => companyFiles(V, { id: newId('o'), name: $('#o-name').value, domain: $('#o-domain').value, kind: $('#o-kind').value, next_step: $('#o-next').value.trim(), owner: me(), at: nowIso() })); });
   checkKeys();
+  $('#write-email')?.addEventListener('submit', (ev) => { ev.preventDefault(); if (!me()) return askName(); const org = ev.target.dataset.org, person = $('#e-person').value, warn = nudgeWarning(V, { org, person, direction: 'out' });
+    ask(warn ? 'Reached before: write this email anyway?' : 'Write this email to the Outbox?', () => { const files = outboxDraftFile(V, { id: newId('d'), org, person, subject: $('#e-subject').value, text: $('#e-text').value, created_at: nowIso(), created_by: me() }); return warn ? { files, note: warn } : files; }); });
+  for (const b of document.querySelectorAll('[data-approve]')) b.addEventListener('click', async () => { const st = $('#ob-status'); const d = V.outbox.find((x) => x.id === b.dataset.approve);
+    try { st.className = 'muted'; st.textContent = 'Signing…'; BATCH_ID = BATCH_ID || ME.newBatchId(); const a = await ME.approveDraft(d, BATCH_ID); ask(`Sign off "${d.subject}" for batch ${BATCH_ID}?`, () => ({ files: [approvalFile(a)], note: `Signed by your key ${a.key_fingerprint} over the draft's exact content (sha256 ${a.draft_sha256.slice(0, 16)}…). The Email Cell sends it only in this batch, and only if your key is pinned there.` })); }
+    catch (e) { st.className = 'warn'; st.textContent = 'Not signed: ' + e.message; } });
+  for (const el of document.querySelectorAll('[data-apcheck]')) { const r = outbox(V).find((x) => x.draft.id === el.dataset.apcheck); if (r?.state === 'approved') ME.checkApproval(r.draft, r.approved).then((c) => { if (!c.hashOk) { el.textContent = 'Changed after sign-off'; el.className = 'badge key-bad'; } else if (c.ok && c.mine) { el.textContent = 'Signed off by you ✓'; el.className = 'badge key-ok'; } else { el.textContent = 'Signed off (another key)'; el.className = 'badge key-other'; } }); }
   // Each .grid cell carries its column's heading as data-label: on a phone the table stacks and the label prints first.
   for (const t of document.querySelectorAll('table.grid')) { const heads = [...t.querySelectorAll('thead th')].map((h) => h.textContent.trim());
     for (const tr of t.querySelectorAll('tbody tr')) [...tr.children].forEach((td, i) => { if (heads[i] && !td.hasAttribute('colspan')) td.dataset.label = heads[i]; }); }
@@ -511,7 +543,7 @@ function wireActions() {
 async function route() {
   const [path, query] = (location.hash.slice(1) || '/today').split('?');
   const [, page, id] = path.split('/');
-  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'today' ? todayPage() : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'me' ? await mePage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : board();
+  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'today' ? todayPage() : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'me' ? await mePage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : page === 'outbox' ? outboxPage() : board();
   $('#main').innerHTML = newKeyPanel() + pendingPanel() + body;
   if (page === 'open') wireOpen();
   wireActions();

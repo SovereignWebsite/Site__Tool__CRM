@@ -36,7 +36,12 @@ export function readVault(files) {
     mailbox: files['mail/mailbox.json'] ? json(files['mail/mailbox.json']) : null,
     orgs: under(files, 'orgs/'),
     people: under(files, 'people/'),
-    drafts: under(files, 'drafts/'),
+    // drafts/: the twin's own drafts (any shape but v:1), the outbox drafts (v:1, the signed-batch format agreed with
+    // mail.dev.a and a.mail.conductor, 24 Nov 2026) and their sign-offs (drafts/<id>.approved.json); sent/: what the cell sent.
+    drafts: Object.keys(files).filter((p) => p.startsWith('drafts/') && p.endsWith('.json') && !p.endsWith('.approved.json')).sort().map((p) => json(files[p])).filter((d) => d.v !== 1),
+    outbox: Object.keys(files).filter((p) => /^drafts\/[^/]+\.json$/.test(p) && !p.endsWith('.approved.json')).sort().map((p) => json(files[p])).filter((d) => d.v === 1),
+    approvals: Object.keys(files).filter((p) => /^drafts\/[^/]+\.approved\.json$/.test(p)).sort().map((p) => json(files[p])),
+    sent: under(files, 'sent/'),
     threads: under(files, 'mail/threads/'),
     messages,
     stages: files['crm/stages.json'] ? json(files['crm/stages.json']).stages : STAGES,
@@ -363,8 +368,39 @@ export function timeline(v, org) {
   const idx = index(v);
   const acts = (v.actions || []).filter((a) => a.org === org).map((a) => ({ type: 'action', at: a.at, time: actionTime(a), kind: a.kind, direction: a.direction, by: a.by, person: a.person || null, summary: a.summary, id: a.id }));
   const mail = v.threads.filter((t) => threadOrg(v, t, idx)?.org === org).map((t) => { const m = lastMessage(v, t); return m && { type: 'mail', at: m.date, time: Date.parse(m.date), kind: 'email', direction: m.direction === 'outbound' ? 'out' : 'in', person: threadOrg(v, t, idx).person, summary: t.subject, id: t.id }; }).filter(Boolean);
-  return [...acts, ...mail].sort((a, b) => b.time - a.time);
+  const byId = new Map((v.outbox || []).map((d) => [d.id, d]));
+  const sent = (v.sent || []).map((r) => ({ r, d: byId.get(r.draft_id) })).filter(({ d }) => d && d.crm?.org === org)
+    .map(({ r, d }) => ({ type: 'sent', at: r.sent_at, time: Date.parse(r.sent_at), kind: 'email', direction: 'out', person: d.crm.person || null, summary: d.subject + (r.simulation ? ' (simulated send)' : ''), id: d.id }));
+  return [...acts, ...mail, ...sent].sort((a, b) => b.time - a.time);
 }
+
+// The outbox: drafts in the signed-batch format, each with its latest sign-off and its send, if any.
+// state: 'draft' (not signed off), 'approved' (signed off, not sent) or 'sent'.
+export function outbox(v, org = null) {
+  return (v.outbox || []).filter((d) => !org || d.crm?.org === org).map((d) => {
+    const approved = (v.approvals || []).filter((a) => a.draft_id === d.id).sort((a, b) => String(b.signed_at).localeCompare(String(a.signed_at)))[0] || null;
+    const sent = (v.sent || []).find((r) => r.draft_id === d.id) || null;
+    return { draft: d, approved, sent, state: sent ? 'sent' : approved ? 'approved' : 'draft' };
+  }).sort((a, b) => String(b.draft.created_at).localeCompare(String(a.draft.created_at)));
+}
+
+// A new outbox draft for one person: drafts/<id>.json, v:1. One To address, no Cc, no Bcc; attachments come later.
+export function outboxDraftFile(v, { id, org, person, subject, text, in_reply_to = '', send_after = '', created_at, created_by }) {
+  subject = String(subject || '').trim(); text = String(text || '');
+  const p = v.people.find((x) => x.id === person);
+  if (!v.orgs.some((o) => o.id === org)) throw new Error(`no such company ${org}`);
+  if (!p || p.org !== org) throw new Error('choose a person at this company');
+  const to = (p.emails || [])[0];
+  if (!to || !EMAIL.test(to)) throw new Error(`${p.name} has no email address`);
+  if (!subject) throw new Error('an email needs a subject');
+  if (!text.trim()) throw new Error('an email needs some text');
+  if (send_after && !ISO.test(send_after)) throw new Error('send after must be an ISO time');
+  if (!ISO.test(created_at || '')) throw new Error('needs the time, as an ISO time');
+  if (!created_by) throw new Error('set your name first (top right)');
+  const d = { v: 1, id, crm: { org, person }, to: [to], subject, text: text.endsWith('\n') ? text : text + '\n', attachments: [], ...(in_reply_to ? { in_reply_to } : {}), ...(send_after ? { send_after } : {}), created_at, created_by };
+  return [{ path: `drafts/${id}.json`, record: d, text: JSON.stringify(d, null, 2) + '\n' }];
+}
+export const approvalFile = (a) => ({ path: `drafts/${a.draft_id}.approved.json`, record: a, text: JSON.stringify(a, null, 2) + '\n' });
 
 // Reached before? (Dinis, 24 Nov 2026, via a.maestro: "people I sent a nudge ... because I don't want to send a nudge to
 // people that [I nudged] before".) Every time we reached out to this person (or, with no person, to the company): logged

@@ -132,3 +132,22 @@ export async function checkKeyRecord(rec) {
     return { ok: true, mine: id?.bundle.signing_fingerprint === rec.verifier_fp, trusted: TRUSTED.some((t) => t.bundle?.signing_fingerprint === rec.verifier_fp) };
   } catch (e) { return { ok: false, why: e.message }; }
 }
+
+// Outbox sign-off: this browser's key signs a draft for one batch, with mail.dev.a's own approve() (vendored unedited),
+// so the cell's verifyApproval() checks exactly these bytes. The person is asked for their passkey first.
+import * as BATCH from './batch.js';
+export async function approveDraft(draft, batchId) {
+  await unlock();
+  const id = await existingIdentity(); if (!id) throw new Error('log in first, on the You page');
+  const spki = BATCH.pemToSpki ? BATCH.pemToSpki(id.bundle.sign) : Uint8Array.from(atob(String(id.bundle.sign).replace(/-----[^-]+-----|\s/g, '')), (c) => c.charCodeAt(0));
+  return BATCH.approve(id.sign, spki, draft, batchId);
+}
+// Is this sign-off good for this draft, by this browser's key? (The cell checks again, against the keys pinned there.)
+export async function checkApproval(draft, approved) {
+  const id = await existingIdentity().catch(() => null); if (!id || !approved) return { ok: false, mine: false };
+  const spki = Uint8Array.from(atob(String(id.bundle.sign).replace(/-----[^-]+-----|\s/g, '')), (c) => c.charCodeAt(0));
+  const pinned = [{ fingerprint: id.bundle.signing_fingerprint, spki, name: 'you' }];
+  const r = await BATCH.verifyApproval(draft, approved, pinned, approved.batch_id);
+  return { ...r, mine: approved.key_fingerprint === id.bundle.signing_fingerprint, hashOk: approved.draft_sha256 === await BATCH.draftHash(draft) };
+}
+export const newBatchId = () => BATCH.newBatchId();
