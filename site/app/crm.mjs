@@ -137,12 +137,13 @@ export function followUps(v, now, days = FOLLOW_UP_DAYS) {
   return out.sort((a, b) => b.days - a.days || String(a.thread || a.action).localeCompare(String(b.thread || b.action)));
 }
 
-// Draft state of a company: from drafts/ for its people. 'sent' if any was sent, else 'draft' if any
-// waits, else 'none'.
+// Draft state of a company: from drafts/ for its people. 'draft' if any waits, else 'sent' if any was sent, else 'none'.
 export function draftState(v, orgId) {
   const ds = v.drafts.filter((d) => (d.org ?? v.people.find((p) => p.id === d.person)?.org) === orgId);
-  if (ds.some((d) => d.status === 'sent')) return { state: 'sent', count: ds.length };
+  // A draft still waiting is what needs doing, so it wins over one already sent (design review round 1: the board said
+  // "Sent" while the company page showed a draft waiting).
   if (ds.some((d) => d.status === 'draft' || d.status === 'approved')) return { state: 'draft', count: ds.length };
+  if (ds.some((d) => d.status === 'sent')) return { state: 'sent', count: ds.length };
   return { state: 'none', count: ds.length };
 }
 
@@ -398,4 +399,19 @@ export function importFiles(v, text, { by, at, newId: mk = newId }) {
     }
   });
   return { files, report };
+}
+
+// The Day: what to do now, in order (design review round 1: "The first phone screen is the day's list"). Overdue next
+// steps first, then follow-ups (we reached out, no reply in 5 days), then drafts waiting, then next steps due within a
+// week; one card per company, under its most pressing reason. Counts by stage for the top of the page.
+export function theDay(v, now, { soon = 7 } = {}) {
+  const rows = leadBoard(v, now), cards = [], seen = new Set();
+  const push = (r, why, detail, order) => { if (seen.has(r.org)) return; seen.add(r.org); cards.push({ ...r, why, detail, order }); };
+  const dayOf = (iso) => Date.parse(iso + 'T23:59:59Z');
+  rows.filter((r) => r.overdue).sort((a, b) => dayOf(a.next_step_due) - dayOf(b.next_step_due)).forEach((r) => push(r, 'overdue', `overdue since ${r.next_step_due}`, 0));
+  rows.filter((r) => r.waiting).sort((a, b) => b.waiting.days - a.waiting.days).forEach((r) => push(r, 'follow-up', `no reply in ${r.waiting.days} days`, 1));
+  rows.filter((r) => r.draft.state === 'draft').forEach((r) => push(r, 'draft', 'a draft is waiting', 2));
+  rows.filter((r) => r.next_step_due && !r.overdue && dayOf(r.next_step_due) - now < soon * DAY).sort((a, b) => dayOf(a.next_step_due) - dayOf(b.next_step_due)).forEach((r) => push(r, 'soon', `due ${r.next_step_due}`, 3));
+  const stages = v.stages.map((s) => ({ ...s, count: rows.filter((r) => r.stage === s.id).length }));
+  return { cards, stages, total: rows.length };
 }

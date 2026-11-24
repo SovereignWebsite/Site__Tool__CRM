@@ -4,7 +4,7 @@
 // person's own keys, in this browser only (vault.js); remembered keys are sealed to this browser's
 // own key with the Email Cell's pki.js keep/recall, unedited.
 // By crm.dev.a@AgentiCCells.dinis, 2026-11-23. Apache-2.0.
-import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedThreads, linkFile, companyFiles, personFile, newVaultFiles, newId, KINDS, actionFile, leadEditFile, timeline, ACTION_KINDS, importFiles, IMPORT_COLUMNS, FOLLOW_UP_DAYS } from './crm.mjs';
+import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedThreads, linkFile, companyFiles, personFile, newVaultFiles, newId, KINDS, actionFile, leadEditFile, timeline, ACTION_KINDS, importFiles, IMPORT_COLUMNS, theDay, FOLLOW_UP_DAYS } from './crm.mjs';
 import { keyKind, openVault, readAll, merge, whyNotWritable, writeFiles, createCrmVault } from './vault.js';
 import { identity, existingIdentity, keep, recall, forget, kept } from './pki.js';
 import * as ME from './me.js';
@@ -12,7 +12,7 @@ import * as ME from './me.js';
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const day = (iso) => (iso ? iso.slice(0, 10) : '–');
-let V = null, NOW = 0, MODE = 'demo', OPENED = null, SYNTHETIC = true;
+let V = null, NOW = 0, MODE = 'demo', OPENED = null, SYNTHETIC = true, VAULT_NAME = 'Demo';
 // The open CRM vault (never the twin), its manifest, and the access token for writing: memory only.
 let CRMV = null, CRM_MANIFEST = null, TOKEN = '', PENDING = null, FILES = {}, NEWKEY = null;
 const nowIso = () => new Date().toISOString().replace(/\.\d+Z$/, 'Z');
@@ -40,14 +40,15 @@ function showName() { const b = $('#me'); if (b) b.textContent = myName() ? `You
 function setMode(mode, label, synthetic) {
   MODE = mode;
   SYNTHETIC = mode === 'demo' || !!synthetic;
-  $('#mode').textContent = label;
+  $('#mode').textContent = 'Vault: ' + (mode === 'demo' ? 'Demo' : VAULT_NAME) + ' ▾';
+  $('#mode').title = label + ' (press to switch vault)';
   $('#mode').className = 'mode' + (mode === 'vault' ? ' mode-vault' : '');
   $('#banner').hidden = false;
   $('#banner').textContent = mode === 'demo'
     ? 'Synthetic demo: every company, person and email here is made up, at reserved example domains.'
     : synthetic
-      ? `Your vault ${OPENED}, read in this browser only. Its manifest says it is synthetic.`
-      : `Your vault ${OPENED}, read in this browser only. Nothing is sent anywhere else.`;
+      ? `${VAULT_NAME} (${OPENED}), read in this browser only. Its manifest says it is synthetic.`
+      : `${VAULT_NAME} (${OPENED}), read in this browser only. Nothing is sent anywhere else.`;
 }
 
 async function loadDemo() {
@@ -57,7 +58,7 @@ async function loadDemo() {
   V = readVault(FILES);
   // The demo's clock is the twin's, so "5 days" means the same on every visit.
   NOW = Date.parse(V.manifest.generated_at);
-  OPENED = null; CRMV = null; CRM_MANIFEST = null; TOKEN = ''; PENDING = null;
+  OPENED = null; CRMV = null; CRM_MANIFEST = null; TOKEN = ''; PENDING = null; VAULT_NAME = 'Demo';
   setMode('demo', 'Demo mode');
 }
 
@@ -92,6 +93,7 @@ async function loadVault(crmKey, twinKey, remember, status, token = '') {
   V = v;
   NOW = synthetic && v.manifest?.generated_at ? Date.parse(v.manifest.generated_at) : Date.now();
   OPENED = idOf(crmKey) + (twinKey ? ' + ' + idOf(twinKey) : '');
+  VAULT_NAME = m.crmManifest?.name || idOf(crmKey);
   setMode('vault', 'Your vault' + (synthetic ? ' (synthetic)' : ''), synthetic);
 }
 
@@ -130,7 +132,7 @@ function newKeyPanel() {
 
 function wireOpen() {
   const status = (t, bad) => { const el = $('#status'); if (el) { el.textContent = t; el.className = bad ? 'warn' : 'muted'; } };
-  const go = (crm, twin, remember, token) => loadVault(crm, twin, remember, status, token).then(() => { location.hash = '#/board'; route(); }).catch((e) => status('Could not open: ' + e.message, true));
+  const go = (crm, twin, remember, token) => loadVault(crm, twin, remember, status, token).then(() => { location.hash = '#/today'; route(); }).catch((e) => status('Could not open: ' + e.message, true));
   $('#open')?.addEventListener('submit', (ev) => {
     ev.preventDefault();
     const crm = $('#k-crm').value.trim(), twin = $('#k-twin').value.trim();
@@ -159,10 +161,10 @@ function wireOpen() {
       const { key } = await createCrmVault(token, newVaultFiles({ owner, at: nowIso() }));
       st('Opening it…');
       await loadVault(key, null, remember, st, token);
-      NEWKEY = key; location.hash = '#/board'; route();
+      NEWKEY = key; location.hash = '#/today'; route();
     } catch (e) { st('Not made: ' + e.message, true); }
   });
-  $('#to-demo')?.addEventListener('click', () => loadDemo().then(() => { location.hash = '#/board'; route(); }));
+  $('#to-demo')?.addEventListener('click', () => loadDemo().then(() => { location.hash = '#/today'; route(); }));
 }
 
 const stageName = (id) => V.stages.find((s) => s.id === id)?.name || id;
@@ -179,7 +181,9 @@ function board() {
   const q = new URLSearchParams(location.hash.split('?')[1] || '');
   const owner = q.get('owner') || '';
   const shown = rows.filter((r) => !owner || r.owner === owner);
-  return `<h1>Lead board</h1>${addCompanyForm()}
+  const counts = V.stages.map((s) => ({ ...s, n: rows.filter((r) => r.stage === s.id).length })), overdue = rows.filter((r) => r.overdue).length;
+  return `<h1>Lead board</h1>
+  <p class="stages">${overdue ? `<span class="stage warn">Overdue <strong>${overdue}</strong></span> ` : ''}${counts.map((s) => `<span class="stage s-${esc(s.id)}">${esc(s.name)} <strong>${s.n}</strong></span>`).join(' ')}</p>${addCompanyForm()}
   <p class="filters">Owner: <a href="#/board" class="${owner ? '' : 'on'}">all</a> ${owners.map((o) => `<a href="#/board?owner=${esc(o)}" class="${o === owner ? 'on' : ''}">${esc(o)}</a>`).join(' ')}</p>
   <div class="scroll"><table class="grid">
   <thead><tr><th>Company</th><th>Stage</th><th>Owner</th><th>Draft</th><th>Last contact</th><th>Next step</th></tr></thead>
@@ -220,8 +224,8 @@ function companyPage(id) {
 function followUpsPage() {
   const list = followUps(V, NOW);
   return `<h1>Follow-ups</h1><p class="muted">Where we reached out last (by email, or a logged email, LinkedIn message, call or meeting) and there has been no reply in ${FOLLOW_UP_DAYS} days or more.</p>
-  <div class="scroll"><table class="grid"><thead><tr><th>Days</th><th>Company</th><th>Person</th><th>What we sent</th><th>Sent</th></tr></thead>
-  <tbody>${list.map((f) => `<tr><td class="num">${f.days}</td><td>${f.org ? `<a href="#/company/${esc(f.org)}">${esc(orgName(f.org))}</a>` : '–'}</td><td>${esc(V.people.find((p) => p.id === f.person)?.name || '–')}</td><td>${esc(f.subject)}</td><td>${day(f.sent)}</td></tr>`).join('')}</tbody></table></div>`;
+  <div class="scroll"><table class="grid"><thead><tr><th>Days</th><th>Company</th><th>Person</th><th>What we sent</th><th>Sent</th><th><span class="sr-only">Action</span></th></tr></thead>
+  <tbody>${list.map((f) => `<tr><td class="num">${f.days}</td><td>${f.org ? `<a href="#/company/${esc(f.org)}">${esc(orgName(f.org))}</a>` : '–'}</td><td>${esc(V.people.find((p) => p.id === f.person)?.name || '–')}</td><td>${esc(f.subject)}</td><td>${day(f.sent)}</td><td>${f.org ? `<a class="button small" href="#/company/${esc(f.org)}?log=1">Log the follow-up</a>` : ''}</td></tr>`).join('')}</tbody></table></div>`;
 }
 
 function contactsPage() {
@@ -237,12 +241,26 @@ function linkButton(thread, org, person) {
   return `<button type="button" class="small quiet" data-link="${esc(thread)}" data-org="${esc(org)}" data-person="${esc(person || '')}">Link to ${esc(orgName(org))}</button>`;
 }
 
+function todayPage() {
+  const d = theDay(V, NOW), why = { overdue: 'Overdue', 'follow-up': 'Follow up', draft: 'Draft waiting', soon: 'Coming up' };
+  return `<h1>Today</h1>
+  <p class="stages">${d.stages.map((s) => `<a class="stage s-${esc(s.id)}" href="#/board">${esc(s.name)} <strong>${s.count}</strong></a>`).join(' ')}</p>
+  ${d.cards.length ? '' : '<p class="muted">Nothing needs doing today. Well done.</p>'}
+  <ul class="cards">${d.cards.map((c) => `<li class="card why-${esc(c.why)}">
+    <p class="card-why"><span class="badge">${why[c.why]}</span> <span class="small">${esc(c.detail)}</span></p>
+    <h2><a href="#/company/${esc(c.org)}">${esc(c.name)}</a></h2>
+    <p class="small muted">${esc(stageName(c.stage))} · ${esc(c.owner || 'no owner')}${c.last_contact ? ' · last contact ' + day(c.last_contact.date) : ''}</p>
+    ${c.next_step ? `<p>Next: ${esc(c.next_step)}${c.next_step_due ? ` <span class="small ${c.overdue ? 'warn' : 'muted'}">(${c.overdue ? 'overdue, ' : 'due '}${esc(c.next_step_due)})</span>` : ''}</p>` : ''}
+    <p class="card-actions">${c.why === 'draft' ? draftBadge(c.draft, c.org) : ''} <a class="button" href="#/company/${esc(c.org)}?log=1">Log the follow-up</a></p>
+  </li>`).join('')}</ul>`;
+}
+
 function threadsPage() {
   const list = unlinkedThreads(V);
   return `<h1>Unlinked threads</h1><p class="muted">Mail threads with no link to a company. A link ties the thread to the company's row, whatever addresses it holds.</p>
   <div class="scroll"><table class="grid"><thead><tr><th>Thread</th><th>Last</th><th>Matched by address</th><th>Link to</th></tr></thead>
   <tbody>${list.map((t) => `<tr><td>${esc(t.subject)} <span class="muted small">${esc(t.id)}</span></td><td>${day(t.last_date)}</td><td>${t.org ? esc(orgName(t.org)) : '–'}</td>
-  <td><select data-for="${esc(t.id)}">${V.orgs.map((o) => `<option value="${esc(o.id)}"${o.id === t.org ? ' selected' : ''}>${esc(o.name)}</option>`).join('')}</select>
+  <td><select data-for="${esc(t.id)}" aria-label="Link ${esc(t.subject)} to">${V.orgs.map((o) => `<option value="${esc(o.id)}"${o.id === t.org ? ' selected' : ''}>${esc(o.name)}</option>`).join('')}</select>
   <button type="button" class="small" data-link="${esc(t.id)}" data-pick="1" data-person="${esc(t.person || '')}">Link</button></td></tr>`).join('') || '<tr><td colspan="4" class="muted">Every thread is linked.</td></tr>'}</tbody></table></div>`;
 }
 
@@ -300,19 +318,28 @@ async function mePage() {
   <p class="muted small">${(await ME.passkeyAvailable()) ? 'This device can use a passkey.' : 'This device has no passkey: the key is tied to this browser only.'}</p>`;
   const k = await ME.myKey(), list = await ME.vaults();
   return `<h1>You${myName() ? ': ' + esc(myName()) : ''}</h1>
-  <p class="muted">This browser's key: <code>${esc(k.fp)}</code>. ${ME.hasPasskey() ? 'Locked with a passkey.' : 'No passkey on this device: the key is tied to this browser.'}</p>
+  <p class="muted small">This browser's key: <code>${esc(k.fp)}</code>. ${ME.hasPasskey() ? 'Locked with a passkey.' : 'No passkey on this device: the key is tied to this browser.'} Its private half never leaves this browser.</p>
+  <div class="handover">
+    <section class="give">
+      <h2>1. Send this</h2>
+      <p>Copy your QR code and send it to Dinis on WhatsApp. It is public.</p>
+      <img src="${k.qr}" alt="QR code of this browser's public key" class="qr">
+      <p><button type="button" id="copyqr">Copy QR image</button> <button type="button" id="copykey" class="quiet">Copy as text</button></p>
+      <p id="copy-status" class="muted small" role="status"></p>
+      <textarea id="mykey" rows="2" readonly spellcheck="false" aria-label="Your public key as text">${esc(k.text)}</textarea>
+    </section>
+    <section class="take">
+      <h2>2. Drop what you get back</h2>
+      <p>When you are sent a QR code back, drop the picture here, or paste it (Ctrl+V or Cmd+V anywhere on this page), or paste its text.</p>
+      <div id="drop" class="drop" tabindex="0" role="button" aria-label="Drop or paste the QR code you were sent">Drop or paste the QR code here</div>
+      <p><label class="small">or choose the picture <input id="qrfile" type="file" accept="image/*"></label></p>
+      <form id="receive" class="open" autocomplete="off"><label class="small">or paste its text <textarea id="rc-text" rows="2" spellcheck="false"></textarea></label><button type="submit" class="small">Open it</button></form>
+      <p id="rc-status" class="muted" role="status"></p>
+    </section>
+  </div>
   <h2>Your vaults</h2>
-  <ul class="list">${list.map((v) => `<li><strong>${esc(v.name)}</strong> <span class="muted small">${esc(v.id)} · added ${esc(v.added)}</span> <button type="button" class="small" data-openv="${esc(v.id)}">Open</button> <button type="button" class="small quiet" data-forgetv="${esc(v.id)}">Forget</button></li>`).join('') || '<li class="muted">None yet. Send your key (below) to be given one, or start your own on Open your vault.</li>'}</ul>
+  <ul class="list">${list.map((v) => `<li><strong>${esc(v.name)}</strong> <span class="muted small">${esc(v.id)} · added ${esc(v.added)}</span> <button type="button" class="small" data-openv="${esc(v.id)}">Open</button> <button type="button" class="small quiet" data-forgetv="${esc(v.id)}">Forget</button></li>`).join('') || '<li class="muted">None yet: send your QR code (1), then drop what you get back (2).</li>'}</ul>
   <p id="v-status" class="muted" role="status"></p>
-  <h2>Your key, to send</h2>
-  <p>To be given a vault, send this to Dinis (a screenshot of the QR code on WhatsApp is fine). It is public: it lets someone seal things that only this browser can open.</p>
-  <p><img src="${k.qr}" alt="QR code of this browser's public key" class="qr"></p>
-  <p><button type="button" id="copyqr" class="small">Copy QR image</button> <button type="button" id="copykey" class="small quiet">Copy key text</button> <span id="copy-status" class="muted small" role="status"></span></p>
-  <p><textarea id="mykey" rows="3" readonly spellcheck="false">${esc(k.text)}</textarea></p>
-  <h2>Paste a sealed code</h2>
-  <p>When you are sent a sealed code (text starting with <code>{"v":1,"kind":"pki.sgit.ai/qr/sealed/v1"</code> or <code>m1.</code>), paste it here. Only codes signed by the CRM's agent are opened.</p>
-  <form id="receive" class="open" autocomplete="off"><textarea id="rc-text" rows="4" spellcheck="false"></textarea><button type="submit">Open it</button> <span id="form-error" class="warn"></span></form>
-  <p id="rc-status" class="muted" role="status"></p>
   <p><button type="button" id="logout" class="quiet small">Log out of this browser</button> <span class="muted small">removes the vault keys kept here; your vaults themselves are not touched</span></p>`;
 }
 
@@ -359,19 +386,39 @@ function addPersonForm(org) {
 }
 
 function wireActions() {
-  $('#login')?.addEventListener('submit', async (ev) => { ev.preventDefault(); const n = $('#li-name').value.trim(); if (!n) return; setMyName(n); showName(); $('#form-error').textContent = 'Making this browser\'s key (a few seconds)…'; try { await ME.logIn(n); route(); } catch (e) { $('#form-error').textContent = 'Not logged in: ' + e.message; } });
+  $('#login')?.addEventListener('submit', async (ev) => { ev.preventDefault(); const n = $('#li-name').value.trim(); if (!n) return; setMyName(n); showName(); $('#form-error').textContent = 'Making this browser\'s key (a few seconds)…'; try { await ME.logIn(n); await route(); $('#copyqr')?.click(); } catch (e) { $('#form-error').textContent = 'Not logged in: ' + e.message; } });
   const copied = (t) => { const el = $('#copy-status'); if (el) el.textContent = t; };
   $('#copykey')?.addEventListener('click', async () => { $('#mykey').select(); try { await navigator.clipboard.writeText($('#mykey').value); copied('Key text copied: paste it into WhatsApp.'); } catch { copied('Select the text and copy it.'); } });
   $('#copyqr')?.addEventListener('click', async () => {
     try { const [head, data] = $('img.qr').src.split(','), type = (head.match(/data:([^;]+)/) || [])[1] || 'image/gif'; const bin = atob(data), bytes = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
       const png = await new Promise((ok, no) => { const img = new Image(); img.onload = () => { const c = document.createElement('canvas'); c.width = img.width * 2; c.height = img.height * 2; const x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height); c.toBlob((b) => (b ? ok(b) : no(new Error('no image'))), 'image/png'); }; img.onerror = () => no(new Error('no image')); img.src = URL.createObjectURL(new Blob([bytes], { type })); }); const blob = png; await navigator.clipboard.write([new ClipboardItem({ [blob.type || 'image/png']: blob })]); copied('QR image copied: paste it into WhatsApp.'); }
     catch { copied('This browser could not copy the picture: right-click it and choose Copy image, or use Copy key text.'); } });
-  $('#receive')?.addEventListener('submit', async (ev) => { ev.preventDefault(); const st = $('#rc-status');
-    try { st.textContent = 'Opening…'; const r = await ME.receive($('#rc-text').value, async (key) => JSON.parse((await readAll(await openVault(key)))['manifest.json'] || '{}').name);
-      $('#rc-text').value = ''; st.className = 'muted'; st.textContent = `From ${r.from}. ${r.added.length ? 'Added: ' + r.added.map((v) => v.name).join(', ') + '.' : 'No vault key in it.'}${r.token ? ' An access token was kept too.' : ''}${r.note ? ' Note: ' + r.note : ''}`; setTimeout(route, 1500);
-    } catch (e) { st.className = 'warn'; st.textContent = 'Not opened: ' + e.message; } });
+  const openCode = async (text) => { const st = $('#rc-status');
+    try { st.className = 'muted'; st.textContent = 'Opening…'; const r = await ME.receive(text, async (key) => JSON.parse((await readAll(await openVault(key)))['manifest.json'] || '{}').name);
+      if ($('#rc-text')) $('#rc-text').value = ''; st.className = 'muted'; st.textContent = `From ${r.from}. ${r.added.length ? 'Added: ' + r.added.map((v) => v.name).join(', ') + '.' : 'No vault key in it.'}${r.token ? ' An access token was kept too.' : ''}${r.note ? ' Note: ' + r.note : ''}`; setTimeout(route, 2500);
+    } catch (e) { st.className = 'warn'; st.textContent = 'Not opened: ' + e.message; } };
+  // A QR picture: read with the browser's BarcodeDetector where there is one, else jsQR (vendored, from the Email Cell).
+  const fromPicture = async (file) => { const st = $('#rc-status');
+    try { st.className = 'muted'; st.textContent = 'Reading the QR code…'; const bmp = await createImageBitmap(file); let t = null;
+      if ('BarcodeDetector' in window) { try { const c = await new BarcodeDetector({ formats: ['qr_code'] }).detect(bmp); if (c.length) t = c[0].rawValue; } catch {} }
+      if (!t && window.jsQR) { const k = Math.min(1, 2000 / Math.max(bmp.width, bmp.height)), cv = document.createElement('canvas'); cv.width = Math.round(bmp.width * k); cv.height = Math.round(bmp.height * k); const cx = cv.getContext('2d', { willReadFrequently: true }); cx.drawImage(bmp, 0, 0, cv.width, cv.height); const r = window.jsQR(cx.getImageData(0, 0, cv.width, cv.height).data, cv.width, cv.height); if (r) t = r.data; }
+      if (!t) throw new Error('no QR code found in that picture: try a sharper picture, or paste its text');
+      await openCode(t);
+    } catch (e) { st.className = 'warn'; st.textContent = 'Not opened: ' + e.message; } };
+  $('#receive')?.addEventListener('submit', (ev) => { ev.preventDefault(); openCode($('#rc-text').value); });
+  $('#qrfile')?.addEventListener('change', (ev) => { const f = ev.target.files[0]; if (f) fromPicture(f); ev.target.value = ''; });
+  const drop = $('#drop');
+  if (drop) {
+    drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+    drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('over'); const f = [...(e.dataTransfer?.files || [])].find((x) => x.type.startsWith('image/')); if (f) fromPicture(f); else { const t = e.dataTransfer?.getData('text'); if (t) openCode(t); } });
+    drop.addEventListener('click', () => $('#qrfile').click());
+  }
+  if (!window.__crmPaste) { window.__crmPaste = true; document.addEventListener('paste', (e) => { if (!location.hash.startsWith('#/me') || !$('#drop')) return; if (e.target.closest && e.target.closest('textarea, input')) return;
+    const f = [...(e.clipboardData?.items || [])].filter((i) => i.kind === 'file').map((i) => i.getAsFile()).find((x) => x && x.type.startsWith('image/'));
+    if (f) { e.preventDefault(); fromPicture(f); return; } const t = e.clipboardData?.getData('text'); if (t && /pki\.sgit\.ai|m1\./.test(t)) { e.preventDefault(); openCode(t); } }); }
   for (const b of document.querySelectorAll('[data-openv]')) b.addEventListener('click', async () => { const st = (t, bad) => { $('#v-status').textContent = t; $('#v-status').className = bad ? 'warn' : 'muted'; };
-    try { const key = await ME.vaultKey(b.dataset.openv); await loadVault(key, null, false, st, await ME.savedToken()); location.hash = '#/board'; route(); } catch (e) { st('Could not open: ' + e.message, true); } });
+    try { const key = await ME.vaultKey(b.dataset.openv); await loadVault(key, null, false, st, await ME.savedToken()); location.hash = '#/today'; route(); } catch (e) { st('Could not open: ' + e.message, true); } });
   for (const b of document.querySelectorAll('[data-forgetv]')) b.addEventListener('click', async () => { if (confirm('Forget this vault in this browser? The vault itself is not touched.')) { await ME.forgetVault(b.dataset.forgetv); route(); } });
   $('#logout')?.addEventListener('click', async () => { if (confirm('Log out of this browser? The vault keys kept here are removed.')) { await ME.logOut(); await loadDemo(); location.hash = '#/me'; route(); } });
   $('#i-file')?.addEventListener('change', async (ev) => { const f = ev.target.files[0]; if (f) $('#i-text').value = await f.text(); });
@@ -397,15 +444,19 @@ function wireActions() {
 }
 
 async function route() {
-  const [path] = (location.hash.slice(1) || '/board').split('?');
+  const [path, query] = (location.hash.slice(1) || '/today').split('?');
   const [, page, id] = path.split('/');
-  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'me' ? await mePage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : board();
+  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'today' ? todayPage() : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'me' ? await mePage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : board();
   $('#main').innerHTML = newKeyPanel() + pendingPanel() + body;
   if (page === 'open') wireOpen();
   wireActions();
   if (PENDING) $('#pending')?.scrollIntoView();
-  for (const a of document.querySelectorAll('nav a')) a.classList.toggle('on', a.getAttribute('href') === `#/${page || 'board'}`);
+  else if (page === 'company' && /(^|&)log=1/.test(query || '')) { $('#log-action')?.scrollIntoView(); $('#a-sum')?.focus(); }
+  document.body.classList.remove('menu-open');
+  for (const a of document.querySelectorAll('nav a')) a.classList.toggle('on', a.getAttribute('href') === `#/${page || 'today'}`);
 }
 
 $('#me')?.addEventListener('click', askName); showName();
+$('#menu-toggle')?.addEventListener('click', () => document.body.classList.toggle('menu-open'));
+$('#mode')?.addEventListener('click', () => { location.hash = '#/me'; });
 loadDemo().then(() => { addEventListener('hashchange', route); route(); }).catch((e) => { $('#main').innerHTML = `<p class="warn">Could not load the demo: ${esc(e.message)}</p>`; });
