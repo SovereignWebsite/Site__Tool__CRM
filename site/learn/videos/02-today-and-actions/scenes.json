@@ -2,11 +2,11 @@
  "slug": "02-today-and-actions",
  "title": "Today, and logging an action",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.41 · ed34781 · 2026-11-24",
+ "site_version": "v0.1.42 · 212ba88 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
- "seconds": 73,
+ "seconds": 75,
  "presenter": "Studio",
  "scenes": [
   {
@@ -27,18 +27,18 @@
     "w": 1068,
     "h": 60
    },
-   "screen": "s-a999dc0c5e364352.webp"
+   "screen": "s-4817d5fb8930c69c.webp"
   },
   {
-   "caption": "First, overdue. Example Ventures asked questions on our proposal, and the answer was due on 21 November.",
-   "seconds": 6,
+   "caption": "First, overdue. Example Ventures asked questions on our proposal, due on 21 November. The card names Rui Kowalski, and where we met: our website.",
+   "seconds": 8,
    "box": {
     "x": 106,
     "y": 360,
     "w": 1068,
     "h": 120
    },
-   "screen": "s-a999dc0c5e364352.webp"
+   "screen": "s-4817d5fb8930c69c.webp"
   },
   {
    "caption": "Say we have answered them by email. Press Log the follow-up on its card.",
@@ -49,7 +49,7 @@
     "w": 172,
     "h": 44
    },
-   "screen": "s-a999dc0c5e364352.webp"
+   "screen": "s-4817d5fb8930c69c.webp"
   },
   {
    "caption": "The company's page opens on Log an action: what, which way, when, who, and one line on what happened.",
@@ -60,7 +60,7 @@
     "w": 1068,
     "h": 196
    },
-   "screen": "s-a260abff974cd5c9.webp"
+   "screen": "s-bc59985bcb194241.webp"
   },
   {
    "caption": "Here: an email, we reached out, on 23 November, to Diogo Quinn, answering their questions.",
@@ -71,7 +71,7 @@
     "w": 1068,
     "h": 196
    },
-   "screen": "s-96cde5623e442326.webp"
+   "screen": "s-06bbf56fae21dc51.webp"
   },
   {
    "caption": "Show what will be written shows the exact file first. In the demo it stays in this tab: nothing is written anywhere.",
@@ -93,7 +93,7 @@
     "w": 1050,
     "h": 24
    },
-   "screen": "s-f7f510ea4515aa85.webp"
+   "screen": "s-a620bf79c07cb38d.webp"
   },
   {
    "caption": "Now the next step. Edit stage, owner and next step keeps the lead row up to date.",
@@ -115,7 +115,7 @@
     "w": 1068,
     "h": 394
    },
-   "screen": "s-1ba3277b3fb62018.webp"
+   "screen": "s-e02a32432d11dfd5.webp"
   },
   {
    "caption": "Show what will be written, then Write it. The company now shows the new next step.",
@@ -137,7 +137,7 @@
     "w": 1068,
     "h": 356
    },
-   "screen": "s-8b6291541bb5d856.webp"
+   "screen": "s-56d330ef96db1729.webp"
   },
   {
    "caption": "Next: follow-ups.",

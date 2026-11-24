@@ -154,7 +154,7 @@
         }
       ],
       "mark": "main li:has-text(\"ana.sample@harbour.example.com\")",
-      "caption": "The person is on the company's page, with met at Web Summit 2026, and No key yet until you add theirs.",
+      "caption": "The person is on the company's page, with met: Web Summit 2026, and No key yet until you add theirs.",
       "seconds": 7
     },
     {

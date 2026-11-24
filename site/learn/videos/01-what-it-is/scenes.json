@@ -2,7 +2,7 @@
  "slug": "01-what-it-is",
  "title": "The CRM, and its demo",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.41 · ed34781 · 2026-11-24",
+ "site_version": "v0.1.42 · 212ba88 · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -27,7 +27,7 @@
     "w": 1272,
     "h": 35
    },
-   "screen": "s-a999dc0c5e364352.webp"
+   "screen": "s-4817d5fb8930c69c.webp"
   },
   {
    "caption": "The top right always says which vault is open. Here: Vault: Demo. Nothing you do in the demo is saved anywhere.",
@@ -38,7 +38,7 @@
     "w": 117,
     "h": 44
    },
-   "screen": "s-a999dc0c5e364352.webp"
+   "screen": "s-4817d5fb8930c69c.webp"
   },
   {
    "caption": "Today opens on how many companies sit at each stage, from New to Won and Parked.",
@@ -49,7 +49,7 @@
     "w": 1068,
     "h": 55
    },
-   "screen": "s-a999dc0c5e364352.webp"
+   "screen": "s-4817d5fb8930c69c.webp"
   },
   {
    "caption": "Then what to do now. Overdue comes first: here, a next step that was due on 21 November.",
@@ -60,18 +60,18 @@
     "w": 1068,
     "h": 120
    },
-   "screen": "s-a999dc0c5e364352.webp"
+   "screen": "s-4817d5fb8930c69c.webp"
   },
   {
    "caption": "Next, follow-ups: we wrote and have had no reply for 5 days or more.",
    "seconds": 5,
    "box": {
     "x": 106,
-    "y": 628,
+    "y": 649,
     "w": 1068,
-    "h": 88
+    "h": 67
    },
-   "screen": "s-a999dc0c5e364352.webp"
+   "screen": "s-4817d5fb8930c69c.webp"
   },
   {
    "caption": "Each card has its action. Log the follow-up records what you did next.",
@@ -82,7 +82,7 @@
     "w": 172,
     "h": 44
    },
-   "screen": "s-a999dc0c5e364352.webp"
+   "screen": "s-4817d5fb8930c69c.webp"
   },
   {
    "caption": "The lead board: one row per company, with its stage, owner, draft, last contact and next step.",
@@ -104,7 +104,7 @@
     "w": 1068,
     "h": 211
    },
-   "screen": "s-857a470d6eb76c2a.webp"
+   "screen": "s-b5c51baac95735fb.webp"
   },
   {
    "caption": "Contacts: everyone, with their company and when we were last in touch. Demo emails use reserved example domains.",
@@ -118,7 +118,7 @@
    "screen": "s-630e08951a19ee25.webp"
   },
   {
-   "caption": "Open a company to see its stage, owner, next step, people and every action logged with them.",
+   "caption": "Open a company to see its stage, owner, next step, its people with where we met them, and every action logged with them.",
    "seconds": 6,
    "box": {
     "x": 106,

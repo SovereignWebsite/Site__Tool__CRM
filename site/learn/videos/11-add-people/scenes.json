@@ -2,7 +2,7 @@
  "slug": "11-add-people",
  "title": "Adding a company and a person",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.41 · ed34781 · 2026-11-24",
+ "site_version": "v0.1.43 · b268bfc · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -96,7 +96,7 @@
    "screen": "s-1ad0c36ad966f379.webp"
   },
   {
-   "caption": "The person is on the company's page, with met at Web Summit 2026, and No key yet until you add theirs.",
+   "caption": "The person is on the company's page, with met: Web Summit 2026, and No key yet until you add theirs.",
    "seconds": 7,
    "box": {
     "x": 124,
@@ -104,7 +104,7 @@
     "w": 1050,
     "h": 32
    },
-   "screen": "s-3721cdc75b9c8569.webp"
+   "screen": "s-af6f8d2124cdfb5f.webp"
   },
   {
    "caption": "Enter only people you have a reason to keep in touch with, and only what they shared with you.",

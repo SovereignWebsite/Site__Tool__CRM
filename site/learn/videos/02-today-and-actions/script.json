@@ -27,8 +27,8 @@
     {
       "mark": "li.card:has(a[href=\"#/company/o06\"])",
       "scroll_by": -120,
-      "caption": "First, overdue. Example Ventures asked questions on our proposal, and the answer was due on 21 November.",
-      "seconds": 6
+      "caption": "First, overdue. Example Ventures asked questions on our proposal, due on 21 November. The card names Rui Kowalski, and where we met: our website.",
+      "seconds": 8
     },
     {
       "mark": "li.card:has(a[href=\"#/company/o06\"]) .card-actions .button",
