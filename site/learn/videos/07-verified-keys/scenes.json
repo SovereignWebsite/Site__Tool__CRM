@@ -2,7 +2,7 @@
  "slug": "07-verified-keys",
  "title": "Verified keys on people",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.31 · 6f5908f · 2026-11-24",
+ "site_version": "v0.1.32 · 3c669ba · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -93,7 +93,7 @@
     "w": 1068,
     "h": 65
    },
-   "screen": "s-ec04ef8f5c0aabbb.webp"
+   "screen": "s-7deaf6d5ad66a0db.webp"
   },
   {
    "caption": "A key you verified yourself is how you know who you are sending to, without trusting anyone in between.",

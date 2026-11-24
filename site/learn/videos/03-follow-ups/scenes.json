@@ -2,7 +2,7 @@
  "slug": "03-follow-ups",
  "title": "Follow-ups",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.31 · 6f5908f · 2026-11-24",
+ "site_version": "v0.1.32 · 3c669ba · 2026-11-24",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -27,7 +27,7 @@
     "w": 1068,
     "h": 211
    },
-   "screen": "s-2293e29f093bb577.webp"
+   "screen": "s-9a23979d0d8d1f2b.webp"
   },
   {
    "caption": "Example Data Lab: we sent the draft agreement on 8 November, and there has been no reply for 15 days.",
@@ -38,7 +38,7 @@
     "w": 1068,
     "h": 44
    },
-   "screen": "s-2293e29f093bb577.webp"
+   "screen": "s-9a23979d0d8d1f2b.webp"
   },
   {
    "caption": "Say Bruno has just called back. Log the follow-up opens the company on Log an action.",
@@ -60,7 +60,7 @@
     "w": 1068,
     "h": 196
    },
-   "screen": "s-e6edc19651499198.webp"
+   "screen": "s-130d3de57a50977f.webp"
   },
   {
    "caption": "Show what will be written shows the file. Then Write it.",
@@ -82,7 +82,7 @@
     "w": 1068,
     "h": 167
    },
-   "screen": "s-d04d4f2a984b0297.webp"
+   "screen": "s-53a3a5ab5376b6ee.webp"
   },
   {
    "caption": "Example Security: our email on their question about pricing, 9 days without a reply. This time we chase them.",
@@ -93,7 +93,7 @@
     "w": 1068,
     "h": 43
    },
-   "screen": "s-d04d4f2a984b0297.webp"
+   "screen": "s-53a3a5ab5376b6ee.webp"
   },
   {
    "caption": "We chase by email: an email, we reached out, to Hugo Brandt.",
@@ -115,14 +115,14 @@
     "w": 1068,
     "h": 124
    },
-   "screen": "s-ddcd66e0761a24a9.webp"
+   "screen": "s-e88ae126d2e9ccf6.webp"
   },
   {
-   "caption": "Next: importing a spreadsheet.",
+   "caption": "Next: writing an email, and signing it off.",
    "seconds": 4,
    "card": {
     "title": "Next",
-    "sub": "Importing a spreadsheet: bring in the companies and people you already have.",
+    "sub": "Writing an email, and signing it off: the follow-up itself, from the Outbox.",
     "foot": "crm.tool.sovereignweb.site · how-to: crm.tool.sovereignweb.site/how-to/"
    }
   }

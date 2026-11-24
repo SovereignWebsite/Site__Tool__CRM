@@ -1,16 +1,16 @@
 {
   "slug": "06-log-in",
-  "site_version": "v0.1.31 · 6f5908f · 2026-11-24",
+  "site_version": "v0.1.32 · 3c669ba · 2026-11-24",
   "clock": "2026-11-24T10:00:00Z",
   "scenes": 10,
   "screens": {
-    "s-eaf6bdb60051e136.webp": "c7f6dbaf5d241f53f531a79a0c64143080b89a5fecaff407ef15e8e2bd4bcc39",
-    "s-9d5dbb5276c5625a.webp": "828647eb49855a067b2cde65f425ba56ecca6539bd5c15b9db53996b6193ecab",
+    "s-0780caa5c00c52a9.webp": "522cb9806fc5890af591b3c2078fd56665efed22014c9971f88042447c4752f6",
+    "s-4a7da876f4dd9c40.webp": "8de8d6c29019470854d08c38efc6a4ef73aa7ea1ac43619e0d30253056732151",
     "s-36187b0a48f5698d.webp": "c309374cabb4aba9a6ca4c3159e8ccfc5a1edc1e0d36223ee151fccbda7955c9",
     "s-e5e781a63e788e7f.webp": "ba79b3d17c4a5c4fe619459ce5dc56d352bae6c02ce0172830119df992c85733",
-    "s-f092c84fa0d3b75b.webp": "a02d800020cba23b3252b5503067c2c038b5ad64cc2cb31a037b0272739c5da5"
+    "s-ae3a6f6535a15562.webp": "dfee2cd6eafe598fc658d84d6ff5f8734dd6d29f6f4ca8a4fc26c5b32ee936fb"
   },
-  "scenes_json_sha256": "558304194b4ace5e78650d467ab1dd83a43438c2c20410ed771bf0d9c44ceb9a",
+  "scenes_json_sha256": "4fe7c620d6592881b7f7aa2e69948f700cab1a5f68a6626b62a50014e6b0624a",
   "made_by": "a.crm.studio@SovereignWebsite.dinis",
   "tool": "studio/capture.mjs"
 }
