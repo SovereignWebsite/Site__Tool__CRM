@@ -4,6 +4,7 @@
 // person's own keys, in this browser only (vault.js); remembered keys are sealed to this browser's
 // own key with the Email Cell's pki.js keep/recall, unedited.
 // By crm.dev.a@AgentiCCells.dinis, 2026-11-23. Apache-2.0.
+import { peopleByType } from './crm.mjs';
 import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedThreads, linkFile, companyFiles, personFile, newVaultFiles, newId, KINDS, actionFile, leadEditFile, timeline, ACTION_KINDS, importFiles, IMPORT_COLUMNS, theDay, FOLLOW_UP_DAYS, keyRecord, keyFile, personKey, nudgeWarning, outbox, outboxDraftFile, approvalFile } from './crm.mjs';
 import { keyKind, openVault, readAll, merge, whyNotWritable, writeFiles, createCrmVault } from './vault.js';
 import { identity, existingIdentity, keep, recall, forget, kept } from './pki.js';
@@ -285,6 +286,21 @@ async function forYouPage() {
 async function forYouNote() {
   try { const r = await ME.forYou(); const n = r.items.filter((x) => !x.answered && !x.error).length; const el = $('#for-you-note');
     if (el && n) { el.innerHTML = `<a class="button" href="#/for">${n} ${n === 1 ? 'decision' : 'decisions'} for you →</a>`; el.hidden = false; } } catch {}
+}
+
+// The team, the agents and the synthetic users. A synthetic user can be made to answer (a simulated reply, marked as
+// such) so the workflows can be tried before any real email is sent.
+function peoplePage() {
+  const g = peopleByType(V), last = (p) => p.last ? `${esc(String(p.last.at).slice(0, 10))}: ${esc(p.last.summary.slice(0, 60))}${p.last.simulated ? ' <span class="badge">simulated</span>' : ''}` : '<span class="muted small">none</span>';
+  const table = (rows, sim) => rows.length ? `<div class="scroll"><table class="grid"><thead><tr><th>Name</th><th>Company</th><th>Role</th><th>Email</th><th>Twin inbox</th><th>Last action</th><th></th></tr></thead><tbody>
+    ${rows.map((p) => `<tr><td>${esc(p.name)}</td><td><a href="#/company/${esc(p.org)}">${esc(p.org_name || '')}</a></td><td>${esc(p.role || '')}</td><td>${p.email ? esc(p.email) : '<span class="muted small">to add</span>'}</td><td>${p.twin ? `<code>${esc(p.twin)}</code>` : '<span class="muted small">none yet</span>'}</td><td>${last(p)}</td>
+    <td><a class="button small quiet" href="#/company/${esc(p.org)}">Open</a>${sim && canEdit() ? ` <button type="button" class="small" data-simreply="${esc(p.id)}">Reply as them</button>` : ''}</td></tr>`).join('')}</tbody></table></div>` : '<p class="muted">None yet.</p>';
+  return `<h1>People</h1>
+  <p class="muted">The team, our agents and synthetic users, to try the workflows before real emails go out. Twin inboxes are the Email Cell's simulated Gmail: not wired to the CRM yet. ${g.contacts} other ${g.contacts === 1 ? 'contact is' : 'contacts are'} on <a href="#/contacts">Contacts</a>.</p>
+  <h2>The team</h2>${table(g.team)}
+  <h2>Agents</h2>${table(g.agent)}
+  <h2>Synthetic users <span class="badge">made up</span></h2>${table(g.synthetic, true)}
+  <p id="form-error" class="warn"></p>`;
 }
 
 function contactsPage() {
@@ -574,6 +590,9 @@ function wireActions() {
     // The vault app takes the key after '#', which a browser never sends to a server. Opened in a new tab, without an opener.
     try { const key = await ME.vaultKey(b.dataset.vaultapp); const bare = String(key).replace(/^sgit_private_vault_/, ''); window.open(`https://dev.vault.sgraph.ai/en-gb/#${bare}`, '_blank', 'noopener'); }
     catch (e) { $('#v-status').textContent = 'Could not open: ' + e.message; } });
+  for (const b of document.querySelectorAll('[data-simreply]')) b.addEventListener('click', () => { if (!me()) return askName(); const p = V.people.find((x) => x.id === b.dataset.simreply); if (!p) return;
+    const text = prompt(`What does ${p.name} (synthetic) reply? One line, it is logged as a simulated reply.`, 'Thanks, interested: can we talk next week?'); if (!text) return;
+    ask(`Log a simulated reply from ${p.name}?`, () => actionFile(V, { id: newId('a'), org: p.org, person: p.id, kind: 'email', direction: 'in', at: nowIso().slice(0, 10), by: me(), summary: 'Simulated reply: ' + text, logged_at: nowIso(), simulated: true })); });
   for (const b of document.querySelectorAll('[data-forgetv]')) b.addEventListener('click', async () => { if (confirm('Forget this vault in this browser? The vault itself is not touched.')) { await ME.forgetVault(b.dataset.forgetv); route(); } });
   $('#logout')?.addEventListener('click', async () => { if (confirm('Log out of this browser? The vault keys kept here are removed.')) { await ME.logOut(); await loadDemo(); location.hash = '#/me'; route(); } });
   $('#i-file')?.addEventListener('change', async (ev) => { const f = ev.target.files[0]; if (f) $('#i-text').value = await f.text(); });
@@ -628,7 +647,7 @@ function wireActions() {
 async function route() {
   const [path, query] = (location.hash.slice(1) || '/today').split('?');
   const [, page, id] = path.split('/');
-  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'today' ? todayPage(query) : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'me' ? await mePage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : page === 'outbox' ? outboxPage() : page === 'for' ? await forYouPage() : board();
+  const body = page === 'open' ? await openPage() : page === 'company' ? companyPage(id) : page === 'today' ? todayPage(query) : page === 'threads' ? threadsPage() : page === 'import' ? importPage() : page === 'me' ? await mePage() : page === 'follow-ups' ? followUpsPage() : page === 'contacts' ? contactsPage() : page === 'people' ? peoplePage() : page === 'outbox' ? outboxPage() : page === 'for' ? await forYouPage() : board();
   $('#main').innerHTML = newKeyPanel() + pendingPanel() + body;
   if (page === 'open') wireOpen();
   wireActions();

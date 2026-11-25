@@ -117,7 +117,7 @@ function index(v) {
   const idx = {
     person: new Map(v.people.map((p) => [p.id, p])),
     personByEmail: new Map(v.people.flatMap((p) => (p.emails || []).map((e) => [e.toLowerCase(), p]))),
-    orgByDomain: new Map(v.orgs.map((o) => [o.domain.toLowerCase(), o])),
+    orgByDomain: new Map(v.orgs.filter((o) => o.domain).map((o) => [o.domain.toLowerCase(), o])),
     linkByThread: new Map(v.links.map((k) => [k.thread, k])),
   };
   return idx;
@@ -228,7 +228,7 @@ export function contacts(v) {
   return v.people.map((p) => {
     const mine = v.threads.filter((t) => t.person === p.id || (t.participants || []).some((a) => (p.emails || []).includes(a)));
     const dates = mine.map((t) => lastMessage(v, t)?.date || t.last_date).sort();
-    return { id: p.id, name: p.name, email: (p.emails || [])[0] || null, role: p.role || null, org: p.org, org_name: orgName.get(p.org) || null, key_fp: (v.keys || []).find((k) => k.person === p.id)?.fp || null, threads: mine.length, last_contact: dates.at(-1) || null };
+    return { id: p.id, name: p.name, email: (p.emails || [])[0] || null, type: p.type || null, twin: p.twin || null, role: p.role || null, org: p.org, org_name: orgName.get(p.org) || null, key_fp: (v.keys || []).find((k) => k.person === p.id)?.fp || null, threads: mine.length, last_contact: dates.at(-1) || null };
   }).sort((a, b) => a.name.localeCompare(b.name));
 }
 
@@ -281,15 +281,24 @@ export function companyFiles(v, { id, name, domain = '', kind = 'prospect', owne
 
 // A new person at a company: one file.
 // met: where we met them, in a few words (a.crm.design, round 2 asks: 'the person on each card, and where we met').
-export function personFile(v, { id, name, email, org, role = '', met = '', by, at }) {
-  name = String(name || '').trim(); email = String(email || '').trim().toLowerCase();
+// Who a person is (Dinis Cruz, 25 Nov 2026: "start with us (the team), some of our agents and some synthetic users ... to
+// iron out the workflows"): 'team', 'agent' or 'synthetic'; none for an ordinary contact. twin is the address of their
+// digital twin inbox (the Email Cell's simulated Gmail), where one is set. A team member may have no email yet: they add
+// their own. A synthetic person is made up, on the reserved example domains only.
+export const PERSON_TYPES = ['team', 'agent', 'synthetic'];
+const RESERVED = /@(?:[a-z0-9-]+\.)*example\.(?:com|net|org)$|\.invalid$/i;
+export function personFile(v, { id, name, email, org, role = '', met = '', type = '', twin = '', by, at }) {
+  name = String(name || '').trim(); email = String(email || '').trim().toLowerCase(); type = String(type || '').trim().toLowerCase(); twin = String(twin || '').trim().toLowerCase();
   if (!name) throw new Error('a person needs a name');
-  if (!EMAIL.test(email)) throw new Error(`"${email}" is not an email address`);
+  if (type && !PERSON_TYPES.includes(type)) throw new Error(`unknown type ${type} (team, agent or synthetic)`);
+  if (!(type === 'team' && !email) && !EMAIL.test(email)) throw new Error(`"${email}" is not an email address`);
+  if (type === 'synthetic' && !RESERVED.test(email)) throw new Error(`a synthetic person's email must be on example.com, example.net, example.org or .invalid`);
+  if (twin && !(EMAIL.test(twin) && RESERVED.test(twin))) throw new Error(`a twin inbox must be on a reserved example domain`);
   if (!v.orgs.some((o) => o.id === org)) throw new Error(`no such company ${org}`);
-  if (v.people.some((p) => (p.emails || []).map((e) => e.toLowerCase()).includes(email))) throw new Error(`${email} is already here`);
+  if (email && v.people.some((p) => (p.emails || []).map((e) => e.toLowerCase()).includes(email))) throw new Error(`${email} is already here`);
   if (!ISO.test(at || '')) throw new Error('needs the time, as an ISO time');
   const first = name.split(/\s+/)[0];
-  const person = { schema: 'crm.person/1', id, name, first, emails: [email], org, ...(role ? { role: String(role).trim() } : {}), ...(String(met || '').trim() ? { met: String(met).trim().slice(0, 120) } : {}), added_by: by, added_at: at };
+  const person = { schema: 'crm.person/1', id, name, first, emails: email ? [email] : [], org, ...(type ? { type } : {}), ...(twin ? { twin } : {}), ...(role ? { role: String(role).trim() } : {}), ...(String(met || '').trim() ? { met: String(met).trim().slice(0, 120) } : {}), added_by: by, added_at: at };
   return [{ path: `people/${id}.json`, record: person, text: JSON.stringify(person, null, 2) + '\n' }];
 }
 
@@ -336,7 +345,7 @@ export const ACTION_KINDS = ['email', 'linkedin', 'call', 'meeting', 'message', 
 const DAYISH = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}Z)?$/;
 const actionTime = (a) => Date.parse(a.at.length === 10 ? a.at + 'T12:00:00Z' : a.at);
 
-export function actionFile(v, { id, org, person = null, kind, direction, at, by, summary, logged_at }) {
+export function actionFile(v, { id, org, person = null, kind, direction, at, by, summary, logged_at, simulated = false }) {
   summary = String(summary || '').trim();
   if (!v.orgs.some((o) => o.id === org)) throw new Error(`no such company ${org}`);
   if (person && v.people.find((p) => p.id === person)?.org !== org) throw new Error(`that person is not at this company`);
@@ -346,7 +355,8 @@ export function actionFile(v, { id, org, person = null, kind, direction, at, by,
   if (!by) throw new Error('set your name first (top right)');
   if (!summary) throw new Error('say in a few words what happened');
   if (!ISO.test(logged_at || '')) throw new Error('needs the time, as an ISO time');
-  const a = { schema: 'crm.action/1', id, org, ...(person ? { person } : {}), kind, direction, at, by, summary, logged_at };
+  if (simulated && v.people.find((p) => p.id === person)?.type !== 'synthetic') throw new Error('only a synthetic person can have a simulated action');
+  const a = { schema: 'crm.action/1', id, org, ...(person ? { person } : {}), kind, direction, at, by, summary, logged_at, ...(simulated ? { simulated: true } : {}) };
   return [{ path: `crm/actions/${id}.json`, record: a, text: JSON.stringify(a, null, 2) + '\n' }];
 }
 
@@ -422,7 +432,7 @@ export function nudgeWarning(v, { org, person = null, direction }) {
 // Import: a spreadsheet the team fills in (CSV, one row per person or per company), turned into the CRM's own
 // files, shown first, written in one go. A person supplies and enters the data; nothing is guessed: a cell left
 // empty stays empty. Columns (header row, any order, case-insensitive; only "company" is required):
-export const IMPORT_COLUMNS = ['company', 'domain', 'kind', 'person', 'email', 'role', 'met', 'stage', 'owner', 'next_step', 'next_step_due', 'last_contact_date', 'last_contact_kind', 'last_contact_direction', 'last_contact_summary'];
+export const IMPORT_COLUMNS = ['company', 'domain', 'kind', 'person', 'email', 'role', 'met', 'type', 'twin', 'stage', 'owner', 'next_step', 'next_step_due', 'last_contact_date', 'last_contact_kind', 'last_contact_direction', 'last_contact_summary'];
 
 // RFC 4180 CSV: quoted fields, doubled quotes, commas and newlines inside quotes. Returns rows of strings.
 export function parseCsv(text) {
@@ -473,11 +483,14 @@ export function importFiles(v, text, { by, at, newId: mk = newId }) {
     }
     let personId = null;
     if (r.email || r.person) {
-      if (!r.email) skip('a person with no email is not added (add their email, or leave the person out)');
+      if (!r.email && (r.type || '').toLowerCase() === 'team' && r.person) {
+        if (people.some((p) => p.org === org.id && p.name.toLowerCase() === r.person.toLowerCase())) personId = people.find((p) => p.org === org.id && p.name.toLowerCase() === r.person.toLowerCase()).id;
+        else { try { const [pf] = personFile({ ...v, orgs, people }, { id: mk('p'), name: r.person, email: '', role: r.role, met: r.met, type: 'team', twin: r.twin, org: org.id, by, at }); files.push(pf); people.push(pf.record); personId = pf.record.id; report.people++; } catch (e) { skip(e.message); } }
+      } else if (!r.email) skip('a person with no email is not added (add their email, or leave the person out)');
       else if (emails.has(r.email.toLowerCase())) personId = people.find((p) => (p.emails || []).map((e) => e.toLowerCase()).includes(r.email.toLowerCase()))?.id || null;
       else {
         try {
-          const [pf] = personFile({ ...v, orgs, people }, { id: mk('p'), name: r.person || r.email.split('@')[0], email: r.email, role: r.role, met: r.met, org: org.id, by, at });
+          const [pf] = personFile({ ...v, orgs, people }, { id: mk('p'), name: r.person || r.email.split('@')[0], email: r.email, role: r.role, met: r.met, type: r.type, twin: r.twin, org: org.id, by, at });
           files.push(pf); people.push(pf.record); emails.add(r.email.toLowerCase()); personId = pf.record.id; report.people++;
         } catch (e) { skip(e.message); }
       }
@@ -521,4 +534,17 @@ export function theDay(v, now, { soon = 7, owner = null } = {}) {
   const count = (w) => cards.filter((c) => c.reasons.some((r) => r.why === w)).length;
   const stages = v.stages.map((s) => ({ ...s, count: all.filter((r) => r.stage === s.id).length }));
   return { cards, stages, total: all.length, counts: { overdue: count('overdue'), 'follow-up': count('follow-up'), draft: count('draft'), soon: count('soon') } };
+}
+
+// The People page: the team, the agents and the synthetic users, each with their twin inbox and their latest action
+// (Dinis Cruz, 25 Nov 2026: "some synthetic users which we need to also have a full UI to see (and act on them)").
+export function peopleByType(v) {
+  const orgName = new Map(v.orgs.map((o) => [o.id, o.name])), out = { team: [], agent: [], synthetic: [], contacts: 0 };
+  for (const p of v.people) {
+    if (!PERSON_TYPES.includes(p.type)) { out.contacts++; continue; }
+    const acts = v.actions.filter((a) => a.person === p.id).sort((a, b) => String(b.at).localeCompare(String(a.at)));
+    out[p.type].push({ id: p.id, name: p.name, org: p.org, org_name: orgName.get(p.org) || null, role: p.role || null, email: (p.emails || [])[0] || null, twin: p.twin || null, actions: acts.length, last: acts[0] || null });
+  }
+  for (const k of PERSON_TYPES) out[k].sort((a, b) => a.name.localeCompare(b.name));
+  return out;
 }
