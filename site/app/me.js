@@ -173,7 +173,7 @@ export async function forYou() {
       items.push({ id: it.id, from: r.from, decision: o.decision, answered: done.includes(it.id) });
     } catch (e) { items.push({ id: it.id, error: e.message }); }
   }
-  return { loggedIn: true, items };
+  return { loggedIn: true, items, fp: id.bundle.signing_fingerprint };
 }
 const b64s = (bytes) => { let s = ''; for (const b of new Uint8Array(bytes)) s += String.fromCharCode(b); return btoa(s); };
 const unpemB = (pem) => Uint8Array.from(atob(pem.replace(/-----[^-]+-----/g, '').replace(/\s/g, '')), (c) => c.charCodeAt(0));

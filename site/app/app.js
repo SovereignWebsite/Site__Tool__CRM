@@ -279,7 +279,7 @@ async function forYouPage() {
     <button type="submit">Sign and send my answer</button> <span class="muted small" data-decst="${esc(d.id)}" role="status"></span></form></section>`;
   };
   const open = r.items.filter((x) => !x.answered && !x.error).length;
-  return `<h1>For you</h1><p>${r.items.length ? `${open} waiting for your answer.` : 'Nothing waiting for you.'} Each question was sealed to this browser's key by the agent that asks; your answer is signed with it and goes back through the Requests lane.</p>${r.items.map(one).join('')}`;
+  return `<h1>For you</h1><p>${r.items.length ? `${open} waiting for your answer.` : 'Nothing waiting for this browser.'}</p><p class="muted small">Questions are sealed to one browser's key. This browser's key is <code>${esc(r.fp || '')}</code>; a question sealed to the key of another device or browser opens only there.</p><p> Each question was sealed to this browser's key by the agent that asks; your answer is signed with it and goes back through the Requests lane.</p>${r.items.map(one).join('')}`;
 }
 async function forYouNote() {
   try { const r = await ME.forYou(); const n = r.items.filter((x) => !x.answered && !x.error).length; const el = $('#for-you-note');

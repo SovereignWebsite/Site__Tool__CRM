@@ -52,8 +52,19 @@ async function send(ev) {
     const enc = await seal(CFG.recipient.encrypt, JSON.stringify(request));
     const r = await fetch(`${CFG.endpoint}/api/vault/append/write/${CFG.vault_id}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ append_token: CFG.append_token, payload: btoa(enc) }) });
     if (!r.ok) throw new Error(r.status === 413 ? 'that is too long for one message' : r.status === 507 ? 'the inbox is full until the keeper reads it' : `the inbox answered ${r.status}`);
-    $('#text').value = ''; say('Sent. The keeper reads its inbox, acts within its policy, and answers here.');
+    $('#text').value = ''; say(`Sent at ${new Date().toISOString().slice(11, 16)} UTC, signed with this browser's key ${ID.bundle.signing_fingerprint}. The keeper reads its inbox, acts within its policy, and answers here.`);
+    remember({ at: new Date().toISOString().replace(/\.\d+Z$/, 'Z'), kind, words: text.slice(0, 80), status: r.status }); showSent();
   } catch (e) { say('Not sent: ' + e.message, true); } finally { $('#send').disabled = false; }
+}
+
+// What this browser sent (a convenience, kept in this browser only): so the person can see that a request left.
+const SENT = 'crm.sent';
+const sentList = () => { try { return JSON.parse(localStorage.getItem(SENT) || '[]'); } catch { return []; } };
+function remember(x) { try { localStorage.setItem(SENT, JSON.stringify([...sentList(), x].slice(-20))); } catch {} }
+function showSent() {
+  const box = $('#sent'); if (!box) return; const list = sentList();
+  box.innerHTML = list.length ? '<h2>Sent from this browser</h2><ul class="list"></ul>' : '';
+  for (const x of list.slice().reverse()) { const li = document.createElement('li'); li.textContent = `${x.at.replace('T', ' ').slice(0, 16)} UTC · ${x.kind} · ${x.words}${x.words.length >= 80 ? '…' : ''} · accepted by the inbox (${x.status})`; box.querySelector('ul').appendChild(li); }
 }
 
 async function main() {
@@ -63,7 +74,7 @@ async function main() {
   if (!ID) { $('#who').innerHTML = 'Log in first, on <a href="../#/me">You</a>: your requests are signed with this browser\'s key.'; $('#form').hidden = true; return; }
   $('#who').textContent = `Signed in as ${name() || 'this browser'} (key ${ID.bundle.signing_fingerprint}).`;
   $('#form').hidden = false; $('#form').addEventListener('submit', send);
-  showAnswers();
+  showAnswers(); showSent();
 }
 main();
 
