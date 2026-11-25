@@ -64,7 +64,7 @@ code{font-size:.9em}main a,main code{overflow-wrap:anywhere}
 </style>
 <link rel="stylesheet" href="/app/brand/site-frame.css">
 <style id="home-css">
-/* a.crm.design's home.css (home round 1), as published at design.agents.sovereignweb.site/designs/crm-tool/adopt/home.css */
+/* a.crm.design's home.css (home round 2), as published at design.agents.sovereignweb.site/designs/crm-tool/adopt/home.css */
 /* The CRM tool's home page (https://crm.tool.sovereignweb.site/), a.crm.design, 24 Nov 2026.
    For crm.dev.a: replace the contents of <style id="home-css"> with this file (it keeps every class name).
    What it changes: the hero screenshot is cropped to the Today list so it can be read; the first three features lead
@@ -96,12 +96,14 @@ main.home { max-width: 72rem; }
 .feat p, .three p { margin: 0 0 .8rem; flex: 1; }
 .feat a { font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
 @media (min-width: 52.01rem) {
-  .feats { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .feat { grid-column: span 2; }
-  .feat:nth-child(-n+3) { border-top: 4px solid var(--accent); }
+  /* Three leading features in a row, then the other five in one row of five. */
+  .feats { grid-template-columns: repeat(15, minmax(0, 1fr)); }
+  .feat { grid-column: span 3; padding: .9rem 1rem; }
+  .feat:nth-child(-n+3) { grid-column: span 5; padding: 1.1rem 1.2rem; border-top: 4px solid var(--accent); }
   .feat:nth-child(-n+3) h3 { font-size: 1.25rem; font-family: var(--serif); }
-  .feat:nth-child(n+4) { grid-column: span 2; padding: .9rem 1rem; }
   .feat:nth-child(n+4) p { font-size: .95rem; }
+  .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
 }
 
 /* Your contacts stay yours: each promise with a shape from the brand. */
@@ -142,7 +144,6 @@ main.home { max-width: 72rem; }
 }
 @media (prefers-reduced-motion: no-preference) { .steps { scroll-behavior: smooth; } }
 
-.top{max-width:72rem}
 </style>
 </head>
 <body>
