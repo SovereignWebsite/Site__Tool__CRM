@@ -2,7 +2,7 @@
  "slug": "07-verified-keys",
  "title": "Verified keys on people",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.44 · ed7f471 · 2026-11-24",
+ "site_version": "v0.1.55 · 4715134 · 2026-11-25",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -27,7 +27,7 @@
     "w": 1068,
     "h": 60
    },
-   "screen": "s-ce003a9b2c7744dd.webp"
+   "screen": "s-52a0857efebafe46.webp"
   },
   {
    "caption": "On a company's page, each person shows No key yet, or their verified key. Rui Kowalski has none.",
@@ -93,7 +93,7 @@
     "w": 1068,
     "h": 65
    },
-   "screen": "s-6fa9a707786e435f.webp"
+   "screen": "s-111ddd31d20cfbd2.webp"
   },
   {
    "caption": "A key you verified yourself is how you know who you are sending to, without trusting anyone in between.",

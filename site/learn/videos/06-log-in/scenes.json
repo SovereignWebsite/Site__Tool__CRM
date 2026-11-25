@@ -2,11 +2,11 @@
  "slug": "06-log-in",
  "title": "Logging in, and the QR key hand-over",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.44 · ed7f471 · 2026-11-24",
+ "site_version": "v0.1.55 · 4715134 · 2026-11-25",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
- "seconds": 71,
+ "seconds": 72,
  "presenter": "Studio",
  "scenes": [
   {
@@ -27,7 +27,7 @@
     "w": 560,
     "h": 128
    },
-   "screen": "s-9849b23709450d71.webp"
+   "screen": "s-b9f77d3fdaf29c4b.webp"
   },
   {
    "caption": "Here, a made-up name: Sam Sample.",
@@ -38,7 +38,7 @@
     "w": 560,
     "h": 128
    },
-   "screen": "s-1aca5ebe071be43b.webp"
+   "screen": "s-6c430dde260e72e0.webp"
   },
   {
    "caption": "Your browser makes its own key. Its private half never leaves this browser and cannot be copied out. Its fingerprint is hidden here.",
@@ -49,7 +49,7 @@
     "w": 1068,
     "h": 20
    },
-   "screen": "s-36187b0a48f5698d.webp"
+   "screen": "s-de5f9ad5b095304b.webp"
   },
   {
    "caption": "On the left, 1. Send this: your key as a QR code, already copied for you (hidden here). Send it to Dinis on WhatsApp. It is public: it only lets someone seal things that this browser alone can open.",
@@ -60,18 +60,18 @@
     "w": 522,
     "h": 606
    },
-   "screen": "s-e5e781a63e788e7f.webp"
+   "screen": "s-42d3d79a07cafe54.webp"
   },
   {
-   "caption": "On the right, 2. Drop what you get back: when Dinis sends a QR code back, drop the picture there, or paste it anywhere on the page.",
-   "seconds": 8,
+   "caption": "On the right, 2. Drop what you get back: when the QR code comes back, paste it, choose the picture, or drop it here. On a phone, save the picture to Photos, then choose it.",
+   "seconds": 9,
    "box": {
     "x": 652,
     "y": 110,
     "w": 522,
-    "h": 571
+    "h": 562
    },
-   "screen": "s-e5e781a63e788e7f.webp"
+   "screen": "s-42d3d79a07cafe54.webp"
   },
   {
    "caption": "The page checks the code was signed by the CRM's agent and opens it. The vault then appears here, under Your vaults. Press Open.",
@@ -82,7 +82,7 @@
     "w": 1068,
     "h": 24
    },
-   "screen": "s-16a9b9b7023fa800.webp"
+   "screen": "s-164facb8dec9c374.webp"
   },
   {
    "caption": "The top right always says which vault is open. Press it to switch, or to go back to the demo.",
@@ -93,7 +93,7 @@
     "w": 117,
     "h": 44
    },
-   "screen": "s-16a9b9b7023fa800.webp"
+   "screen": "s-164facb8dec9c374.webp"
   },
   {
    "caption": "On a shared or borrowed computer, use Log out of this browser when you finish.",
@@ -104,7 +104,7 @@
     "w": 154,
     "h": 36
    },
-   "screen": "s-16a9b9b7023fa800.webp"
+   "screen": "s-164facb8dec9c374.webp"
   },
   {
    "caption": "A vault's key opens everything in it. Share it only through the sealed codes, never in a chat or an email.",

@@ -73,8 +73,8 @@
     },
     {
       "mark": "section.take",
-      "caption": "On the right, 2. Drop what you get back: when Dinis sends a QR code back, drop the picture there, or paste it anywhere on the page.",
-      "seconds": 8
+      "caption": "On the right, 2. Drop what you get back: when the QR code comes back, paste it, choose the picture, or drop it here. On a phone, save the picture to Photos, then choose it.",
+      "seconds": 9
     },
     {
       "do": [
