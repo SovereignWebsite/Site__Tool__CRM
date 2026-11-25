@@ -402,10 +402,11 @@ async function mePage() {
     </section>
     <section class="take">
       <h2>2. Drop what you get back</h2>
-      <p>When you are sent a QR code back, drop the picture here, or paste it (the button, or Ctrl+V or Cmd+V anywhere on this page), or paste its text. For several vaults, drop all the pictures at once, or a zip of them.</p>
-      <div id="drop" class="drop" tabindex="0" role="button" aria-label="Drop the QR codes you were sent, or a zip of them">Drop the QR code here<br><span class="small muted">several pictures or a zip for more than one vault</span></div>
-      <p><button type="button" id="pasteqr">Paste QR code</button> <label class="small">or choose the pictures <input id="qrfile" type="file" accept="image/*,.zip,application/zip,.txt,text/plain" multiple></label></p>
-      <form id="receive" class="open" autocomplete="off"><label class="small">or paste its text <textarea id="rc-text" rows="2" spellcheck="false"></textarea></label><button type="submit" class="small">Open it</button></form>
+      <p>When the QR code comes back: paste it, choose the picture, or drop it here. For several vaults, choose several pictures or a zip.</p>
+      <div id="drop" class="drop" tabindex="0" role="button" aria-label="Drop or tap to choose the QR picture you were sent, or several, or a zip">Drop or tap to choose the QR picture<br><span class="small muted">several pictures or a zip for more than one vault</span></div>
+      <p><button type="button" id="pasteqr">Paste QR code</button> <label class="small">Choose the picture <input id="qrfile" type="file" accept="image/*,.zip,application/zip,.txt,text/plain" multiple></label></p>
+      <form id="receive" class="open" autocomplete="off"><label class="small">Or press and hold here, then Paste: the picture or its text <textarea id="rc-text" rows="2" spellcheck="false"></textarea></label><button type="submit" class="small">Open it</button></form>
+      <p class="muted small">On an iPad or a phone, the surest way: save the picture from WhatsApp to Photos, then Choose the picture.</p>
       <p id="rc-status" class="muted" role="status"></p>
     </section>
   </div>`;
@@ -510,7 +511,7 @@ function wireActions() {
   $('#copyqr')?.addEventListener('click', async () => {
     try { const [head, data] = $('img.qr').src.split(','), type = (head.match(/data:([^;]+)/) || [])[1] || 'image/gif'; const bin = atob(data), bytes = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
       const png = await new Promise((ok, no) => { const img = new Image(); img.onload = () => { const m = 48, c = document.createElement('canvas'); c.width = img.width * 2 + 2 * m; c.height = img.height * 2 + 2 * m; const x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, m, m, img.width * 2, img.height * 2); c.toBlob((b) => (b ? ok(b) : no(new Error('no image'))), 'image/png'); }; img.onerror = () => no(new Error('no image')); img.src = URL.createObjectURL(new Blob([bytes], { type })); }); const blob = png; await navigator.clipboard.write([new ClipboardItem({ [blob.type || 'image/png']: blob })]); copied('QR image copied: paste it into WhatsApp.'); }
-    catch { copied('This browser could not copy the picture: right-click it and choose Copy image, or use Copy key text.'); } });
+    catch { copied('This browser could not copy the picture: press and hold it (or right-click it) and choose Copy, or use Copy as text.'); } });
   // Open one or more codes (sealed messages), then show everything added in one place. items: [{ label, text } | { label, error }].
   const openCodes = async (items) => { const st = $('#rc-status'), all = [], froms = [], failed = []; let token = false, note = '';
     st.className = 'muted';
@@ -540,7 +541,7 @@ function wireActions() {
     st.textContent = `Read ${items.length} ${items.length === 1 ? 'code' : 'codes'}…`; await openCodes(items); };
   // The Paste button: the async clipboard API (Chrome, Edge, Safari, Firefox 127+), from the click itself. Safari shows a
   // small Paste bubble first. Where the API is missing or refused, the keyboard paste below still works.
-  $('#pasteqr')?.addEventListener('click', async () => { const st = $('#rc-status');
+  $('#pasteqr')?.addEventListener('click', async () => { const st = $('#rc-status'); st.className = 'muted'; st.textContent = 'Tap Paste when it appears.';
     try {
       if (navigator.clipboard?.read) { const files = [];
         for (const it of await navigator.clipboard.read()) { const t = it.types.find((x) => x.startsWith('image/'));
@@ -549,7 +550,7 @@ function wireActions() {
         if (files.length) return fromFiles(files);
       } else if (navigator.clipboard?.readText) { const text = await navigator.clipboard.readText(); if (text.trim()) return openCode(text); }
       st.className = 'warn'; st.textContent = 'There is no QR picture or code on the clipboard: copy the picture first (in WhatsApp, press on it and choose Copy).';
-    } catch (e) { st.className = 'warn'; st.textContent = 'This browser did not let the page read the clipboard: press Ctrl+V (Cmd+V on a Mac) here instead.'; } });
+    } catch (e) { st.className = 'warn'; st.textContent = 'This browser did not let the page read the clipboard: press and hold in the box below and choose Paste, or choose the picture.'; } });
   $('#receive')?.addEventListener('submit', (ev) => { ev.preventDefault(); openCode($('#rc-text').value); });
   $('#qrfile')?.addEventListener('change', (ev) => { const f = [...ev.target.files]; if (f.length) fromFiles(f); ev.target.value = ''; });
   const drop = $('#drop');
@@ -559,9 +560,9 @@ function wireActions() {
     drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('over'); const f = [...(e.dataTransfer?.files || [])]; if (f.length) fromFiles(f); else { const t = e.dataTransfer?.getData('text'); if (t) openCode(t); } });
     drop.addEventListener('click', () => $('#qrfile').click());
   }
-  if (!window.__crmPaste) { window.__crmPaste = true; document.addEventListener('paste', (e) => { if (!location.hash.startsWith('#/me') || !$('#drop')) return; if (e.target.closest && e.target.closest('textarea, input')) return;
-    const f = [...(e.clipboardData?.items || [])].filter((i) => i.kind === 'file').map((i) => i.getAsFile()).filter(Boolean);
-    if (f.length) { e.preventDefault(); fromFiles(f); return; } const t = e.clipboardData?.getData('text'); if (t && /pki\.sgit\.ai|m1\./.test(t)) { e.preventDefault(); openCode(t); } }); }
+  if (!window.__crmPaste) { window.__crmPaste = true; document.addEventListener('paste', (e) => { if (!location.hash.startsWith('#/me') || !$('#drop')) return; const f = [...(e.clipboardData?.items || [])].filter((i) => i.kind === 'file').map((i) => i.getAsFile()).filter(Boolean);
+    if (f.length) { e.preventDefault(); fromFiles(f); return; }
+    if (e.target.closest && e.target.closest('textarea, input')) return; const t = e.clipboardData?.getData('text'); if (t && /pki\.sgit\.ai|m1\./.test(t)) { e.preventDefault(); openCode(t); } }); }
   for (const b of document.querySelectorAll('[data-openv]')) b.addEventListener('click', async () => { const st = (t, bad) => { $('#v-status').textContent = t; $('#v-status').className = bad ? 'warn' : 'muted'; };
     try { const key = await ME.vaultKey(b.dataset.openv); await loadVault(key, null, false, st, await ME.savedToken()); ME.setLastVault(b.dataset.openv); location.hash = '#/today'; route(); } catch (e) { st('Could not open: ' + e.message, true); } });
   for (const b of document.querySelectorAll('[data-vaultapp]')) b.addEventListener('click', async () => {

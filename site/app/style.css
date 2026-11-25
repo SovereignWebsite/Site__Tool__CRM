@@ -298,3 +298,16 @@ p.filters[role=group] a.on, p.filters[role=group] a[aria-current] { background: 
 .decision form.decide { gap: 8px; }
 .decision fieldset { margin: 4px 0; }
 .decision details { margin: 0; }
+
+/* Round 7 (a.crm.design, 25 Nov 2026): the You page's "Drop what you get back", for touch screens. The drop area
+   stacks its two lines (a <br> is ignored in a flex box); "choose the pictures" becomes a real button, the native file
+   control hidden inside its label (the label still opens the picker: Photos, Files or the camera on an iPad). */
+.take .drop { flex-direction: column; gap: 4px; min-height: 140px; text-align: center; font-size: 17px; }
+.take .drop .small { font-weight: 500; }
+.take label:has(> #qrfile) { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; border: 2px solid var(--accent); border-radius: 8px; color: var(--accent); font-weight: 600; font-size: 15px; cursor: pointer; }
+.take label:has(> #qrfile) > #qrfile { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.take label:has(> #qrfile:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.take #pasteqr { min-height: 44px; }
+.take p:has(> #pasteqr) { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.take #rc-text { min-height: 64px; }
+@media (max-width: 640px) { .take #pasteqr, .take label:has(> #qrfile) { width: 100%; justify-content: center; margin: 4px 0; } }
