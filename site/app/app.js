@@ -8,7 +8,7 @@ import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedT
 import { keyKind, openVault, readAll, merge, whyNotWritable, writeFiles, createCrmVault } from './vault.js';
 import { identity, existingIdentity, keep, recall, forget, kept } from './pki.js';
 import * as ME from './me.js';
-import { isZip, unzip } from './unzip.mjs';
+import { isZip, unzip, safeName, MAX_FILE } from './unzip.mjs';
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -529,26 +529,31 @@ function wireActions() {
   // Files dropped, chosen or pasted: QR pictures, key texts (.txt) and zips of either, read in the order given.
   const fromFiles = async (files) => { const st = $('#rc-status'), items = [];
     st.className = 'muted'; st.textContent = 'Reading…';
-    const one = async (name, blob) => {
+    // inZip: an entry of a zip; a zip inside a zip is refused (security.b review 036, M2).
+    const one = async (name, blob, inZip) => { name = safeName(name);
+      if (blob.size > MAX_FILE) { items.push({ label: name, error: 'too big for a hand-over (over 20 MB)' }); return; }
       if (/^image\//.test(blob.type) || /\.(png|jpe?g|gif|webp|heic|bmp)$/i.test(name)) { try { items.push({ label: name, text: await qrFromPicture(blob) }); } catch (e) { items.push({ label: name, error: e.message }); } return; }
       const bytes = new Uint8Array(await blob.arrayBuffer());
-      if (isZip(bytes)) { let ents; try { ents = await unzip(bytes); } catch (e) { items.push({ label: name, error: e.message }); return; }
+      if (isZip(bytes)) { if (inZip) { items.push({ label: name, error: 'a zip inside a zip is not opened' }); return; } let ents; try { ents = await unzip(bytes); } catch (e) { items.push({ label: name, error: e.message }); return; }
         if (!ents.length) items.push({ label: name, error: 'the zip is empty' });
-        for (const z of ents) await one(z.name, new Blob([z.bytes], { type: /\.png$/i.test(z.name) ? 'image/png' : /\.jpe?g$/i.test(z.name) ? 'image/jpeg' : '' })); return; }
+        for (const z of ents) await one(z.name, new Blob([z.bytes], { type: /\.png$/i.test(z.name) ? 'image/png' : /\.jpe?g$/i.test(z.name) ? 'image/jpeg' : '' }), true); return; }
       if (/\.(txt|json)$/i.test(name) || /^text\//.test(blob.type)) { items.push({ label: name, text: new TextDecoder().decode(bytes) }); return; }
       items.push({ label: name, error: 'not a picture, a text file or a zip' }); };
     for (const f of files) await one(f.name || 'the picture', f);
     st.textContent = `Read ${items.length} ${items.length === 1 ? 'code' : 'codes'}…`; await openCodes(items); };
   // The Paste button: the async clipboard API (Chrome, Edge, Safari, Firefox 127+), from the click itself. Safari shows a
   // small Paste bubble first. Where the API is missing or refused, the keyboard paste below still works.
+  // Clipboard text goes to the parser only if it looks like a code (as for the keyboard paste); other text is never shown.
+  const looksLikeCode = (t) => /pki\.sgit\.ai|m1\./.test(t || '');
+  const notCode = () => { const st = $('#rc-status'); st.className = 'warn'; st.textContent = 'The clipboard holds text, but not a QR code or a sealed code from this site.'; };
   $('#pasteqr')?.addEventListener('click', async () => { const st = $('#rc-status'); st.className = 'muted'; st.textContent = 'Tap Paste when it appears.';
     try {
       if (navigator.clipboard?.read) { const files = [];
         for (const it of await navigator.clipboard.read()) { const t = it.types.find((x) => x.startsWith('image/'));
           if (t) { files.push(new File([await it.getType(t)], 'the pasted picture', { type: t })); continue; }
-          if (it.types.includes('text/plain')) { const text = await (await it.getType('text/plain')).text(); if (text.trim()) return openCode(text); } }
+          if (it.types.includes('text/plain')) { const text = await (await it.getType('text/plain')).text(); if (looksLikeCode(text)) return openCode(text); if (text.trim()) return notCode(); } }
         if (files.length) return fromFiles(files);
-      } else if (navigator.clipboard?.readText) { const text = await navigator.clipboard.readText(); if (text.trim()) return openCode(text); }
+      } else if (navigator.clipboard?.readText) { const text = await navigator.clipboard.readText(); if (looksLikeCode(text)) return openCode(text); if (text.trim()) return notCode(); }
       st.className = 'warn'; st.textContent = 'There is no QR picture or code on the clipboard: copy the picture first (in WhatsApp, press on it and choose Copy).';
     } catch (e) { st.className = 'warn'; st.textContent = 'This browser did not let the page read the clipboard: press and hold in the box below and choose Paste, or choose the picture.'; } });
   $('#receive')?.addEventListener('submit', (ev) => { ev.preventDefault(); openCode($('#rc-text').value); });
