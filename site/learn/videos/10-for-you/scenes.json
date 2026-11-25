@@ -2,7 +2,7 @@
  "slug": "10-for-you",
  "title": "For you: questions from the agents",
  "site": "https://crm.tool.sovereignweb.site",
- "site_version": "v0.1.44 · ed7f471 · 2026-11-24",
+ "site_version": "v0.1.50 · 244486c · 2026-11-25",
  "clock": "2026-11-24T10:00:00Z",
  "width": 1280,
  "height": 720,
@@ -34,55 +34,55 @@
    "seconds": 8,
    "box": {
     "x": 134,
-    "y": 283,
+    "y": 359,
     "w": 1017,
     "h": 33
    },
-   "screen": "s-bf39b0f41ce6e14e.webp"
+   "screen": "s-2f92b71d110f17e5.webp"
   },
   {
    "caption": "It says who asked and by when, and that their signature was checked.",
    "seconds": 6,
    "box": {
     "x": 134,
-    "y": 329,
+    "y": 405,
     "w": 1017,
-    "h": 20
+    "h": 19
    },
-   "screen": "s-bf39b0f41ce6e14e.webp"
+   "screen": "s-2f92b71d110f17e5.webp"
   },
   {
    "caption": "Pick one option in each group. Here, a made-up question: which view should open first, and in which order.",
    "seconds": 7,
    "box": {
     "x": 134,
-    "y": 255,
+    "y": 330,
     "w": 560,
-    "h": 461
+    "h": 386
    },
-   "screen": "s-4dbb1a2c2b541ab3.webp"
+   "screen": "s-352b534b395f2855.webp"
   },
   {
    "caption": "Here: Today, overdue first. The recommendation is there too, with its evidence.",
    "seconds": 7,
    "box": {
     "x": 134,
-    "y": 255,
+    "y": 330,
     "w": 560,
-    "h": 461
+    "h": 386
    },
-   "screen": "s-b6928821e8282d19.webp"
+   "screen": "s-4caec6d1dd8fa69c.webp"
   },
   {
    "caption": "Sign and send my answer signs it with your key and sends it back through the Requests lane. In this explainer nothing is sent.",
    "seconds": 8,
    "box": {
     "x": 134,
-    "y": 469,
+    "y": 468,
     "w": 238,
     "h": 44
    },
-   "screen": "s-239ab6d8134323d5.webp"
+   "screen": "s-320a5ec1d5e1dd3f.webp"
   },
   {
    "caption": "The question is sealed to you and the answer signed by you. That is the CRM: open it, and start on Today.",
