@@ -8,6 +8,7 @@ import { readVault, checkCrm, leadBoard, followUps, company, contacts, unlinkedT
 import { keyKind, openVault, readAll, merge, whyNotWritable, writeFiles, createCrmVault } from './vault.js';
 import { identity, existingIdentity, keep, recall, forget, kept } from './pki.js';
 import * as ME from './me.js';
+import { isZip, unzip } from './unzip.mjs';
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -387,8 +388,9 @@ async function mePage() {
   <p class="muted small">${(await ME.passkeyAvailable()) ? 'This device can use a passkey.' : 'This device has no passkey: the key is tied to this browser only.'}</p>`;
   const k = await ME.myKey(), list = await ME.vaults(), ja = JUST_ADDED; JUST_ADDED = null;
   const added = ja ? `<section class="added" role="status"><h2>${ja.vaults.map((v) => esc(v.name)).join(', ')} added</h2>
-    <p>It was sealed to this browser and signed by ${esc(ja.from)}. It is kept here, locked to this browser's key.${ja.token ? ' An access token came with it and is kept too.' : ''}</p>
-    <p>${ja.vaults.map((v) => `<button type="button" class="big" data-openv="${esc(v.id)}">Open ${esc(v.name)} now</button>`).join(' ')}</p></section>` : '';
+    <p>${ja.vaults.length > 1 ? 'They were' : 'It was'} sealed to this browser and signed by ${esc(ja.from)}. It is kept here, locked to this browser's key.${ja.token ? ' An access token came with it and is kept too.' : ''}</p>
+    <p>${ja.vaults.map((v) => `<button type="button" class="big" data-openv="${esc(v.id)}">Open ${esc(v.name)} now</button>`).join(' ')}</p>
+    ${ja.failed?.length ? `<p class="warn">Not opened: ${ja.failed.map((f) => esc(f)).join('; ')}.</p>` : ''}</section>` : '';
   const handover = `<div class="handover">
     <section class="give">
       <h2>1. Send this</h2>
@@ -400,9 +402,9 @@ async function mePage() {
     </section>
     <section class="take">
       <h2>2. Drop what you get back</h2>
-      <p>When you are sent a QR code back, drop the picture here, or paste it (Ctrl+V or Cmd+V anywhere on this page), or paste its text.</p>
-      <div id="drop" class="drop" tabindex="0" role="button" aria-label="Drop or paste the QR code you were sent">Drop or paste the QR code here</div>
-      <p><label class="small">or choose the picture <input id="qrfile" type="file" accept="image/*"></label></p>
+      <p>When you are sent a QR code back, drop the picture here, or paste it (the button, or Ctrl+V or Cmd+V anywhere on this page), or paste its text. For several vaults, drop all the pictures at once, or a zip of them.</p>
+      <div id="drop" class="drop" tabindex="0" role="button" aria-label="Drop the QR codes you were sent, or a zip of them">Drop the QR code here<br><span class="small muted">several pictures or a zip for more than one vault</span></div>
+      <p><button type="button" id="pasteqr">Paste QR code</button> <label class="small">or choose the pictures <input id="qrfile" type="file" accept="image/*,.zip,application/zip,.txt,text/plain" multiple></label></p>
       <form id="receive" class="open" autocomplete="off"><label class="small">or paste its text <textarea id="rc-text" rows="2" spellcheck="false"></textarea></label><button type="submit" class="small">Open it</button></form>
       <p id="rc-status" class="muted" role="status"></p>
     </section>
@@ -509,26 +511,57 @@ function wireActions() {
     try { const [head, data] = $('img.qr').src.split(','), type = (head.match(/data:([^;]+)/) || [])[1] || 'image/gif'; const bin = atob(data), bytes = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
       const png = await new Promise((ok, no) => { const img = new Image(); img.onload = () => { const m = 48, c = document.createElement('canvas'); c.width = img.width * 2 + 2 * m; c.height = img.height * 2 + 2 * m; const x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, m, m, img.width * 2, img.height * 2); c.toBlob((b) => (b ? ok(b) : no(new Error('no image'))), 'image/png'); }; img.onerror = () => no(new Error('no image')); img.src = URL.createObjectURL(new Blob([bytes], { type })); }); const blob = png; await navigator.clipboard.write([new ClipboardItem({ [blob.type || 'image/png']: blob })]); copied('QR image copied: paste it into WhatsApp.'); }
     catch { copied('This browser could not copy the picture: right-click it and choose Copy image, or use Copy key text.'); } });
-  const openCode = async (text) => { const st = $('#rc-status');
-    try { st.className = 'muted'; st.textContent = 'Opening…'; const r = await ME.receive(text, async (key) => JSON.parse((await readAll(await openVault(key)))['manifest.json'] || '{}').name);
-      if (!r.added.length) { st.className = 'warn'; st.textContent = `From ${r.from}, but there was no vault key in it.`; return; }
-      JUST_ADDED = { vaults: r.added, from: r.from, note: r.note, token: r.token }; route();
-    } catch (e) { st.className = 'warn'; st.textContent = 'Not opened: ' + e.message; } };
-  const fromPicture = async (file) => { const st = $('#rc-status');
-    try { st.className = 'muted'; st.textContent = 'Reading the QR code…'; await openCode(await qrFromPicture(file));
-    } catch (e) { st.className = 'warn'; st.textContent = 'Not opened: ' + e.message; } };
+  // Open one or more codes (sealed messages), then show everything added in one place. items: [{ label, text } | { label, error }].
+  const openCodes = async (items) => { const st = $('#rc-status'), all = [], froms = [], failed = []; let token = false, note = '';
+    st.className = 'muted';
+    for (const [i, it] of items.entries()) {
+      st.textContent = items.length > 1 ? `Opening ${i + 1} of ${items.length}…` : 'Opening…';
+      if (it.error) { failed.push(`${it.label}: ${it.error}`); continue; }
+      try { const r = await ME.receive(it.text, async (key) => JSON.parse((await readAll(await openVault(key)))['manifest.json'] || '{}').name);
+        if (!r.added.length) { failed.push(`${it.label}: from ${r.from}, but there was no vault key in it`); continue; }
+        for (const v of r.added) if (!all.some((x) => x.id === v.id)) all.push(v);
+        if (!froms.includes(r.from)) froms.push(r.from); token = token || r.token; note = note || r.note;
+      } catch (e) { failed.push(`${it.label}: ${e.message}`); } }
+    if (!all.length) { st.className = 'warn'; st.textContent = 'Not opened: ' + (failed.join('; ') || 'nothing to open'); return; }
+    JUST_ADDED = { vaults: all, from: froms.join(', '), note, token, failed }; route(); };
+  const openCode = (text) => openCodes([{ label: 'the text', text }]);
+  // Files dropped, chosen or pasted: QR pictures, key texts (.txt) and zips of either, read in the order given.
+  const fromFiles = async (files) => { const st = $('#rc-status'), items = [];
+    st.className = 'muted'; st.textContent = 'Reading…';
+    const one = async (name, blob) => {
+      if (/^image\//.test(blob.type) || /\.(png|jpe?g|gif|webp|heic|bmp)$/i.test(name)) { try { items.push({ label: name, text: await qrFromPicture(blob) }); } catch (e) { items.push({ label: name, error: e.message }); } return; }
+      const bytes = new Uint8Array(await blob.arrayBuffer());
+      if (isZip(bytes)) { let ents; try { ents = await unzip(bytes); } catch (e) { items.push({ label: name, error: e.message }); return; }
+        if (!ents.length) items.push({ label: name, error: 'the zip is empty' });
+        for (const z of ents) await one(z.name, new Blob([z.bytes], { type: /\.png$/i.test(z.name) ? 'image/png' : /\.jpe?g$/i.test(z.name) ? 'image/jpeg' : '' })); return; }
+      if (/\.(txt|json)$/i.test(name) || /^text\//.test(blob.type)) { items.push({ label: name, text: new TextDecoder().decode(bytes) }); return; }
+      items.push({ label: name, error: 'not a picture, a text file or a zip' }); };
+    for (const f of files) await one(f.name || 'the picture', f);
+    st.textContent = `Read ${items.length} ${items.length === 1 ? 'code' : 'codes'}…`; await openCodes(items); };
+  // The Paste button: the async clipboard API (Chrome, Edge, Safari, Firefox 127+), from the click itself. Safari shows a
+  // small Paste bubble first. Where the API is missing or refused, the keyboard paste below still works.
+  $('#pasteqr')?.addEventListener('click', async () => { const st = $('#rc-status');
+    try {
+      if (navigator.clipboard?.read) { const files = [];
+        for (const it of await navigator.clipboard.read()) { const t = it.types.find((x) => x.startsWith('image/'));
+          if (t) { files.push(new File([await it.getType(t)], 'the pasted picture', { type: t })); continue; }
+          if (it.types.includes('text/plain')) { const text = await (await it.getType('text/plain')).text(); if (text.trim()) return openCode(text); } }
+        if (files.length) return fromFiles(files);
+      } else if (navigator.clipboard?.readText) { const text = await navigator.clipboard.readText(); if (text.trim()) return openCode(text); }
+      st.className = 'warn'; st.textContent = 'There is no QR picture or code on the clipboard: copy the picture first (in WhatsApp, press on it and choose Copy).';
+    } catch (e) { st.className = 'warn'; st.textContent = 'This browser did not let the page read the clipboard: press Ctrl+V (Cmd+V on a Mac) here instead.'; } });
   $('#receive')?.addEventListener('submit', (ev) => { ev.preventDefault(); openCode($('#rc-text').value); });
-  $('#qrfile')?.addEventListener('change', (ev) => { const f = ev.target.files[0]; if (f) fromPicture(f); ev.target.value = ''; });
+  $('#qrfile')?.addEventListener('change', (ev) => { const f = [...ev.target.files]; if (f.length) fromFiles(f); ev.target.value = ''; });
   const drop = $('#drop');
   if (drop) {
     drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
     drop.addEventListener('dragleave', () => drop.classList.remove('over'));
-    drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('over'); const f = [...(e.dataTransfer?.files || [])].find((x) => x.type.startsWith('image/')); if (f) fromPicture(f); else { const t = e.dataTransfer?.getData('text'); if (t) openCode(t); } });
+    drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('over'); const f = [...(e.dataTransfer?.files || [])]; if (f.length) fromFiles(f); else { const t = e.dataTransfer?.getData('text'); if (t) openCode(t); } });
     drop.addEventListener('click', () => $('#qrfile').click());
   }
   if (!window.__crmPaste) { window.__crmPaste = true; document.addEventListener('paste', (e) => { if (!location.hash.startsWith('#/me') || !$('#drop')) return; if (e.target.closest && e.target.closest('textarea, input')) return;
-    const f = [...(e.clipboardData?.items || [])].filter((i) => i.kind === 'file').map((i) => i.getAsFile()).find((x) => x && x.type.startsWith('image/'));
-    if (f) { e.preventDefault(); fromPicture(f); return; } const t = e.clipboardData?.getData('text'); if (t && /pki\.sgit\.ai|m1\./.test(t)) { e.preventDefault(); openCode(t); } }); }
+    const f = [...(e.clipboardData?.items || [])].filter((i) => i.kind === 'file').map((i) => i.getAsFile()).filter(Boolean);
+    if (f.length) { e.preventDefault(); fromFiles(f); return; } const t = e.clipboardData?.getData('text'); if (t && /pki\.sgit\.ai|m1\./.test(t)) { e.preventDefault(); openCode(t); } }); }
   for (const b of document.querySelectorAll('[data-openv]')) b.addEventListener('click', async () => { const st = (t, bad) => { $('#v-status').textContent = t; $('#v-status').className = bad ? 'warn' : 'muted'; };
     try { const key = await ME.vaultKey(b.dataset.openv); await loadVault(key, null, false, st, await ME.savedToken()); ME.setLastVault(b.dataset.openv); location.hash = '#/today'; route(); } catch (e) { st('Could not open: ' + e.message, true); } });
   for (const b of document.querySelectorAll('[data-vaultapp]')) b.addEventListener('click', async () => {
